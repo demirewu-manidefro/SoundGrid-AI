@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #0B0F19;
+    color: #F1F5F9;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Custom industrial scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0F19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1F2937;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+/* Telemetry Glow effects */
+.glow-accent {
+  box-shadow: 0 0 15px -3px rgba(56, 189, 248, 0.25);
+}
+
+.glow-critical {
+  box-shadow: 0 0 20px -3px rgba(239, 68, 68, 0.35);
+}
+
+.glow-healthy {
+  box-shadow: 0 0 15px -3px rgba(16, 185, 129, 0.25);
+}
+
+.glow-warning {
+  box-shadow: 0 0 15px -3px rgba(245, 158, 11, 0.25);
+}
+
+/* Industrial Grid overlay */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(31, 41, 55, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(31, 41, 55, 0.3) 1px, transparent 1px);
+}
