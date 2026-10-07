@@ -21,6 +21,8 @@ dist/
 # Build artifacts
 backend/dist/
 frontend/dist/
+backend/uploads/
+uploads/
 
 # Environment secrets
 .env
