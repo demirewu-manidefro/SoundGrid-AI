@@ -8,14 +8,22 @@ import { apiRateLimiter } from './middlewares/rateLimiter.middleware';
 import { errorHandler } from './middlewares/error.middleware';
 import { audioUploadMiddleware, validateAudioPayload } from './middlewares/uploadValidator.middleware';
 
+import path from 'path';
+
 // Routes
 import authRoutes from './modules/auth/auth.routes';
 import tenantsRoutes from './modules/tenants/tenants.routes';
 import usersRoutes from './modules/users/users.routes';
 import auditRoutes from './modules/audit/audit.routes';
+import machinesRoutes from './modules/machines/machines.routes';
+import diagnosticsRoutes from './modules/diagnostics/diagnostics.routes';
+import ticketsRoutes from './modules/tickets/tickets.routes';
 import { prisma } from './db/prisma';
 
 export const app = express();
+
+// Static audio files serving
+app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
 
 // 1. Security Headers via Helmet
 app.use(
@@ -109,6 +117,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/tenants', tenantsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/audit', auditRoutes);
+app.use('/api/machines', machinesRoutes);
+app.use('/api/diagnostics', diagnosticsRoutes);
+app.use('/api/tickets', ticketsRoutes);
 
 // 8. 404 Catch-All
 app.use((_req, res) => {
