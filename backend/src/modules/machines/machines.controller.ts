@@ -20,8 +20,10 @@ export class MachinesController {
   static async list(req: Request, res: Response): Promise<void> {
     const isSuperAdmin = req.user?.role === UserRole.SUPER_ADMIN;
     const tenantId = isSuperAdmin ? (req.query.tenantId as string) || null : req.user?.tenantId;
-    const type = req.query.type as MachineType | undefined;
-    const status = req.query.status as MachineStatus | undefined;
+    const typeQuery = req.query.type as string | undefined;
+    const statusQuery = req.query.status as string | undefined;
+    const type = (typeQuery && typeQuery !== 'undefined' && typeQuery !== 'ALL') ? (typeQuery as MachineType) : undefined;
+    const status = (statusQuery && statusQuery !== 'undefined' && statusQuery !== 'ALL') ? (statusQuery as MachineStatus) : undefined;
 
     const machines = await MachinesService.listMachines(tenantId, type, status);
     res.json({ success: true, count: machines.length, data: machines });
