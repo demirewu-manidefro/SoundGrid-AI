@@ -1,0 +1,186 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ENTERPRISE_ADMIN
+  SAFETY_MANAGER
+  TECHNICIAN
+  AUDITOR
+}
+
+enum TenantTier {
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum MachineType {
+  TRANSFORMER
+  PUMP
+  MOTOR
+  FAN
+}
+
+enum MachineStatus {
+  OPERATIONAL
+  WARNING
+  CRITICAL
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model Tenant {
+  id           String        @id @default(uuid())
+  name         String
+  slug         String        @unique
+  tier         TenantTier    @default(ENTERPRISE)
+  isActive     Boolean       @default(true)
+  deletedAt    DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  users        User[]
+  machines     Machine[]
+  auditLogs    AuditLog[]
+
+  @@index([slug])
+  @@index([isActive])
+}
+
+model User {
+  id           String         @id @default(uuid())
+  tenantId     String?
+  email        String         @unique
+  passwordHash String?
+  googleId     String?        @unique
+  fullName     String
+  role         UserRole       @default(TECHNICIAN)
+  isActive     Boolean        @default(true)
+  lastLoginAt  DateTime?
+  deletedAt    DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  tenant       Tenant?        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  refreshTokens RefreshToken[]
+  diagnostics  DiagnosticRecord[]
+  assignedTickets MaintenanceTicket[] @relation("TicketAssignee")
+  auditLogs    AuditLog[]
+
+  @@index([tenantId])
+  @@index([email])
+  @@index([role])
+}
+
+model RefreshToken {
+  id         String   @id @default(uuid())
+  userId     String
+  tokenHash  String   @unique
+  revoked    Boolean  @default(false)
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tokenHash])
+}
+
+model Machine {
+  id           String             @id @default(uuid())
+  tenantId     String
+  name         String
+  machineType  MachineType
+  serialNumber String             @unique
+  location     String
+  status       MachineStatus      @default(OPERATIONAL)
+  deletedAt    DateTime?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  tenant       Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  diagnostics  DiagnosticRecord[]
+
+  @@index([tenantId])
+  @@index([machineType])
+  @@index([status])
+}
+
+model DiagnosticRecord {
+  id                 String             @id @default(uuid())
+  machineId          String
+  technicianId       String
+  audioUrl           String
+  isAnomaly          Boolean
+  confidenceScore    Float
+  classProbabilities Json               // e.g. { "normal": 0.08, "anomaly": 0.92 }
+  frequencyData      Json?              // Spectrogram / frequency bins telemetry
+  technicianNotes    String?
+  createdAt          DateTime           @default(now())
+
+  machine            Machine            @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  technician         User               @relation(fields: [technicianId], references: [id], onDelete: Cascade)
+  maintenanceTicket  MaintenanceTicket?
+
+  @@index([machineId])
+  @@index([technicianId])
+  @@index([isAnomaly])
+  @@index([createdAt])
+}
+
+model MaintenanceTicket {
+  id              String         @id @default(uuid())
+  diagnosticId    String         @unique
+  assignedToId    String?
+  status          TicketStatus   @default(OPEN)
+  priority        TicketPriority @default(HIGH)
+  resolutionNotes String?
+  resolvedAt      DateTime?
+  deletedAt       DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  diagnostic      DiagnosticRecord @relation(fields: [diagnosticId], references: [id], onDelete: Cascade)
+  assignedTo      User?            @relation("TicketAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([priority])
+  @@index([assignedToId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String?
+  tenantId  String?
+  action    String
+  resource  String
+  ipAddress String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  actor     User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([actorId])
+  @@index([action])
+  @@index([createdAt])
+}
