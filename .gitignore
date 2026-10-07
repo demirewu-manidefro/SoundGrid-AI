@@ -22,6 +22,11 @@ dist/
 backend/dist/
 frontend/dist/
 
+# Environment secrets
+.env
+backend/.env
+ai_engine/.env
+
 # Logs & temp
 *.log
 data/
