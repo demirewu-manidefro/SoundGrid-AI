@@ -5,8 +5,8 @@ export class MachinesService {
   static async listMachines(tenantId?: string | null, type?: MachineType, status?: MachineStatus) {
     const where: any = { deletedAt: null };
     if (tenantId) where.tenantId = tenantId;
-    if (type) where.machineType = type;
-    if (status) where.status = status;
+    if (type && (type as string) !== 'undefined') where.machineType = type;
+    if (status && (status as string) !== 'undefined') where.status = status;
 
     return prisma.machine.findMany({
       where,
