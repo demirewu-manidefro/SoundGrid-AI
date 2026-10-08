@@ -27,6 +27,7 @@ uploads/
 # Environment secrets
 .env
 backend/.env
+frontend/.env
 ai_engine/.env
 
 # Logs & temp
