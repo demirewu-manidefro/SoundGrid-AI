@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Activity, Shield, LogIn, Lock, Mail, Users, ArrowRight } from 'lucide-react';
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import { Activity, Shield, LogIn, Lock, Mail, Users, ArrowRight, Sparkles } from 'lucide-react';
 
 export const Login: React.FC = () => {
   const { login, quickDemoLogin, loginWithGoogle } = useAuth();
@@ -20,6 +21,26 @@ export const Login: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
+    if (!credentialResponse.credential) {
+      setError('Google authentication failed: No credential received from Google.');
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      await loginWithGoogle(credentialResponse.credential);
+    } catch (err: any) {
+      setError(err.message || 'Google SSO verification failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setError('Google Sign-In was cancelled or failed to authenticate.');
   };
 
   const handleGoogleMock = async () => {
@@ -149,16 +170,41 @@ export const Login: React.FC = () => {
             </button>
           </form>
 
-          {/* Google SSO button */}
-          <div className="mt-4">
-            <button
-              id="btn-google-sso"
-              onClick={handleGoogleMock}
-              disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-lg border border-industrial-border bg-slate-900/60 py-2 text-xs font-mono text-slate-300 hover:bg-slate-800 transition-colors"
-            >
-              <span className="font-bold text-sky-400">G</span> Sign in with Google SSO
-            </button>
+          {/* Google Single Sign-On (GIS) */}
+          <div className="mt-5 space-y-3">
+            <div className="relative flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-industrial-border" />
+              </div>
+              <span className="relative bg-[#0B0F19] px-3 font-mono text-[11px] uppercase tracking-wider text-slate-400">
+                Or Single Sign-On
+              </span>
+            </div>
+
+            <div className="flex w-full justify-center overflow-hidden rounded-lg" id="google-login-container">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                theme="filled_black"
+                size="large"
+                shape="rectangular"
+                text="signin_with"
+                width="380"
+              />
+            </div>
+
+            <div className="text-center">
+              <button
+                id="btn-google-sso"
+                onClick={handleGoogleMock}
+                disabled={loading}
+                type="button"
+                className="text-[11px] font-mono text-slate-400 hover:text-sky-400 transition-colors underline underline-offset-2"
+                title="Simulate Google SSO login with a mock token in development"
+              >
+                ⚡ Dev Bypass: 1-Click Test Google SSO
+              </button>
+            </div>
           </div>
 
           {/* Quick Demo Role Cards */}
