@@ -1,8 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { SlidingTokenBucket } from '../utils/tokenBucket';
 
-// Auth bucket: 10 attempts per minute per IP
-const authBucket = new SlidingTokenBucket({ maxTokens: 10, windowMs: 60 * 1000 });
+// Auth bucket: 10 attempts per minute in production (generous in development/test)
+const authBucket = new SlidingTokenBucket({
+  maxTokens: process.env.NODE_ENV === 'production' ? 10 : 150,
+  windowMs: 60 * 1000,
+});
 
 // General API bucket: 120 requests per minute
 const apiBucket = new SlidingTokenBucket({ maxTokens: 120, windowMs: 60 * 1000 });

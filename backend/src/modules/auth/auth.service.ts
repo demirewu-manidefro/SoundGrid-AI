@@ -276,19 +276,33 @@ export class AuthService {
    * Explicitly revokes refresh token on user logout.
    */
   static async logout(rawRefreshToken: string | undefined, userId?: string, ipAddress?: string) {
+    let resolvedUserId = userId;
+
     if (rawRefreshToken) {
       const tokenHash = hashToken(rawRefreshToken);
-      await prisma.refreshToken.updateMany({
+      const tokenRecord = await prisma.refreshToken.findUnique({
         where: { tokenHash },
-        data: { revoked: true },
       });
+
+      if (tokenRecord) {
+        resolvedUserId = resolvedUserId || tokenRecord.userId;
+        await prisma.refreshToken.update({
+          where: { id: tokenRecord.id },
+          data: { revoked: true },
+        });
+      } else {
+        await prisma.refreshToken.updateMany({
+          where: { tokenHash },
+          data: { revoked: true },
+        });
+      }
     }
 
-    if (userId) {
+    if (resolvedUserId) {
       await AuditService.record({
-        actorId: userId,
+        actorId: resolvedUserId,
         action: 'AUTH_LOGOUT',
-        resource: `User:${userId}`,
+        resource: `User:${resolvedUserId}`,
         ipAddress: ipAddress || '127.0.0.1',
       });
     }
