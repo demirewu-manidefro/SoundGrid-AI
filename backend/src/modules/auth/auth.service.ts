@@ -175,6 +175,18 @@ export class AuthService {
       throw new Error('Account deactivated.');
     }
 
+    if (user.tenant && (!user.tenant.isActive || user.tenant.deletedAt)) {
+      await AuditService.record({
+        actorId: user.id,
+        tenantId: user.tenantId,
+        action: 'AUTH_LOGIN_REJECTED',
+        resource: `Tenant:${user.tenantId}`,
+        ipAddress: params.ipAddress,
+        metadata: { reason: 'Organization suspended', userAgent: params.userAgent },
+      });
+      throw new Error('Your organization account has been suspended.');
+    }
+
     const { accessToken, refreshToken } = await this.issueTokenPair(user);
 
     await AuditService.record({
