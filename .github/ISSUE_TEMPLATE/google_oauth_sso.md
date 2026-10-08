@@ -27,34 +27,28 @@ Currently, the backend architecture in `backend/src/modules/auth/auth.service.ts
 - [ ] Copy `Client ID` and store in environment configurations.
 
 ### 2. Backend Environment & Verification
-- [ ] Update `backend/.env`:
-  ```env
-  GOOGLE_CLIENT_ID="<your-google-client-id>.apps.googleusercontent.com"
-  ```
-- [ ] Validate token payload verification in `AuthService.loginWithGoogle`:
-  - Verify email domain matching.
-  - Check user existence in PostgreSQL:
-    - If user exists: link `googleId`, update `lastLoginAt`.
-    - If user is new: auto-provision under default tenant (e.g., `Apex Power Generation`) with default role `TECHNICIAN`.
-- [ ] Issue short-lived JWT (15m) + revocable HTTP-only Refresh Token cookie (7d).
-- [ ] Record immutable audit log: `AUTH_GOOGLE_SSO_SUCCESS`.
+- [x] Update `backend/.env` with `GOOGLE_CLIENT_ID`.
+- [x] Validate token payload verification in `AuthService.loginWithGoogle`:
+  - [x] Verify token signature with `OAuth2Client` and match audience.
+  - [x] Check user existence in PostgreSQL:
+    - [x] If user exists: link `googleId`, update `lastLoginAt`.
+    - [x] If user is new: auto-provision under default tenant (`Apex Power Generation`) with default role `TECHNICIAN`.
+- [x] Issue short-lived JWT (15m) + revocable HTTP-only Refresh Token cookie (7d).
+- [x] Record immutable audit log: `AUTH_GOOGLE_SSO_SUCCESS`.
 
 ### 3. Frontend Integration (`frontend/src/pages/Login.tsx`)
-- [ ] Install `@react-oauth/google` in frontend:
-  ```bash
-  npm install @react-oauth/google
-  ```
-- [ ] Wrap app with `<GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>`.
-- [ ] Replace mock button in `Login.tsx` with `<GoogleLogin onSuccess={...} onError={...} />`.
-- [ ] Send Google `credential` (ID token) to `POST /api/auth/google`.
-- [ ] Store access token in `localStorage` and redirect to `/` telemetry dashboard.
+- [x] Install `@react-oauth/google` in frontend (`npm install @react-oauth/google`).
+- [x] Wrap app with `<GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>` in `main.tsx`.
+- [x] Integrate official `<GoogleLogin onSuccess={...} onError={...} />` in `Login.tsx`.
+- [x] Send Google `credential` (ID token) to `POST /api/auth/google`.
+- [x] Store access token in `localStorage` and redirect to `/` telemetry dashboard.
 
 ---
 
 ## 🔒 Security & Defense-in-Depth Requirements
-- [ ] Audience verification: ensure token audience matches `GOOGLE_CLIENT_ID`.
-- [ ] Rate limiting: apply `authRateLimiter` sliding-window token bucket to prevent token flooding.
-- [ ] Organizational tenant scoping: ensure Google authenticated users cannot access or tamper with other organizations' assets without proper tenant privileges.
+- [x] Audience verification: ensure token audience matches `GOOGLE_CLIENT_ID`.
+- [x] Rate limiting: apply `authRateLimiter` sliding-window token bucket to prevent token flooding.
+- [x] Organizational tenant scoping: ensure Google authenticated users cannot access or tamper with other organizations' assets without proper tenant privileges.
 
 ---
 
