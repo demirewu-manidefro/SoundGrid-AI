@@ -4,7 +4,7 @@ export interface User {
   id: string;
   email: string;
   fullName: string;
-  role: 'SUPER_ADMIN' | 'ENTERPRISE_ADMIN' | 'SAFETY_MANAGER' | 'TECHNICIAN' | 'AUDITOR';
+  role: 'SUPER_ADMIN' | 'ENTERPRISE_ADMIN' | 'TECHNICIAN';
   tenantId: string | null;
   tenant?: {
     id: string;
