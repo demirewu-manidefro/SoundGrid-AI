@@ -9,31 +9,28 @@ const router = Router();
 router.use(authenticateJWT);
 router.use(enforceTenantIsolation);
 
-// Read-only access allowed for Super Admin, Enterprise Admin, Safety Manager, and Auditor
+// Read access allowed for Super Admin and Enterprise Admin
 router.get(
   '/',
-  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN, UserRole.SAFETY_MANAGER, UserRole.AUDITOR),
+  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN),
   UsersController.list
 );
 
-// Mutations require at least Enterprise Admin, and blocked for Auditors
+// Mutations require Enterprise Admin or Super Admin
 router.post(
   '/',
-  enforceAuditorReadOnly,
   requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN),
   UsersController.create
 );
 
 router.patch(
   '/:id',
-  enforceAuditorReadOnly,
   requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN),
   UsersController.update
 );
 
 router.delete(
   '/:id',
-  enforceAuditorReadOnly,
   requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN),
   UsersController.delete
 );
