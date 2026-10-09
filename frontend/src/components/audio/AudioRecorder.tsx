@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Mic, Square, Play, Pause, RefreshCw, Cpu, Volume2 } from 'lucide-react';
+import { Mic, Square, Play, Pause, Cpu, Volume2, Sparkles, CheckCircle2, AlertTriangle, Radio } from 'lucide-react';
 
 interface AudioRecorderProps {
   onAudioReady: (blob: Blob, fileName: string) => void;
@@ -10,8 +10,9 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
   const [isRecording, setIsRecording] = useState(false);
   const [recordingSeconds, setRecordingSeconds] = useState(0);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [audioFileName, setAudioFileName] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [decibels, setDecibels] = useState(-60);
+  const [decibels, setDecibels] = useState(-54);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
@@ -22,7 +23,6 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
   const timerIntervalRef = useRef<any>(null);
   const audioPlayerRef = useRef<HTMLAudioElement | null>(null);
 
-  // Clean up on unmount
   useEffect(() => {
     return () => {
       stopStreams();
@@ -45,6 +45,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
   const startRecording = async () => {
     try {
       setAudioUrl(null);
+      setAudioFileName(null);
       recordedChunksRef.current = [];
       setRecordingSeconds(0);
 
@@ -69,7 +70,6 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
       source.connect(analyser);
       analyserRef.current = analyser;
 
-      // ScriptProcessor / AudioWorklet fallback for raw PCM capture
       const processor = audioCtx.createScriptProcessor(2048, 1, 1);
       source.connect(processor);
       processor.connect(audioCtx.destination);
@@ -82,22 +82,19 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
 
       setIsRecording(true);
 
-      // Start recording timer
       timerIntervalRef.current = setInterval(() => {
         setRecordingSeconds((prev) => {
-          if (prev >= 5) {
-            // Auto stop at 5s (enough for 3s target model)
+          if (prev >= 4) {
             stopRecording();
-            return 5;
+            return 4;
           }
           return prev + 1;
         });
       }, 1000);
 
-      // Start visualizer loop
       drawWaveform();
     } catch (err: any) {
-      alert(`Could not access microphone: ${err.message}. You can use "Simulate Acoustic Telemetry" below instead.`);
+      alert(`Microphone notice: ${err.message}. You can use the "⚡ 1-Click Simulation Presets" below to test the AI model instantly!`);
     }
   };
 
@@ -106,7 +103,6 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
     if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
 
-    // Merge PCM chunks
     const totalLength = recordedChunksRef.current.reduce((acc, c) => acc + c.length, 0);
     const merged = new Float32Array(totalLength);
     let offset = 0;
@@ -120,8 +116,10 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
     if (totalLength > 0) {
       const wavBlob = encodeWav(merged, 16000);
       const url = URL.createObjectURL(wavBlob);
+      const name = `live_mic_capture_${Date.now()}.wav`;
       setAudioUrl(url);
-      onAudioReady(wavBlob, `live_field_recording_${Date.now()}.wav`);
+      setAudioFileName(name);
+      onAudioReady(wavBlob, name);
     }
   };
 
@@ -139,7 +137,6 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
       animFrameRef.current = requestAnimationFrame(render);
       analyser.getByteTimeDomainData(dataArray);
 
-      // Compute approximate dB level
       let sum = 0;
       for (let i = 0; i < bufferLength; i++) {
         const val = (dataArray[i] - 128) / 128;
@@ -149,11 +146,24 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
       const db = Math.round(20 * Math.log10(Math.max(rms, 1e-4)));
       setDecibels(db);
 
-      ctx.fillStyle = '#0B0F19';
+      ctx.fillStyle = '#070A12';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = '#38BDF8'; // Cyber Sky
+      // Oscilloscope Grid Lines
+      ctx.strokeStyle = 'rgba(28, 39, 64, 0.4)';
+      ctx.lineWidth = 1;
+      for (let y = 20; y < canvas.height; y += 20) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Neon Waveform Line
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#00F2FE';
+      ctx.shadowColor = '#00F2FE';
+      ctx.shadowBlur = 10;
       ctx.beginPath();
 
       const sliceWidth = (canvas.width * 1.0) / bufferLength;
@@ -173,14 +183,12 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
 
       ctx.lineTo(canvas.width, canvas.height / 2);
       ctx.stroke();
+      ctx.shadowBlur = 0;
     };
 
     render();
   };
 
-  /**
-   * Encodes float32 PCM array into standard RIFF/WAVE 16-bit binary
-   */
   const encodeWav = (samples: Float32Array, sampleRate = 16000): Blob => {
     const buffer = new ArrayBuffer(44 + samples.length * 2);
     const view = new DataView(buffer);
@@ -196,8 +204,8 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
     writeString(8, 'WAVE');
     writeString(12, 'fmt ');
     view.setUint32(16, 16, true);
-    view.setUint16(20, 1, true); // PCM
-    view.setUint16(22, 1, true); // Mono
+    view.setUint16(20, 1, true);
+    view.setUint16(22, 1, true);
     view.setUint32(24, sampleRate, true);
     view.setUint32(28, sampleRate * 2, true);
     view.setUint16(32, 2, true);
@@ -214,94 +222,120 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
     return new Blob([buffer], { type: 'audio/wav' });
   };
 
-  /**
-   * Generates synthetic industrial acoustics (e.g. Pump Cavitation Anomaly or Normal Motor Hum)
-   */
-  const simulateAudio = (isAnomaly: boolean) => {
+  const simulateAudio = (type: 'healthy' | 'cavitation' | 'bearing') => {
     const sampleRate = 16000;
     const duration = 3.0;
     const samples = new Float32Array(sampleRate * duration);
 
     for (let i = 0; i < samples.length; i++) {
       const t = i / sampleRate;
-      if (isAnomaly) {
-        // Friction + cavitation broadband harmonics
+      if (type === 'cavitation') {
+        // High frequency turbulent bubble collapse and broadband noise
         samples[i] =
-          0.4 * Math.sin(2 * Math.PI * 180 * t) +
+          0.35 * Math.sin(2 * Math.PI * 180 * t) +
           0.3 * Math.sin(2 * Math.PI * 540 * t) +
+          0.25 * Math.sin(2 * Math.PI * 1420 * t) +
           0.3 * (Math.random() * 2 - 1);
-      } else {
-        // Clean 60Hz machine fundamental hum
+      } else if (type === 'bearing') {
+        // Impact friction spikes simulating spalled outer race fault
+        const pulse = (i % (sampleRate / 25)) < 120 ? 0.6 : 0;
         samples[i] =
-          0.7 * Math.sin(2 * Math.PI * 60 * t) +
+          0.4 * Math.sin(2 * Math.PI * 350 * t) +
+          pulse +
+          0.2 * (Math.random() * 2 - 1);
+      } else {
+        // Clean, nominal 60Hz machine fundamental hum with minimal harmonics
+        samples[i] =
+          0.75 * Math.sin(2 * Math.PI * 60 * t) +
           0.2 * Math.sin(2 * Math.PI * 120 * t) +
-          0.05 * (Math.random() * 2 - 1);
+          0.04 * (Math.random() * 2 - 1);
       }
     }
 
     const wavBlob = encodeWav(samples, sampleRate);
     const url = URL.createObjectURL(wavBlob);
+    const names = {
+      healthy: 'simulated_nominal_hum.wav',
+      cavitation: 'simulated_pump_cavitation_fault.wav',
+      bearing: 'simulated_bearing_friction_fault.wav',
+    };
+    const chosenName = names[type];
     setAudioUrl(url);
-    const name = isAnomaly ? 'simulated_fault_cavitation.wav' : 'simulated_normal_hum.wav';
-    onAudioReady(wavBlob, name);
+    setAudioFileName(chosenName);
+    onAudioReady(wavBlob, chosenName);
   };
 
   return (
-    <div className="rounded-xl border border-industrial-border bg-industrial-panel p-5 shadow-lg">
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Volume2 className="h-5 w-5 text-sky-400" />
-          <h3 className="font-mono text-sm font-semibold tracking-wide text-white uppercase">
-            Acoustic Signal Acquisition
-          </h3>
+    <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/90 p-6 backdrop-blur-xl shadow-xl space-y-4">
+      <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-950/60 border border-cyan-800/60 text-cyan-400">
+            <Volume2 className="h-4 w-4" />
+          </div>
+          <div>
+            <h3 className="font-display text-sm font-bold tracking-wide text-white uppercase">
+              Acoustic Signal Acquisition
+            </h3>
+            <p className="text-[10px] font-mono text-slate-400">16,000 Hz Mono PCM Sensor Feed</p>
+          </div>
         </div>
+
         <div className="flex items-center gap-3">
           {isRecording && (
-            <span className="flex items-center gap-2 font-mono text-xs text-rose-400 font-bold animate-pulse">
+            <span className="flex items-center gap-2 font-mono text-xs text-rose-400 font-bold animate-pulse bg-rose-950/50 border border-rose-800/60 px-3 py-1 rounded-full">
               <span className="h-2 w-2 rounded-full bg-rose-500" />
-              RECORDING {recordingSeconds}s / 5s
+              LIVE CAPTURE: {recordingSeconds}s / 4s
             </span>
           )}
-          <span className="font-mono text-xs text-slate-400">
+          <span className="rounded-md border border-white/5 bg-[#070A12] px-2.5 py-1 font-mono text-xs text-cyan-300">
             {decibels} dB
           </span>
         </div>
       </div>
 
-      {/* Waveform Canvas */}
-      <div className="relative mb-4 h-28 w-full overflow-hidden rounded-lg border border-industrial-border bg-[#0B0F19]">
+      {/* High-Tech Oscilloscope Canvas */}
+      <div className="relative h-32 w-full overflow-hidden rounded-xl border border-white/[0.08] bg-[#070A12] shadow-inner">
         <canvas
           ref={canvasRef}
-          width={600}
-          height={112}
-          className="h-full w-full"
+          width={640}
+          height={128}
+          className="h-full w-full block"
         />
+
         {!isRecording && !audioUrl && (
-          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-slate-500">
-            Ready to capture live telemetry or simulate equipment audio
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 text-xs font-mono text-slate-400 bg-[#070A12]/40 backdrop-blur-[1px]">
+            <Radio className="h-5 w-5 text-cyan-400/60 animate-pulse" />
+            <span>Ready for acoustic signal capture or 1-click test preset</span>
+          </div>
+        )}
+
+        {audioFileName && !isRecording && (
+          <div className="absolute top-2 left-2 flex items-center gap-2 rounded-md bg-slate-900/80 border border-white/10 px-2.5 py-1 text-[10px] font-mono text-cyan-300 backdrop-blur-md">
+            <CheckCircle2 className="h-3 w-3 text-cyan-400" />
+            <span>Loaded: {audioFileName}</span>
           </div>
         )}
       </div>
 
-      {/* Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      {/* Main Controls */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
         <div className="flex items-center gap-2">
           {!isRecording ? (
             <button
               id="btn-start-record"
               onClick={startRecording}
               disabled={disabled}
-              className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-md hover:bg-indigo-500 transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2.5 text-xs font-mono font-bold text-white shadow-[0_0_15px_-3px_rgba(99,102,241,0.4)] hover:brightness-110 transition-all disabled:opacity-50"
             >
-              <Mic className="h-4 w-4" /> Start Live Mic (16kHz)
+              <Mic className="h-4 w-4 text-cyan-200" /> Capture Microphone (16kHz)
             </button>
           ) : (
             <button
               id="btn-stop-record"
               onClick={stopRecording}
-              className="flex items-center gap-2 rounded-lg bg-rose-600 px-4 py-2 text-xs font-semibold text-white shadow-md hover:bg-rose-500 transition-colors"
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-500 px-4 py-2.5 text-xs font-mono font-bold text-white shadow-[0_0_15px_-3px_rgba(244,63,94,0.4)] hover:brightness-110 transition-all"
             >
-              <Square className="h-4 w-4" /> Stop & Process
+              <Square className="h-4 w-4" /> Stop & Finalize WAV
             </button>
           )}
 
@@ -319,10 +353,14 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
                   }
                 }
               }}
-              className="flex items-center gap-2 rounded-lg border border-industrial-border bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-slate-700 transition-colors"
+              className="flex items-center gap-2 rounded-xl border border-white/10 bg-slate-900/80 px-3.5 py-2.5 text-xs font-mono font-semibold text-slate-200 hover:border-cyan-500/40 hover:text-white transition-all"
             >
-              {isPlaying ? <Pause className="h-4 w-4 text-amber-400" /> : <Play className="h-4 w-4 text-emerald-400" />}
-              {isPlaying ? 'Pause' : 'Play Audio'}
+              {isPlaying ? (
+                <Pause className="h-4 w-4 text-amber-400" />
+              ) : (
+                <Play className="h-4 w-4 text-emerald-400" />
+              )}
+              {isPlaying ? 'Pause Audio' : 'Preview WAV'}
             </button>
           )}
 
@@ -334,26 +372,34 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
           />
         </div>
 
-        {/* Quick Simulation Options */}
-        <div className="flex items-center gap-2">
+        {/* 1-Click Simulation Presets */}
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1">
-            <Cpu className="h-3.5 w-3.5 text-slate-500" /> Quick Sim:
+            <Sparkles className="h-3 w-3 text-cyan-400" /> 1-Click Presets:
           </span>
           <button
             id="btn-sim-normal"
-            onClick={() => simulateAudio(false)}
+            onClick={() => simulateAudio('healthy')}
             disabled={isRecording || disabled}
-            className="rounded border border-emerald-800/80 bg-emerald-950/40 px-2.5 py-1 text-[11px] font-mono text-emerald-300 hover:bg-emerald-900/60 transition-colors"
+            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/40 px-3 py-1.5 text-[11px] font-mono font-bold text-emerald-300 hover:bg-emerald-900/60 hover:border-emerald-400 shadow-[0_0_10px_-3px_rgba(16,185,129,0.2)] transition-all"
           >
-            Healthy Hum
+            <CheckCircle2 className="h-3 w-3" /> Nominal Hum
           </button>
           <button
-            id="btn-sim-anomaly"
-            onClick={() => simulateAudio(true)}
+            id="btn-sim-cavitation"
+            onClick={() => simulateAudio('cavitation')}
             disabled={isRecording || disabled}
-            className="rounded border border-rose-800/80 bg-rose-950/40 px-2.5 py-1 text-[11px] font-mono text-rose-300 hover:bg-rose-900/60 transition-colors"
+            className="flex items-center gap-1.5 rounded-lg border border-rose-500/30 bg-rose-950/40 px-3 py-1.5 text-[11px] font-mono font-bold text-rose-300 hover:bg-rose-900/60 hover:border-rose-400 shadow-[0_0_10px_-3px_rgba(244,63,94,0.2)] transition-all"
           >
-            Fault Acoustic
+            <AlertTriangle className="h-3 w-3" /> Pump Cavitation Fault
+          </button>
+          <button
+            id="btn-sim-bearing"
+            onClick={() => simulateAudio('bearing')}
+            disabled={isRecording || disabled}
+            className="flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-950/40 px-3 py-1.5 text-[11px] font-mono font-bold text-amber-300 hover:bg-amber-900/60 hover:border-amber-400 shadow-[0_0_10px_-3px_rgba(245,158,11,0.2)] transition-all"
+          >
+            <AlertTriangle className="h-3 w-3" /> Bearing Friction Fault
           </button>
         </div>
       </div>
