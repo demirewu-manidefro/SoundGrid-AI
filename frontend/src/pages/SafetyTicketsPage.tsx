@@ -20,7 +20,7 @@ export const SafetyTicketsPage: React.FC = () => {
   const { data: usersRes } = useQuery({
     queryKey: ['users'],
     queryFn: () => api.users.list(),
-    enabled: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN', 'SAFETY_MANAGER'].includes(user?.role || ''),
+    enabled: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN'].includes(user?.role || ''),
   });
 
   const tickets = ticketsRes?.data || [];
@@ -47,8 +47,7 @@ export const SafetyTicketsPage: React.FC = () => {
     },
   });
 
-  const canApprove = ['SUPER_ADMIN', 'ENTERPRISE_ADMIN', 'SAFETY_MANAGER'].includes(user?.role || '');
-  const isAuditor = user?.role === 'AUDITOR';
+  const canApprove = ['SUPER_ADMIN', 'ENTERPRISE_ADMIN'].includes(user?.role || '');
 
   return (
     <div className="space-y-6">
@@ -64,13 +63,6 @@ export const SafetyTicketsPage: React.FC = () => {
           Review automated acoustic failure alerts, assign repair orders, and approve machine recovery states
         </p>
       </div>
-
-      {isAuditor && (
-        <div className="rounded-lg border border-sky-800 bg-sky-950/40 p-3 text-xs font-mono text-sky-300 flex items-center gap-2">
-          <ShieldCheck className="h-4 w-4" />
-          <span>Compliance Auditor View: Strictly read-only access. Modification actions are disabled.</span>
-        </div>
-      )}
 
       {/* Tickets List */}
       <div className="rounded-xl border border-industrial-border bg-industrial-panel shadow-lg overflow-hidden">
@@ -132,7 +124,7 @@ export const SafetyTicketsPage: React.FC = () => {
                       {new Date(t.createdAt).toLocaleDateString()}
                     </td>
                     <td className="p-3.5 text-right">
-                      {t.status !== 'RESOLVED' && canApprove && !isAuditor ? (
+                      {t.status !== 'RESOLVED' && canApprove ? (
                         <button
                           id={`btn-triage-${t.id}`}
                           onClick={() => {
