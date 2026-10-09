@@ -9,15 +9,13 @@ const router = Router();
 router.use(authenticateJWT);
 router.use(enforceTenantIsolation);
 
-// Read endpoints accessible to all 5 tiers
+// Read endpoints accessible to all 3 tiers
 router.get(
   '/',
   requireRole(
     UserRole.SUPER_ADMIN,
     UserRole.ENTERPRISE_ADMIN,
-    UserRole.SAFETY_MANAGER,
-    UserRole.TECHNICIAN,
-    UserRole.AUDITOR
+    UserRole.TECHNICIAN
   ),
   MachinesController.list
 );
@@ -27,9 +25,7 @@ router.get(
   requireRole(
     UserRole.SUPER_ADMIN,
     UserRole.ENTERPRISE_ADMIN,
-    UserRole.SAFETY_MANAGER,
-    UserRole.TECHNICIAN,
-    UserRole.AUDITOR
+    UserRole.TECHNICIAN
   ),
   MachinesController.getById
 );
@@ -37,16 +33,14 @@ router.get(
 // Machinery registration: Enterprise Admin / Super Admin
 router.post(
   '/',
-  enforceAuditorReadOnly,
   requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN),
   MachinesController.create
 );
 
-// Machinery status override: Safety Manager / Enterprise Admin / Super Admin
+// Machinery status override: Enterprise Admin / Super Admin
 router.patch(
   '/:id/status',
-  enforceAuditorReadOnly,
-  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN, UserRole.SAFETY_MANAGER),
+  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN),
   MachinesController.updateStatus
 );
 
