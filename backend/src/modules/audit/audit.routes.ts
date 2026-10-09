@@ -8,10 +8,10 @@ const router = Router();
 
 router.use(authenticateJWT);
 
-// Only Super Admin, Enterprise Admin, Safety Manager, and Auditor can view audit logs
+// Only Super Admin and Enterprise Admin can view audit logs
 router.get(
   '/',
-  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN, UserRole.SAFETY_MANAGER, UserRole.AUDITOR),
+  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN),
   AuditController.listLogs
 );
 
