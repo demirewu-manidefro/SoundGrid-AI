@@ -10,6 +10,8 @@ import {
   Building2,
   Users,
   ShieldAlert,
+  Terminal,
+  Activity,
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
@@ -24,12 +26,14 @@ export const Sidebar: React.FC = () => {
       label: 'Telemetry Overview',
       icon: LayoutDashboard,
       allowed: true,
+      badge: 'Live',
     },
     {
       to: '/diagnostics',
       label: 'Acoustic Diagnostics',
       icon: Radio,
       allowed: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN', 'TECHNICIAN'].includes(role),
+      badge: 'AI Core',
     },
     {
       to: '/machines',
@@ -57,55 +61,112 @@ export const Sidebar: React.FC = () => {
     },
     {
       to: '/users',
-      label: 'Team & Technicians',
+      label: 'Team & Personnel',
       icon: Users,
       allowed: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN'].includes(role),
     },
   ];
 
   return (
-    <aside className="w-64 border-r border-industrial-border bg-industrial-canvas p-4 flex flex-col justify-between shrink-0">
-      <div className="space-y-1">
-        <div className="px-3 py-2 text-[10px] font-mono font-semibold uppercase tracking-wider text-slate-500">
-          Navigation Control
+    <aside className="w-64 border-r border-white/[0.08] bg-[#070A12]/90 p-4 flex flex-col justify-between shrink-0 backdrop-blur-xl">
+      <div className="space-y-6">
+        <div>
+          <div className="px-3 py-2 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500">
+            Control Console
+          </div>
+          <div className="space-y-1 mt-1">
+            {navItems
+              .filter((item) => item.allowed)
+              .map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `group relative flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-mono font-medium transition-all ${
+                        isActive
+                          ? 'bg-gradient-to-r from-cyan-500/15 via-indigo-500/10 to-transparent text-cyan-300 border border-cyan-500/30 shadow-[0_0_15px_-3px_rgba(0,242,254,0.15)]'
+                          : 'text-slate-400 hover:bg-slate-900/60 hover:text-slate-200 border border-transparent'
+                      }`
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        <div className="flex items-center gap-3">
+                          <Icon
+                            className={`h-4 w-4 shrink-0 transition-colors ${
+                              isActive ? 'text-cyan-400' : 'text-slate-500 group-hover:text-slate-300'
+                            }`}
+                          />
+                          <span>{item.label}</span>
+                        </div>
+                        {item.badge && (
+                          <span
+                            className={`rounded-full px-1.5 py-0.2 text-[9px] font-mono font-bold tracking-tight ${
+                              isActive
+                                ? 'bg-cyan-950/80 text-cyan-300 border border-cyan-800'
+                                : 'bg-slate-800 text-slate-400'
+                            }`}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                        {isActive && (
+                          <span className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-cyan-400 shadow-[0_0_8px_#00F2FE]" />
+                        )}
+                      </>
+                    )}
+                  </NavLink>
+                );
+              })}
+          </div>
         </div>
-        {navItems
-          .filter((item) => item.allowed)
-          .map((item) => {
-            const Icon = item.icon;
-            return (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs font-mono font-medium transition-colors ${
-                    isActive
-                      ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30'
-                      : 'text-slate-400 hover:bg-industrial-panel hover:text-slate-200'
-                  }`
-                }
-              >
-                <Icon className="h-4 w-4 shrink-0" />
-                <span>{item.label}</span>
-              </NavLink>
-            );
-          })}
       </div>
 
-      {/* Compliance / Role Watermark */}
-      <div className="rounded-lg border border-industrial-border bg-industrial-panel p-3">
-        <div className="flex items-center gap-2 mb-1">
-          <ShieldAlert className="h-3.5 w-3.5 text-sky-400" />
-          <span className="font-mono text-[10px] uppercase font-bold text-slate-300">
-            Tenant Isolation
-          </span>
+      {/* Hardware Telemetry & Tenant State Card */}
+      <div className="space-y-3">
+        <div className="rounded-xl border border-white/[0.08] bg-[#0F1626]/80 p-3.5 backdrop-blur-md">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5 text-cyan-400 font-mono text-[10px] font-bold uppercase tracking-wider">
+              <Activity className="h-3.5 w-3.5 animate-pulse" />
+              <span>Edge Telemetry</span>
+            </div>
+            <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#10B981]" />
+          </div>
+
+          <div className="space-y-1 font-mono text-[10px] text-slate-400">
+            <div className="flex justify-between">
+              <span className="text-slate-500">Sample Rate:</span>
+              <span className="text-slate-300 font-semibold">16.0 kHz</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500">Engine:</span>
+              <span className="text-cyan-300 font-semibold">TorchScript</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500">Tenant:</span>
+              <span className="text-slate-200 truncate max-w-[90px]">
+                {user.tenant ? user.tenant.slug : 'Global Admin'}
+              </span>
+            </div>
+          </div>
+
+          {/* Mini dynamic Equalizer */}
+          <div className="mt-3 flex items-end gap-1 h-3.5 pt-1 border-t border-white/5">
+            {[40, 75, 55, 90, 60, 30, 85, 45, 95, 70, 50, 80].map((h, idx) => (
+              <span
+                key={idx}
+                className="flex-1 rounded-t-sm bg-gradient-to-t from-indigo-500 to-cyan-400 animate-pulse"
+                style={{
+                  height: `${h}%`,
+                  animationDelay: `${idx * 120}ms`,
+                  animationDuration: '1.2s',
+                }}
+              />
+            ))}
+          </div>
         </div>
-        <p className="font-mono text-[10px] text-slate-400">
-          {user.tenant ? `Tenant: ${user.tenant.slug}` : 'Scope: Global Super Admin'}
-        </p>
-        <p className="font-mono text-[10px] text-slate-500 mt-1">
-          Enforced by JWT RBAC & PostgreSQL
-        </p>
       </div>
     </aside>
   );

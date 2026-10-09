@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../api/client';
-import { Activity, Shield, LogOut, Users, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Activity, Shield, LogOut, Users, CheckCircle2, Zap, Sparkles } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const { user, logout, quickDemoLogin } = useAuth();
@@ -23,23 +23,50 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const roles = [
-    { role: 'SUPER_ADMIN', label: 'Tier 1: Super Admin (Global Master)', user: 'superadmin@soundgrid.ai' },
-    { role: 'ENTERPRISE_ADMIN', label: 'Tier 2: Plant Admin (Apex Power)', user: 'admin@apexpower.com' },
-    { role: 'TECHNICIAN', label: 'Tier 3: Field Acoustic Tech', user: 'tech@apexpower.com' },
+    {
+      role: 'SUPER_ADMIN',
+      tier: 'Tier 1',
+      title: 'Platform Super Admin',
+      label: 'Global Master Governance',
+      user: 'superadmin@soundgrid.ai',
+      badgeColor: 'border-violet-500/40 bg-violet-950/60 text-violet-300',
+    },
+    {
+      role: 'ENTERPRISE_ADMIN',
+      tier: 'Tier 2',
+      title: 'Enterprise Admin',
+      label: 'Plant Director (Apex Power)',
+      user: 'admin@apexpower.com',
+      badgeColor: 'border-cyan-500/40 bg-cyan-950/60 text-cyan-300',
+    },
+    {
+      role: 'TECHNICIAN',
+      tier: 'Tier 3',
+      title: 'Field Acoustic Technician',
+      label: 'Diagnostic Operator',
+      user: 'tech@apexpower.com',
+      badgeColor: 'border-emerald-500/40 bg-emerald-950/60 text-emerald-300',
+    },
   ] as const;
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-industrial-border bg-industrial-panel/95 px-6 backdrop-blur-md">
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-white/[0.08] bg-[#070A12]/80 px-6 backdrop-blur-xl shadow-lg">
       {/* Brand & System Health */}
       <div className="flex items-center gap-6">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600/20 border border-indigo-500/40 text-indigo-400">
-            <Activity className="h-5 w-5" />
+        <div className="flex items-center gap-3">
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600/30 to-cyan-500/20 border border-cyan-500/30 text-cyan-400 shadow-[0_0_15px_-3px_rgba(0,242,254,0.3)] group cursor-pointer">
+            <Activity className="h-5 w-5 transition-transform group-hover:scale-110" />
+            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500" />
+            </span>
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-base font-bold tracking-wider text-white">SOUNDGRID</span>
-              <span className="rounded bg-sky-950/80 border border-sky-800/80 px-1.5 py-0.5 text-[10px] font-mono font-bold text-sky-400">
+              <span className="font-display text-base font-extrabold tracking-wider text-white">
+                SOUNDGRID
+              </span>
+              <span className="rounded-full bg-cyan-950/80 border border-cyan-800/80 px-2 py-0.5 text-[9px] font-mono font-bold tracking-widest text-cyan-400 shadow-[0_0_10px_-2px_rgba(0,242,254,0.5)]">
                 SENTINEL
               </span>
             </div>
@@ -48,51 +75,51 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Live Cluster Health Badge */}
-        <div className="hidden items-center gap-4 border-l border-industrial-border pl-6 md:flex">
-          <div className="flex items-center gap-2 text-xs font-mono">
+        <div className="hidden items-center gap-4 border-l border-white/[0.08] pl-6 lg:flex">
+          <div className="flex items-center gap-2 rounded-full bg-slate-900/60 px-3 py-1 border border-white/5 text-xs font-mono">
             <span
               className={`h-2 w-2 rounded-full ${
                 gatewayHealthy ? 'bg-emerald-400 shadow-[0_0_8px_#10B981]' : 'bg-rose-500 animate-ping'
               }`}
             />
-            <span className="text-slate-300">API GATEWAY:</span>
-            <span className={gatewayHealthy ? 'text-emerald-400' : 'text-rose-400 font-bold'}>
+            <span className="text-slate-400">API GATEWAY:</span>
+            <span className={gatewayHealthy ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-bold'}>
               {gatewayHealthy ? 'ONLINE' : 'DEGRADED'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-mono">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10B981]" />
-            <span className="text-slate-300">AI TORCH ENGINE:</span>
-            <span className="text-emerald-400">ACTIVE (127.0.0.1:8001)</span>
+          <div className="flex items-center gap-2 rounded-full bg-cyan-950/30 px-3 py-1 border border-cyan-800/30 text-xs font-mono">
+            <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#00F2FE]" />
+            <span className="text-slate-400">AI TORCH ENGINE:</span>
+            <span className="text-cyan-300 font-semibold">127.0.0.1:8001 (5.04ms)</span>
           </div>
         </div>
       </div>
 
       {/* User Context & Role Switcher */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         {/* Quick Role Switcher Button */}
         <button
           id="btn-role-switcher"
           onClick={() => setShowDemoModal(true)}
-          className="flex items-center gap-2 rounded-lg border border-industrial-border bg-slate-800/80 px-3 py-1.5 text-xs font-mono text-slate-200 hover:border-indigo-500 hover:text-white transition-all shadow-sm"
+          className="flex items-center gap-2 rounded-xl border border-indigo-500/30 bg-indigo-950/40 px-3.5 py-1.5 text-xs font-mono font-medium text-indigo-300 hover:border-indigo-400 hover:bg-indigo-900/50 hover:text-white transition-all shadow-[0_0_12px_-3px_rgba(99,102,241,0.25)]"
           title="Switch role instantly to test multi-tenant RBAC permissions"
         >
-          <Users className="h-3.5 w-3.5 text-indigo-400" />
+          <Sparkles className="h-3.5 w-3.5 text-indigo-400 animate-pulse" />
           <span>Switch Tier Role</span>
         </button>
 
         {/* User Badge */}
         {user && (
-          <div className="flex items-center gap-3 border-l border-industrial-border pl-4">
+          <div className="flex items-center gap-3 border-l border-white/[0.08] pl-3">
             <div className="text-right">
               <div className="flex items-center justify-end gap-2">
                 <span className="text-xs font-semibold text-slate-200">{user.fullName}</span>
-                <span className="rounded border border-indigo-800 bg-indigo-950/60 px-1.5 py-0.5 text-[10px] font-mono text-indigo-300 uppercase">
+                <span className="rounded-full border border-cyan-800/60 bg-cyan-950/60 px-2 py-0.5 text-[10px] font-mono text-cyan-300 font-bold uppercase">
                   {user.role}
                 </span>
               </div>
-              <p className="text-[11px] font-mono text-slate-400">
+              <p className="text-[10px] font-mono text-slate-400">
                 {user.tenant ? user.tenant.name : 'Platform Master Owner'}
               </p>
             </div>
@@ -100,7 +127,7 @@ export const Navbar: React.FC = () => {
             <button
               id="btn-logout"
               onClick={logout}
-              className="rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-rose-400 transition-colors"
+              className="rounded-xl p-2 text-slate-400 hover:bg-rose-950/40 hover:text-rose-400 border border-transparent hover:border-rose-800/40 transition-all"
               title="Logout"
             >
               <LogOut className="h-4 w-4" />
@@ -111,27 +138,27 @@ export const Navbar: React.FC = () => {
 
       {/* Role Switcher Modal */}
       {showDemoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-xl border border-industrial-border bg-industrial-panel p-6 shadow-2xl">
-            <div className="mb-4 flex items-center justify-between border-b border-industrial-border pb-3">
-              <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-indigo-400" />
-                <h3 className="font-mono text-sm font-bold text-white uppercase">
-                  Instant RBAC Tier Persona Switcher
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#0F1626] p-6 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between border-b border-white/[0.08] pb-3">
+              <div className="flex items-center gap-2.5">
+                <Shield className="h-5 w-5 text-cyan-400" />
+                <h3 className="font-display text-base font-bold text-white uppercase tracking-wider">
+                  Select RBAC Role Persona
                 </h3>
               </div>
               <button
                 onClick={() => setShowDemoModal(false)}
-                className="text-slate-400 hover:text-white text-sm"
+                className="h-7 w-7 rounded-lg border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 text-sm"
               >
                 ✕
               </button>
             </div>
-            <p className="mb-4 text-xs text-slate-400">
-              Select any of the 5 hierarchical enterprise roles to immediately test tenant isolation, read-only guards, work order approval, or AI diagnostic features:
+            <p className="mb-5 text-xs font-sans text-slate-300 leading-relaxed">
+              Instantly impersonate any of the 3 active hierarchical roles to test tenant isolation, ticket approvals, and acoustic AI tools:
             </p>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               {roles.map((r) => {
                 const isCurrent = user?.role === r.role;
                 return (
@@ -141,17 +168,31 @@ export const Navbar: React.FC = () => {
                       await quickDemoLogin(r.role);
                       setShowDemoModal(false);
                     }}
-                    className={`flex w-full items-center justify-between rounded-lg border p-3 text-left transition-all ${
+                    className={`flex w-full items-center justify-between rounded-xl border p-4 text-left transition-all ${
                       isCurrent
-                        ? 'border-indigo-500 bg-indigo-950/40 text-white'
-                        : 'border-industrial-border bg-slate-900/40 text-slate-300 hover:border-slate-700 hover:bg-slate-800/50'
+                        ? 'border-cyan-500/80 bg-cyan-950/40 shadow-[0_0_20px_-3px_rgba(0,242,254,0.25)]'
+                        : 'border-white/[0.08] bg-slate-900/60 hover:border-white/20 hover:bg-slate-800/60'
                     }`}
                   >
                     <div>
-                      <p className="font-mono text-xs font-semibold text-white">{r.label}</p>
-                      <p className="text-[11px] font-mono text-slate-400">{r.user}</p>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className={`rounded px-1.5 py-0.5 text-[10px] font-mono font-bold uppercase border ${r.badgeColor}`}>
+                          {r.tier}
+                        </span>
+                        <p className="font-display text-sm font-bold text-white">{r.title}</p>
+                      </div>
+                      <p className="text-xs text-slate-300 font-sans">{r.label}</p>
+                      <p className="text-[11px] font-mono text-cyan-400/80 mt-1">{r.user}</p>
                     </div>
-                    {isCurrent && <CheckCircle2 className="h-4 w-4 text-indigo-400" />}
+                    {isCurrent ? (
+                      <span className="flex items-center gap-1 text-xs font-mono text-cyan-400 font-bold">
+                        <CheckCircle2 className="h-4 w-4" /> ACTIVE
+                      </span>
+                    ) : (
+                      <span className="text-xs font-mono text-slate-500 group-hover:text-white">
+                        Switch →
+                      </span>
+                    )}
                   </button>
                 );
               })}
