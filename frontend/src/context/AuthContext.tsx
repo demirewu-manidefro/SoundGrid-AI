@@ -7,16 +7,14 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   loginWithGoogle: (idToken: string) => Promise<void>;
-  quickDemoLogin: (role: 'SUPER_ADMIN' | 'ENTERPRISE_ADMIN' | 'SAFETY_MANAGER' | 'TECHNICIAN' | 'AUDITOR') => Promise<void>;
+  quickDemoLogin: (role: 'SUPER_ADMIN' | 'ENTERPRISE_ADMIN' | 'TECHNICIAN') => Promise<void>;
   logout: () => void;
 }
 
 const DEMO_CREDENTIALS: Record<string, { email: string; pass: string }> = {
   SUPER_ADMIN: { email: 'superadmin@soundgrid.ai', pass: 'Password123!' },
   ENTERPRISE_ADMIN: { email: 'admin@apexpower.com', pass: 'Password123!' },
-  SAFETY_MANAGER: { email: 'safety@apexpower.com', pass: 'Password123!' },
   TECHNICIAN: { email: 'tech@apexpower.com', pass: 'Password123!' },
-  AUDITOR: { email: 'auditor@apexpower.com', pass: 'Password123!' },
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -63,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const quickDemoLogin = async (role: 'SUPER_ADMIN' | 'ENTERPRISE_ADMIN' | 'SAFETY_MANAGER' | 'TECHNICIAN' | 'AUDITOR') => {
+  const quickDemoLogin = async (role: 'SUPER_ADMIN' | 'ENTERPRISE_ADMIN' | 'TECHNICIAN') => {
     const creds = DEMO_CREDENTIALS[role];
     if (creds) {
       await login(creds.email, creds.pass);
