@@ -140,10 +140,9 @@ export const UsersPage: React.FC = () => {
                   onChange={(e) => setRole(e.target.value)}
                   className="w-full rounded border border-industrial-border bg-[#0B0F19] p-2.5 text-white focus:border-indigo-500 focus:outline-none"
                 >
-                  <option value="TECHNICIAN">Tier 4: Field Maintenance Technician</option>
-                  <option value="SAFETY_MANAGER">Tier 3: Plant Safety Manager / Chief Engineer</option>
+                  <option value="TECHNICIAN">Tier 3: Field Maintenance Technician</option>
                   <option value="ENTERPRISE_ADMIN">Tier 2: Plant Owner / Enterprise Admin</option>
-                  <option value="AUDITOR">Tier 5: Third-Party Auditor (Read-Only)</option>
+                  <option value="SUPER_ADMIN">Tier 1: Platform Super Admin</option>
                 </select>
               </div>
 
