@@ -24,10 +24,8 @@ SoundGrid Sentinel is an industrial telemetry platform designed to monitor and d
 | Tier | Role | Description |
 | :--- | :--- | :--- |
 | **Tier 1** | `SUPER_ADMIN` | Global master owner: cross-company visibility, tenant onboarding, system metrics |
-| **Tier 2** | `ENTERPRISE_ADMIN` | Plant owner: tenant-scoped rights; manages machines, technicians, and managers |
-| **Tier 3** | `SAFETY_MANAGER` | Facility supervisor: fleet monitoring, ticket assignments, approves machine states |
-| **Tier 4** | `TECHNICIAN` | Ground operator: audio inspection tools, real-time diagnostic execution, notes |
-| **Tier 5** | `AUDITOR` | Compliance auditor: strictly read-only access to tamper-proof audit trails |
+| **Tier 2** | `ENTERPRISE_ADMIN` | Plant owner: tenant-scoped rights; manages machines, technicians, and work order approvals |
+| **Tier 3** | `TECHNICIAN` | Ground operator: audio inspection tools, real-time diagnostic execution, logs tickets |
 
 ---
 
