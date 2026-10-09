@@ -25,9 +25,7 @@ export const Navbar: React.FC = () => {
   const roles = [
     { role: 'SUPER_ADMIN', label: 'Tier 1: Super Admin (Global Master)', user: 'superadmin@soundgrid.ai' },
     { role: 'ENTERPRISE_ADMIN', label: 'Tier 2: Plant Admin (Apex Power)', user: 'admin@apexpower.com' },
-    { role: 'SAFETY_MANAGER', label: 'Tier 3: Safety Manager / Chief Eng', user: 'safety@apexpower.com' },
-    { role: 'TECHNICIAN', label: 'Tier 4: Field Acoustic Tech', user: 'tech@apexpower.com' },
-    { role: 'AUDITOR', label: 'Tier 5: Third-Party Auditor (Read-Only)', user: 'auditor@apexpower.com' },
+    { role: 'TECHNICIAN', label: 'Tier 3: Field Acoustic Tech', user: 'tech@apexpower.com' },
   ] as const;
 
   return (
