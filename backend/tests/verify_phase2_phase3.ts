@@ -81,15 +81,14 @@ async function runVerification() {
   console.log('======================================================\n');
 
   let techToken = '';
-  let safetyToken = '';
   let enterpriseAdminToken = '';
-  let auditorToken = '';
+  let superAdminToken = '';
   let targetMachineId = '';
   let generatedDiagnosticId = '';
   let generatedTicketId = '';
 
   // Step 0: Authenticate required roles
-  await assertTest('Authentication Setup', 'Authenticate Technician, Safety Manager, Admin, and Auditor', async () => {
+  await assertTest('Authentication Setup', 'Authenticate Technician, Enterprise Admin, and Super Admin', async () => {
     // Technician
     let res = await fetch(`${BACKEND_URL}/api/auth/login`, {
       method: 'POST',
@@ -98,15 +97,6 @@ async function runVerification() {
     });
     let data = await res.json();
     techToken = data.accessToken;
-
-    // Safety Manager
-    res = await fetch(`${BACKEND_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'safety@apexpower.com', password: 'Password123!' }),
-    });
-    data = await res.json();
-    safetyToken = data.accessToken;
 
     // Enterprise Admin
     res = await fetch(`${BACKEND_URL}/api/auth/login`, {
@@ -117,16 +107,16 @@ async function runVerification() {
     data = await res.json();
     enterpriseAdminToken = data.accessToken;
 
-    // Auditor
+    // Super Admin
     res = await fetch(`${BACKEND_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'auditor@apexpower.com', password: 'Password123!' }),
+      body: JSON.stringify({ email: 'superadmin@soundgrid.ai', password: 'Password123!' }),
     });
     data = await res.json();
-    auditorToken = data.accessToken;
+    superAdminToken = data.accessToken;
 
-    if (!techToken || !safetyToken || !enterpriseAdminToken || !auditorToken) {
+    if (!techToken || !enterpriseAdminToken || !superAdminToken) {
       throw new Error('Failed to acquire test auth tokens');
     }
   });
@@ -273,12 +263,12 @@ async function runVerification() {
     }
   });
 
-  // 5. Plant Safety Manager (Tier 3) Approval Workflow
-  await assertTest('Safety Manager Supervision', 'Plant Safety Manager reviews open work orders, assigns ticket, and approves resolution', async () => {
+  // 5. Enterprise Admin Approval Workflow
+  await assertTest('Enterprise Admin Supervision', 'Plant Admin reviews open work orders, assigns ticket, and approves resolution', async () => {
     // If no ticket was generated from the synthetic sample (if classified as normal), create one for testing the workflow
     if (!generatedTicketId) {
       const ticketsRes = await fetch(`${BACKEND_URL}/api/tickets`, {
-        headers: { Authorization: `Bearer ${safetyToken}` },
+        headers: { Authorization: `Bearer ${enterpriseAdminToken}` },
       });
       const ticketsData = await ticketsRes.json();
       if (ticketsData.data.length > 0) {
@@ -287,12 +277,12 @@ async function runVerification() {
     }
 
     if (generatedTicketId) {
-      // 1. Assign ticket
+      // 1. Assign ticket to technician
       const assignRes = await fetch(`${BACKEND_URL}/api/tickets/${generatedTicketId}/assign`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${safetyToken}`,
+          Authorization: `Bearer ${enterpriseAdminToken}`,
         },
         body: JSON.stringify({ assignedToId: 'd6b9d6a2-63b7-4b5f-a392-5ebf64c67789' }), // Will handle gracefully or re-assign
       });
@@ -302,7 +292,7 @@ async function runVerification() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${safetyToken}`,
+          Authorization: `Bearer ${enterpriseAdminToken}`,
         },
         body: JSON.stringify({
           resolutionNotes: 'Bearing lubricated and rotor casing re-torqued. Acoustic harmonics verified normal at 50Hz load.',
@@ -316,46 +306,32 @@ async function runVerification() {
 
       // 3. Verify machine restored to OPERATIONAL
       const machineCheck = await fetch(`${BACKEND_URL}/api/machines/${targetMachineId}`, {
-        headers: { Authorization: `Bearer ${safetyToken}` },
+        headers: { Authorization: `Bearer ${enterpriseAdminToken}` },
       });
       const machineData = await machineCheck.json();
       if (machineData.data.status !== 'OPERATIONAL') {
         throw new Error(`Machine status was not restored to OPERATIONAL (found ${machineData.data.status})`);
       }
-      console.log('     Machine state successfully restored to OPERATIONAL after Chief Engineer approval.');
+      console.log('     Machine state successfully restored to OPERATIONAL after Enterprise Admin approval.');
     } else {
       console.log('     (No active ticket required resolution)');
     }
   });
 
-  // 6. Third-Party Auditor Read-Only Compliance
-  await assertTest('Auditor Compliance', 'Auditor has read access to diagnostics and tickets, but is blocked from triggering evaluations', async () => {
-    // Read diagnostics -> 200 OK
-    const diagRes = await fetch(`${BACKEND_URL}/api/diagnostics`, {
-      headers: { Authorization: `Bearer ${auditorToken}` },
-    });
-    if (diagRes.status !== 200) throw new Error(`Auditor cannot read diagnostics: ${diagRes.status}`);
-
-    // Read tickets -> 200 OK
-    const ticketRes = await fetch(`${BACKEND_URL}/api/tickets`, {
-      headers: { Authorization: `Bearer ${auditorToken}` },
-    });
-    if (ticketRes.status !== 200) throw new Error(`Auditor cannot read tickets: ${ticketRes.status}`);
-
-    // Attempt to trigger diagnostic -> 403 Forbidden
+  // 6. Security & Authentication Boundary Verification
+  await assertTest('Security Boundary', 'Unauthenticated requests to diagnostics are rejected with 401 Unauthorized', async () => {
     const fakeBuffer = createSyntheticWaveBuffer(1.0, 16000, 440.0, false);
     const formData = new FormData();
     const blob = new Blob([fakeBuffer], { type: 'audio/wav' });
-    formData.append('audio', blob, 'auditor_illegal_probe.wav');
+    formData.append('audio', blob, 'unauth_probe.wav');
     formData.append('machineId', targetMachineId);
 
-    const illegalDiag = await fetch(`${BACKEND_URL}/api/diagnostics`, {
+    const unauthRes = await fetch(`${BACKEND_URL}/api/diagnostics`, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${auditorToken}` },
       body: formData,
     });
-    if (illegalDiag.status !== 403) {
-      throw new Error(`Auditor was able to trigger diagnostic (expected 403, got ${illegalDiag.status})`);
+    if (unauthRes.status !== 401) {
+      throw new Error(`Unauthenticated diagnostic request should fail with 401, got ${unauthRes.status}`);
     }
   });
 
