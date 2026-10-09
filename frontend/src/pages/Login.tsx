@@ -58,9 +58,7 @@ export const Login: React.FC = () => {
   const demoRoles = [
     { role: 'SUPER_ADMIN', title: 'Tier 1: Super Admin', email: 'superadmin@soundgrid.ai', desc: 'Global multi-tenant governance' },
     { role: 'ENTERPRISE_ADMIN', title: 'Tier 2: Plant Admin', email: 'admin@apexpower.com', desc: 'Apex Power facility management' },
-    { role: 'SAFETY_MANAGER', title: 'Tier 3: Safety Manager', email: 'safety@apexpower.com', desc: 'Chief Engineer work order approval' },
-    { role: 'TECHNICIAN', title: 'Tier 4: Field Tech', email: 'tech@apexpower.com', desc: 'Acoustic recorder & diagnostic tool' },
-    { role: 'AUDITOR', title: 'Tier 5: Compliance Auditor', email: 'auditor@apexpower.com', desc: 'Strictly read-only audit trails' },
+    { role: 'TECHNICIAN', title: 'Tier 3: Field Tech', email: 'tech@apexpower.com', desc: 'Acoustic recorder & diagnostic tool' },
   ] as const;
 
   return (
