@@ -29,7 +29,7 @@ export const Sidebar: React.FC = () => {
       to: '/diagnostics',
       label: 'Acoustic Diagnostics',
       icon: Radio,
-      allowed: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN', 'SAFETY_MANAGER', 'TECHNICIAN'].includes(role),
+      allowed: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN', 'TECHNICIAN'].includes(role),
     },
     {
       to: '/machines',
@@ -41,13 +41,13 @@ export const Sidebar: React.FC = () => {
       to: '/tickets',
       label: 'Work Orders & Approval',
       icon: Wrench,
-      allowed: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN', 'SAFETY_MANAGER', 'TECHNICIAN', 'AUDITOR'].includes(role),
+      allowed: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN', 'TECHNICIAN'].includes(role),
     },
     {
       to: '/audit',
       label: 'Immutable Audit Trail',
       icon: FileText,
-      allowed: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN', 'SAFETY_MANAGER', 'AUDITOR'].includes(role),
+      allowed: ['SUPER_ADMIN', 'ENTERPRISE_ADMIN'].includes(role),
     },
     {
       to: '/tenants',
