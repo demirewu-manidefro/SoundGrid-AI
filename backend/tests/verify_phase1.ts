@@ -96,7 +96,7 @@ async function runVerification() {
     apexTenantId = data.user.tenantId;
   });
 
-  await assertTest('Authentication & Identity', 'Field Technician (Tier 4) logs in with Argon2id', async () => {
+  await assertTest('Authentication & Identity', 'Field Technician (Tier 3) logs in with Argon2id', async () => {
     const res = await fetch(`${BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -107,19 +107,6 @@ async function runVerification() {
       throw new Error(`Technician login failed: ${JSON.stringify(data)}`);
     }
     technicianToken = data.accessToken;
-  });
-
-  await assertTest('Authentication & Identity', 'Third-Party Auditor (Tier 5) logs in with Argon2id', async () => {
-    const res = await fetch(`${BASE_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'auditor@apexpower.com', password: 'Password123!' }),
-    });
-    const data = await res.json();
-    if (!data.success || data.user.role !== 'AUDITOR') {
-      throw new Error(`Auditor login failed: ${JSON.stringify(data)}`);
-    }
-    auditorToken = data.accessToken;
   });
 
   await assertTest('Authentication & Identity', 'Incorrect password rejected with 401 Unauthorized', async () => {
@@ -228,29 +215,29 @@ async function runVerification() {
     }
   });
 
-  // 6. Third-Party Auditor Read-Only Enforcement
-  await assertTest('Auditor Compliance', 'Auditor can read users list in their tenant (200 OK)', async () => {
+  // 6. Role-Based Access Enforcement
+  await assertTest('RBAC Enforcement', 'Enterprise Admin can read users list in their tenant (200 OK)', async () => {
     const res = await fetch(`${BASE_URL}/api/users`, {
-      headers: { Authorization: `Bearer ${auditorToken}` },
+      headers: { Authorization: `Bearer ${enterpriseAdminToken}` },
     });
-    if (res.status !== 200) throw new Error(`Auditor read failed with status ${res.status}`);
+    if (res.status !== 200) throw new Error(`Enterprise Admin read failed with status ${res.status}`);
   });
 
-  await assertTest('Auditor Compliance', 'Auditor blocked from mutating data (POST /api/users -> 403)', async () => {
+  await assertTest('RBAC Enforcement', 'Field Technician blocked from user mutations (POST /api/users -> 403)', async () => {
     const res = await fetch(`${BASE_URL}/api/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${auditorToken}`,
+        Authorization: `Bearer ${technicianToken}`,
       },
       body: JSON.stringify({
-        email: 'illegal.auditor@apexpower.com',
+        email: 'illegal.tech@apexpower.com',
         fullName: 'Illegal User Creation',
         role: 'TECHNICIAN',
       }),
     });
     if (res.status !== 403) {
-      throw new Error(`Expected 403 Auditor Read-Only Violation, got ${res.status}`);
+      throw new Error(`Expected 403 Forbidden for Technician user creation, got ${res.status}`);
     }
   });
 
