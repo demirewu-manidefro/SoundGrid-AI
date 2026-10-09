@@ -1,6 +1,6 @@
 import { OAuth2Client } from 'google-auth-library';
 import { prisma } from '../../db/prisma';
-import { verifyPassword } from '../../utils/argon';
+import { verifyPassword, hashPassword } from '../../utils/argon';
 import {
   signAccessToken,
   signRefreshToken,
@@ -92,6 +92,113 @@ export class AuthService {
       ipAddress: params.ipAddress,
       metadata: { role: user.role, userAgent: params.userAgent },
     });
+
+    return {
+      accessToken,
+      refreshToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
+        role: user.role,
+        tenantId: user.tenantId,
+        tenant: user.tenant ? { id: user.tenant.id, name: user.tenant.name, slug: user.tenant.slug, tier: user.tenant.tier } : null,
+      },
+    };
+  }
+
+  /**
+   * User self-registration with Argon2id password hashing and automatic role/tenant resolution.
+   */
+  static async register(params: {
+    email: string;
+    password: string;
+    fullName: string;
+    organizationName?: string;
+    role?: string;
+    ipAddress: string;
+    userAgent: string;
+  }) {
+    const email = params.email.toLowerCase().trim();
+    const fullName = params.fullName.trim();
+
+    // 1. Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+    if (existingUser) {
+      throw new Error('An account with this email address already exists. Please sign in instead.');
+    }
+
+    if (params.password.length < 8) {
+      throw new Error('Password must be at least 8 characters long.');
+    }
+
+    // 2. Determine role & tenant
+    const isSuperAdminEmail =
+      email === 'demirewumanidefro@gmail.com' ||
+      email === 'superadmin@soundgrid.ai';
+
+    let role: UserRole = UserRole.TECHNICIAN;
+    if (isSuperAdminEmail) {
+      role = UserRole.SUPER_ADMIN;
+    } else if (params.role === 'ENTERPRISE_ADMIN') {
+      role = UserRole.ENTERPRISE_ADMIN;
+    } else if (params.role === 'TECHNICIAN') {
+      role = UserRole.TECHNICIAN;
+    }
+
+    let tenantId: string | null = null;
+    if (!isSuperAdminEmail) {
+      if (params.organizationName && params.organizationName.trim()) {
+        const orgName = params.organizationName.trim();
+        const slug = orgName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+        let tenant = await prisma.tenant.findUnique({ where: { slug } });
+        if (!tenant) {
+          tenant = await prisma.tenant.create({
+            data: {
+              name: orgName,
+              slug,
+              tier: 'ENTERPRISE',
+            },
+          });
+        }
+        tenantId = tenant.id;
+      } else {
+        const defaultTenant = await prisma.tenant.findFirst({ where: { slug: 'apex-power' } });
+        tenantId = defaultTenant?.id || null;
+      }
+    }
+
+    // 3. Hash password with Argon2id
+    const passwordHash = await hashPassword(params.password);
+
+    // 4. Create user in PostgreSQL
+    const user = await prisma.user.create({
+      data: {
+        email,
+        fullName,
+        passwordHash,
+        role,
+        tenantId,
+        isActive: true,
+        lastLoginAt: new Date(),
+      },
+      include: { tenant: true },
+    });
+
+    // 5. Append immutable audit record
+    await AuditService.record({
+      actorId: user.id,
+      tenantId: user.tenantId,
+      action: 'AUTH_REGISTER_SUCCESS',
+      resource: `User:${user.id}`,
+      ipAddress: params.ipAddress,
+      metadata: { role: user.role, email: user.email, userAgent: params.userAgent },
+    });
+
+    // 6. Issue token pair for immediate login
+    const { accessToken, refreshToken } = await this.issueTokenPair(user);
 
     return {
       accessToken,

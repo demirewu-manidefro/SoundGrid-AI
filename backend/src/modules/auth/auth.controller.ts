@@ -8,6 +8,14 @@ const loginSchema = z.object({
   password: z.string().min(6),
 });
 
+const registerSchema = z.object({
+  email: z.string().email('Valid email address required'),
+  password: z.string().min(8, 'Password must be at least 8 characters long'),
+  fullName: z.string().min(2, 'Full name is required'),
+  organizationName: z.string().optional(),
+  role: z.enum(['TECHNICIAN', 'ENTERPRISE_ADMIN']).optional(),
+});
+
 const googleAuthSchema = z.object({
   idToken: z.string().min(1),
 });
@@ -67,6 +75,50 @@ export class AuthController {
         success: false,
         error: 'Authentication Failed',
         message: err.message || 'Invalid credentials.',
+      });
+    }
+  }
+
+  static async register(req: Request, res: Response): Promise<void> {
+    try {
+      const parsed = registerSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          success: false,
+          error: 'Validation Error',
+          message: parsed.error.issues[0]?.message || 'Invalid registration input.',
+          details: parsed.error.format(),
+        });
+        return;
+      }
+
+      const ipAddress = getClientIp(req);
+      const userAgent = req.headers['user-agent'] || 'Unknown';
+
+      const result = await AuthService.register({
+        email: parsed.data.email,
+        password: parsed.data.password,
+        fullName: parsed.data.fullName,
+        organizationName: parsed.data.organizationName,
+        role: parsed.data.role,
+        ipAddress,
+        userAgent,
+      });
+
+      setRefreshTokenCookie(res, result.refreshToken);
+
+      res.status(201).json({
+        success: true,
+        message: 'Account registered successfully',
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken,
+        user: result.user,
+      });
+    } catch (err: any) {
+      res.status(400).json({
+        success: false,
+        error: 'Registration Failed',
+        message: err.message || 'Unable to register account.',
       });
     }
   }

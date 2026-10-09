@@ -5,6 +5,9 @@ import { authenticateJWT } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
+// Register endpoint with Argon2id password hashing
+router.post('/register', authRateLimiter, AuthController.register);
+
 // Login endpoint protected by rate limiter (brute-force defense)
 router.post('/login', authRateLimiter, AuthController.login);
 
