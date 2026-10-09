@@ -21,50 +21,87 @@ export const StatCard: React.FC<StatCardProps> = ({
   accentColor = 'accent',
   trend,
 }) => {
-  const borderAccents: Record<string, string> = {
-    accent: 'hover:border-sky-500/50',
-    primary: 'hover:border-indigo-500/50',
-    healthy: 'hover:border-emerald-500/50',
-    warning: 'hover:border-amber-500/50',
-    critical: 'hover:border-rose-500/50',
+  const colorConfigs = {
+    accent: {
+      border: 'hover:border-cyan-400/50',
+      iconBox: 'text-cyan-400 bg-cyan-950/40 border-cyan-500/30 shadow-[0_0_15px_-3px_rgba(6,182,212,0.3)]',
+      glow: 'from-cyan-500/10 via-transparent to-transparent',
+      valueColor: 'text-white',
+    },
+    primary: {
+      border: 'hover:border-indigo-400/50',
+      iconBox: 'text-indigo-400 bg-indigo-950/40 border-indigo-500/30 shadow-[0_0_15px_-3px_rgba(99,102,241,0.3)]',
+      glow: 'from-indigo-500/10 via-transparent to-transparent',
+      valueColor: 'text-white',
+    },
+    healthy: {
+      border: 'hover:border-emerald-400/50',
+      iconBox: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30 shadow-[0_0_15px_-3px_rgba(16,185,129,0.3)]',
+      glow: 'from-emerald-500/10 via-transparent to-transparent',
+      valueColor: 'text-emerald-300',
+    },
+    warning: {
+      border: 'hover:border-amber-400/50',
+      iconBox: 'text-amber-400 bg-amber-950/40 border-amber-500/30 shadow-[0_0_15px_-3px_rgba(245,158,11,0.3)]',
+      glow: 'from-amber-500/10 via-transparent to-transparent',
+      valueColor: 'text-amber-300',
+    },
+    critical: {
+      border: 'hover:border-rose-400/50',
+      iconBox: 'text-rose-400 bg-rose-950/40 border-rose-500/30 shadow-[0_0_20px_-3px_rgba(244,63,94,0.4)] animate-pulse',
+      glow: 'from-rose-500/15 via-transparent to-transparent',
+      valueColor: 'text-rose-300',
+    },
   };
 
-  const iconColors: Record<string, string> = {
-    accent: 'text-sky-400 bg-sky-950/40 border-sky-800/50',
-    primary: 'text-indigo-400 bg-indigo-950/40 border-indigo-800/50',
-    healthy: 'text-emerald-400 bg-emerald-950/40 border-emerald-800/50',
-    warning: 'text-amber-400 bg-amber-950/40 border-amber-800/50',
-    critical: 'text-rose-400 bg-rose-950/40 border-rose-800/50',
-  };
+  const cfg = colorConfigs[accentColor] || colorConfigs.accent;
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border border-industrial-border bg-industrial-panel p-5 transition-all duration-200 ${borderAccents[accentColor]} shadow-lg`}
+      className={`relative overflow-hidden rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-5 backdrop-blur-xl transition-all duration-300 ${cfg.border} shadow-xl hover:-translate-y-1 hover:shadow-2xl group`}
     >
-      <div className="flex items-start justify-between">
+      {/* Ambient Radial Corner Glow */}
+      <div
+        className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br ${cfg.glow} blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500`}
+      />
+
+      <div className="relative z-10 flex items-start justify-between">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-slate-400">{label}</p>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-mono text-3xl font-bold tracking-tight text-white">{value}</span>
-            {subValue && <span className="text-xs font-mono text-slate-400">{subValue}</span>}
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+            {label}
+          </p>
+          <div className="mt-2.5 flex items-baseline gap-2">
+            <span className={`font-display text-3xl font-extrabold tracking-tight ${cfg.valueColor}`}>
+              {value}
+            </span>
+            {subValue && (
+              <span className="font-mono text-xs text-slate-400 font-medium">{subValue}</span>
+            )}
           </div>
+
           {trend && (
-            <div className="mt-2 flex items-center gap-1.5 text-xs">
+            <div className="mt-3 flex items-center gap-2 font-mono text-xs">
               <span
-                className={`font-mono font-medium ${
-                  trend.isGood ? 'text-emerald-400' : 'text-rose-400'
+                className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                  trend.isGood
+                    ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/60'
+                    : 'bg-rose-950/80 text-rose-400 border border-rose-800/60'
                 }`}
               >
-                {trend.isUpward ? '↑' : '↓'} {trend.value}
+                {trend.isUpward ? '▲' : '▼'} {trend.value}
               </span>
-              <span className="text-slate-500">vs last 24h</span>
+              <span className="text-[11px] text-slate-500">telemetry window</span>
             </div>
           )}
         </div>
-        <div className={`rounded-lg border p-3 ${iconColors[accentColor]}`}>
+
+        <div className={`rounded-xl border p-3 transition-transform duration-300 group-hover:scale-110 ${cfg.iconBox}`}>
           {icon}
         </div>
       </div>
+
+      {/* Bottom glowing accent line */}
+      <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-cyan-400/50 transition-colors duration-500" />
     </div>
   );
 };
