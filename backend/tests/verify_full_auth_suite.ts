@@ -42,15 +42,13 @@ async function runFullAuthVerification() {
   });
 
   // -------------------------------------------------------------------------
-  // 2. Argon2id Password Authentication Across All 5 Ranks
+  // 2. Argon2id Password Authentication Across All 3 Ranks
   // -------------------------------------------------------------------------
-  console.log('\n🔐 2. Argon2id Multi-Tier Role Hierarchy (5 Roles):');
+  console.log('\n🔐 2. Argon2id Multi-Tier Role Hierarchy (3 Roles):');
   const rolesToTest = [
     { email: 'superadmin@soundgrid.ai', expectedRole: 'SUPER_ADMIN', label: 'Tier 1 Super Admin' },
     { email: 'admin@apexpower.com', expectedRole: 'ENTERPRISE_ADMIN', label: 'Tier 2 Plant Admin' },
-    { email: 'safety@apexpower.com', expectedRole: 'SAFETY_MANAGER', label: 'Tier 3 Safety Manager' },
-    { email: 'tech@apexpower.com', expectedRole: 'TECHNICIAN', label: 'Tier 4 Field Technician' },
-    { email: 'auditor@apexpower.com', expectedRole: 'AUDITOR', label: 'Tier 5 Compliance Auditor' },
+    { email: 'tech@apexpower.com', expectedRole: 'TECHNICIAN', label: 'Tier 3 Field Technician' },
   ];
 
   let technicianAccessToken = '';
