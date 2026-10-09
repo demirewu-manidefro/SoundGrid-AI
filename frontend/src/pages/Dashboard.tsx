@@ -3,7 +3,19 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../api/client';
 import { StatCard } from '../components/common/StatCard';
 import { StatusBadge } from '../components/common/StatusBadge';
-import { Cpu, AlertTriangle, CheckCircle2, Zap, ArrowUpRight, Activity } from 'lucide-react';
+import { AcousticWaveform } from '../components/common/AcousticWaveform';
+import {
+  Cpu,
+  AlertTriangle,
+  CheckCircle2,
+  Zap,
+  ArrowUpRight,
+  Activity,
+  Radio,
+  Clock,
+  Sparkles,
+  Layers,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Dashboard: React.FC = () => {
@@ -33,25 +45,34 @@ export const Dashboard: React.FC = () => {
   const openTickets = tickets.filter((t) => t.status !== 'RESOLVED').length;
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <h1 className="font-mono text-xl font-bold tracking-tight text-white uppercase">
-            Industrial Telemetry Overview
-          </h1>
-          <p className="text-xs font-mono text-slate-400 mt-1">
-            Real-time acoustic vibration and fault classification telemetry
-          </p>
-        </div>
+    <div className="space-y-8 animate-in fade-in duration-300">
+      {/* Top Hero Banner */}
+      <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-r from-[#0F1626]/90 via-[#131C33]/80 to-[#0F1626]/90 p-6 md:p-8 backdrop-blur-xl shadow-2xl">
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 h-72 w-72 rounded-full bg-gradient-to-br from-cyan-500/10 via-indigo-500/10 to-transparent blur-3xl pointer-events-none" />
 
-        <div className="flex items-center gap-3">
-          <Link
-            to="/diagnostics"
-            className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-md hover:bg-indigo-500 transition-colors"
-          >
-            <Zap className="h-4 w-4" /> Trigger Acoustic Inspection
-          </Link>
+        <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-3 py-1 font-mono text-[11px] font-semibold text-cyan-300 shadow-[0_0_12px_-2px_rgba(0,242,254,0.3)]">
+              <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+              TorchScript CNN Runtime • Sub-10ms Inference Active
+            </div>
+            <h1 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-white uppercase">
+              Industrial Telemetry Control Room
+            </h1>
+            <p className="max-w-xl text-xs md:text-sm font-sans text-slate-300 leading-relaxed">
+              Predictive acoustic anomaly detection for transformers, heavy pumps, induction motors, and industrial ventilation fans.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              to="/diagnostics"
+              className="group relative flex items-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 px-5 py-3 text-xs font-mono font-bold text-white shadow-[0_0_20px_-3px_rgba(99,102,241,0.5)] hover:shadow-[0_0_25px_-2px_rgba(0,242,254,0.6)] transition-all hover:scale-[1.02]"
+            >
+              <Zap className="h-4 w-4 text-cyan-200 transition-transform group-hover:rotate-12" />
+              <span>Launch Acoustic Diagnostics</span>
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -73,47 +94,74 @@ export const Dashboard: React.FC = () => {
           trend={{ value: '100% target', isUpward: true, isGood: true }}
         />
         <StatCard
-          label="Critical Anomalies"
-          value={loadingMachines ? '...' : criticalCount}
-          subValue={`${warningCount} warning`}
+          label="Anomalies & Warnings"
+          value={loadingMachines ? '...' : criticalCount + warningCount}
+          subValue={`${criticalCount} critical • ${warningCount} warning`}
           icon={<AlertTriangle className="h-5 w-5" />}
-          accentColor={criticalCount > 0 ? 'critical' : 'healthy'}
+          accentColor={criticalCount > 0 ? 'critical' : warningCount > 0 ? 'warning' : 'healthy'}
         />
         <StatCard
           label="Avg AI Latency"
-          value="23.2 ms"
-          subValue="TorchScript"
+          value="5.04 ms"
+          subValue="TorchScript CNN"
           icon={<Activity className="h-5 w-5" />}
           accentColor="primary"
-          trend={{ value: 'sub-second', isUpward: false, isGood: true }}
+          trend={{ value: 'sub-10ms', isUpward: false, isGood: true }}
         />
       </div>
 
-      {/* Fleet Status Grid & Open Tickets */}
+      {/* Live Acoustic Waveform Visualizer Banner */}
+      <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-5 backdrop-blur-xl shadow-xl">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Radio className="h-4 w-4 text-cyan-400" />
+            <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white">
+              Real-Time Acoustic Telemetry Wave Spectrum
+            </h3>
+          </div>
+          <span className="text-[11px] font-mono text-cyan-400/90 font-semibold flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            Sampling 16 kHz • 128 Mel Filters
+          </span>
+        </div>
+        <AcousticWaveform isAnomaly={criticalCount > 0} isActive={true} height={52} />
+      </div>
+
+      {/* Fleet Status Grid & Open Work Orders */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Machinery Status Overview */}
-        <div className="rounded-xl border border-industrial-border bg-industrial-panel p-5 shadow-lg lg:col-span-2">
-          <div className="mb-4 flex items-center justify-between border-b border-industrial-border pb-3">
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-wider text-white">
-              Machinery Telemetry Fleet
-            </h3>
-            <Link to="/machines" className="flex items-center gap-1 text-xs font-mono text-indigo-400 hover:text-indigo-300">
-              View Fleet <ArrowUpRight className="h-3.5 w-3.5" />
+        <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-6 backdrop-blur-xl shadow-xl lg:col-span-2">
+          <div className="mb-5 flex items-center justify-between border-b border-white/[0.08] pb-3">
+            <div>
+              <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white">
+                Equipment Fleet Status
+              </h3>
+              <p className="font-mono text-[11px] text-slate-400 mt-0.5">
+                Continuous acoustic diagnostic monitoring
+              </p>
+            </div>
+            <Link
+              to="/machines"
+              className="flex items-center gap-1 text-xs font-mono text-cyan-400 hover:text-cyan-300 font-semibold transition-colors"
+            >
+              All Assets <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
             {machines.map((m) => (
               <div
                 key={m.id}
-                className="flex items-center justify-between rounded-lg border border-industrial-border bg-[#0B0F19] p-3.5 hover:border-slate-700 transition-colors"
+                className="group relative flex items-center justify-between rounded-xl border border-white/[0.06] bg-[#070A12]/60 p-4 hover:border-cyan-500/40 hover:bg-[#0E1526]/80 transition-all duration-200"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-white">{m.name}</span>
+                    <span className="font-display text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                      {m.name}
+                    </span>
                   </div>
-                  <p className="font-mono text-[11px] text-slate-400 mt-0.5">
-                    {m.serialNumber} • {m.location}
+                  <p className="font-mono text-[11px] text-slate-400 mt-1">
+                    {m.serialNumber} • <span className="text-slate-300">{m.location}</span>
                   </p>
                 </div>
                 <StatusBadge status={m.status} size="sm" />
@@ -123,71 +171,104 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Actionable Work Orders */}
-        <div className="rounded-xl border border-industrial-border bg-industrial-panel p-5 shadow-lg">
-          <div className="mb-4 flex items-center justify-between border-b border-industrial-border pb-3">
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-wider text-white">
-              Active Work Orders ({openTickets})
-            </h3>
-            <Link to="/tickets" className="flex items-center gap-1 text-xs font-mono text-indigo-400 hover:text-indigo-300">
-              Triage <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
+        <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-6 backdrop-blur-xl shadow-xl flex flex-col justify-between">
+          <div>
+            <div className="mb-5 flex items-center justify-between border-b border-white/[0.08] pb-3">
+              <div>
+                <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white">
+                  Active Work Orders ({openTickets})
+                </h3>
+                <p className="font-mono text-[11px] text-slate-400 mt-0.5">
+                  Automated anomaly recovery
+                </p>
+              </div>
+              <Link
+                to="/tickets"
+                className="flex items-center gap-1 text-xs font-mono text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
+              >
+                Triage <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+
+            {tickets.length === 0 ? (
+              <div className="py-12 text-center">
+                <CheckCircle2 className="h-8 w-8 text-emerald-400/80 mx-auto mb-2" />
+                <p className="text-xs font-mono text-slate-400 font-medium">
+                  Zero active maintenance alerts
+                </p>
+                <p className="text-[11px] text-slate-500 mt-1">
+                  All equipment nominal
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {tickets.slice(0, 3).map((t) => (
+                  <div
+                    key={t.id}
+                    className="rounded-xl border border-white/[0.06] bg-[#070A12]/60 p-3.5 text-xs hover:border-white/10 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <StatusBadge status={t.priority} size="sm" />
+                      <span className="font-mono text-[10px] text-slate-400">
+                        {new Date(t.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p className="font-mono text-xs font-bold text-slate-100 mt-2 line-clamp-1">
+                      {t.diagnostic?.machine?.name || 'Equipment Alert'}
+                    </p>
+                    <p className="text-[11px] text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                      {t.resolutionNotes || 'Automatic anomaly alert ticket pending approval.'}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          {tickets.length === 0 ? (
-            <p className="text-xs font-mono text-slate-500 py-6 text-center">
-              No active maintenance tickets
-            </p>
-          ) : (
-            <div className="space-y-3">
-              {tickets.slice(0, 4).map((t) => (
-                <div
-                  key={t.id}
-                  className="rounded-lg border border-industrial-border bg-[#0B0F19] p-3 text-xs"
-                >
-                  <div className="flex items-center justify-between">
-                    <StatusBadge status={t.priority} size="sm" />
-                    <span className="font-mono text-[10px] text-slate-400">
-                      {new Date(t.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <p className="font-mono text-xs font-medium text-slate-200 mt-2 line-clamp-1">
-                    {t.diagnostic?.machine?.name || 'Equipment Work Order'}
-                  </p>
-                  <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">
-                    {t.resolutionNotes || 'Automatic anomaly alert ticket pending review.'}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="pt-4 border-t border-white/[0.08] mt-4">
+            <Link
+              to="/tickets"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-indigo-500/30 bg-indigo-950/40 py-2.5 text-xs font-mono font-semibold text-indigo-300 hover:bg-indigo-900/50 hover:text-white transition-all"
+            >
+              Manage & Approve Work Orders →
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* Recent Diagnostic Stream Table */}
-      <div className="rounded-xl border border-industrial-border bg-industrial-panel p-5 shadow-lg">
-        <div className="mb-4 flex items-center justify-between border-b border-industrial-border pb-3">
-          <h3 className="font-mono text-xs font-semibold uppercase tracking-wider text-white">
-            Recent Acoustic Diagnostic Feed
-          </h3>
-          <span className="text-[11px] font-mono text-slate-400">
-            Real-Time Edge Forwarding
-          </span>
+      <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-6 backdrop-blur-xl shadow-xl">
+        <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.08] pb-3">
+          <div>
+            <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white">
+              Recent Acoustic Inspection Stream
+            </h3>
+            <p className="font-mono text-[11px] text-slate-400 mt-0.5">
+              Live edge inference history processed by TorchScript CNN
+            </p>
+          </div>
+          <Link
+            to="/diagnostics"
+            className="flex items-center gap-1.5 text-xs font-mono font-semibold text-cyan-400 hover:text-cyan-300"
+          >
+            Run New Inspection <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
-              <tr className="border-b border-industrial-border text-[11px] uppercase text-slate-400">
+              <tr className="border-b border-white/[0.08] text-[10px] uppercase tracking-wider text-slate-400">
                 <th className="pb-3 font-semibold">Timestamp</th>
-                <th className="pb-3 font-semibold">Machine</th>
-                <th className="pb-3 font-semibold">Diagnosis</th>
+                <th className="pb-3 font-semibold">Equipment Asset</th>
+                <th className="pb-3 font-semibold">AI Classification</th>
                 <th className="pb-3 font-semibold">Confidence</th>
                 <th className="pb-3 font-semibold">RMS Energy</th>
                 <th className="pb-3 font-semibold">Spectral Centroid</th>
                 <th className="pb-3 font-semibold">Technician</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-industrial-border">
+            <tbody className="divide-y divide-white/[0.04]">
               {diagnostics.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-8 text-center text-slate-500">
@@ -196,26 +277,34 @@ export const Dashboard: React.FC = () => {
                 </tr>
               ) : (
                 diagnostics.map((d) => (
-                  <tr key={d.id} className="hover:bg-slate-900/50 transition-colors">
-                    <td className="py-3 text-slate-400">
+                  <tr key={d.id} className="hover:bg-slate-800/30 transition-colors">
+                    <td className="py-3.5 text-slate-400">
                       {new Date(d.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                     </td>
-                    <td className="py-3 font-bold text-white">
+                    <td className="py-3.5 font-bold text-white">
                       {d.machine?.name || 'Machinery'}
                     </td>
-                    <td className="py-3">
+                    <td className="py-3.5">
                       <StatusBadge status={d.isAnomaly ? 'CRITICAL' : 'OPERATIONAL'} size="sm" />
                     </td>
-                    <td className="py-3 font-bold text-sky-400">
-                      {(d.confidenceScore * 100).toFixed(1)}%
+                    <td className="py-3.5 font-bold text-cyan-400">
+                      <div className="flex items-center gap-2">
+                        <span>{(d.confidenceScore * 100).toFixed(1)}%</span>
+                        <div className="h-1.5 w-12 rounded-full bg-slate-800 overflow-hidden">
+                          <div
+                            className={`h-full ${d.isAnomaly ? 'bg-rose-500' : 'bg-cyan-400'}`}
+                            style={{ width: `${d.confidenceScore * 100}%` }}
+                          />
+                        </div>
+                      </div>
                     </td>
-                    <td className="py-3 text-slate-300">
+                    <td className="py-3.5 text-slate-300">
                       {d.frequencyData?.rmsEnergyDb ? `${d.frequencyData.rmsEnergyDb} dB` : 'N/A'}
                     </td>
-                    <td className="py-3 text-slate-300">
+                    <td className="py-3.5 text-slate-300">
                       {d.frequencyData?.spectralCentroidHz ? `${d.frequencyData.spectralCentroidHz} Hz` : 'N/A'}
                     </td>
-                    <td className="py-3 text-slate-400">
+                    <td className="py-3.5 text-slate-400">
                       {d.technician?.fullName || 'Technician'}
                     </td>
                   </tr>
