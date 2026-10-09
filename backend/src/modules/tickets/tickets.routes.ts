@@ -9,32 +9,28 @@ const router = Router();
 router.use(authenticateJWT);
 router.use(enforceTenantIsolation);
 
-// Read tickets: all tiers
+// Read tickets: all 3 tiers
 router.get(
   '/',
   requireRole(
     UserRole.SUPER_ADMIN,
     UserRole.ENTERPRISE_ADMIN,
-    UserRole.SAFETY_MANAGER,
-    UserRole.TECHNICIAN,
-    UserRole.AUDITOR
+    UserRole.TECHNICIAN
   ),
   TicketsController.list
 );
 
-// Assign work order: Safety Manager / Enterprise Admin / Super Admin
+// Assign work order: Enterprise Admin / Super Admin
 router.post(
   '/:id/assign',
-  enforceAuditorReadOnly,
-  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN, UserRole.SAFETY_MANAGER),
+  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN),
   TicketsController.assign
 );
 
-// Resolve & approve machine status: Safety Manager / Enterprise Admin / Super Admin
+// Resolve & approve machine status: Enterprise Admin / Super Admin
 router.post(
   '/:id/resolve',
-  enforceAuditorReadOnly,
-  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN, UserRole.SAFETY_MANAGER),
+  requireRole(UserRole.SUPER_ADMIN, UserRole.ENTERPRISE_ADMIN),
   TicketsController.resolve
 );
 
