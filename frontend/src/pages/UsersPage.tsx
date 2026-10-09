@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, User } from '../api/client';
-import { Users, Plus, Shield, CheckCircle2, UserPlus } from 'lucide-react';
+import { 
+  Users, UserPlus, Shield, CheckCircle2, Search, Filter, 
+  Building2, Key, Mail, UserCheck, ShieldCheck, Wrench, X, Sparkles
+} from 'lucide-react';
 
 export const UsersPage: React.FC = () => {
   const queryClient = useQueryClient();
   const [showAddModal, setShowAddModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [roleFilter, setRoleFilter] = useState<string>('ALL');
+  
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [role, setRole] = useState('TECHNICIAN');
@@ -23,74 +29,241 @@ export const UsersPage: React.FC = () => {
       setShowAddModal(false);
       setEmail('');
       setFullName('');
+      setPassword('Password123!');
     },
   });
 
   const users = usersRes?.data || [];
 
+  // Filtered users
+  const filteredUsers = useMemo(() => {
+    return users.filter((u: User) => {
+      const matchesSearch = 
+        u.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        u.email.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesRole = roleFilter === 'ALL' || u.role === roleFilter;
+      return matchesSearch && matchesRole;
+    });
+  }, [users, searchQuery, roleFilter]);
+
+  const stats = useMemo(() => {
+    return {
+      total: users.length,
+      superAdmins: users.filter((u: User) => u.role === 'SUPER_ADMIN').length,
+      enterpriseAdmins: users.filter((u: User) => u.role === 'ENTERPRISE_ADMIN').length,
+      technicians: users.filter((u: User) => u.role === 'TECHNICIAN').length,
+    };
+  }, [users]);
+
+  const getRoleBadge = (userRole: string) => {
+    switch (userRole) {
+      case 'SUPER_ADMIN':
+        return (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-rose-500/30 bg-rose-500/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-rose-300 shadow-[0_0_10px_rgba(244,63,94,0.15)]">
+            <Shield className="h-3 w-3 text-rose-400" />
+            SUPER ADMIN (T1)
+          </span>
+        );
+      case 'ENTERPRISE_ADMIN':
+        return (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-indigo-300 shadow-[0_0_10px_rgba(99,102,241,0.15)]">
+            <Building2 className="h-3 w-3 text-indigo-400" />
+            ENTERPRISE ADMIN (T2)
+          </span>
+        );
+      case 'TECHNICIAN':
+      default:
+        return (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.15)]">
+            <Wrench className="h-3 w-3 text-cyan-400" />
+            TECHNICIAN (T3)
+          </span>
+        );
+    }
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <div className="flex items-center gap-2">
-            <Users className="h-5 w-5 text-indigo-400" />
-            <h1 className="font-mono text-xl font-bold tracking-tight text-white uppercase">
-              Facility Roster & Personnel RBAC
-            </h1>
+      {/* Top Banner / Header */}
+      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-6 backdrop-blur-xl shadow-2xl">
+        <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 shadow-[0_0_12px_rgba(99,102,241,0.3)]">
+                <Users className="h-4 w-4" />
+              </span>
+              <h1 className="font-mono text-xl font-bold tracking-tight text-white uppercase">
+                Facility Roster & Personnel RBAC
+              </h1>
+            </div>
+            <p className="text-xs font-sans text-slate-400 mt-1 max-w-2xl">
+              Multi-tenant Role-Based Access Control matrix (3-Tier architecture: Super Admin, Enterprise Admin, Field Acoustic Technician).
+            </p>
           </div>
-          <p className="text-xs font-mono text-slate-400 mt-1">
-            Manage organization technicians, safety managers, and auditors with tenant scoping
-          </p>
+
+          <button
+            id="btn-add-user"
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:from-indigo-500 hover:to-indigo-400 transition-all cursor-pointer active:scale-95"
+          >
+            <UserPlus className="h-4 w-4" /> Provision Team Member
+          </button>
         </div>
 
-        <button
-          id="btn-add-user"
-          onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-md hover:bg-indigo-500 transition-colors"
-        >
-          <UserPlus className="h-4 w-4" /> Provision Team Member
-        </button>
+        {/* Quick Stats Strip */}
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 border-t border-white/5 pt-4 font-mono">
+          <div className="rounded-xl border border-white/5 bg-slate-900/40 p-3">
+            <span className="text-[11px] uppercase tracking-wider text-slate-400">Total Personnel</span>
+            <div className="mt-1 flex items-baseline gap-2">
+              <span className="text-2xl font-bold text-white">{stats.total}</span>
+              <span className="text-[10px] text-emerald-400 font-sans">Active</span>
+            </div>
+          </div>
+          <div className="rounded-xl border border-indigo-500/20 bg-indigo-950/20 p-3">
+            <span className="text-[11px] uppercase tracking-wider text-indigo-300">Enterprise Admins</span>
+            <div className="mt-1 flex items-baseline gap-2">
+              <span className="text-2xl font-bold text-indigo-400">{stats.enterpriseAdmins}</span>
+              <span className="text-[10px] text-indigo-300/70 font-sans">Tier 2</span>
+            </div>
+          </div>
+          <div className="rounded-xl border border-cyan-500/20 bg-cyan-950/20 p-3">
+            <span className="text-[11px] uppercase tracking-wider text-cyan-300">Technicians</span>
+            <div className="mt-1 flex items-baseline gap-2">
+              <span className="text-2xl font-bold text-cyan-400">{stats.technicians}</span>
+              <span className="text-[10px] text-cyan-300/70 font-sans">Tier 3</span>
+            </div>
+          </div>
+          <div className="rounded-xl border border-rose-500/20 bg-rose-950/20 p-3">
+            <span className="text-[11px] uppercase tracking-wider text-rose-300">Super Admins</span>
+            <div className="mt-1 flex items-baseline gap-2">
+              <span className="text-2xl font-bold text-rose-400">{stats.superAdmins}</span>
+              <span className="text-[10px] text-rose-300/70 font-sans">Tier 1 Root</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Filter and Search Bar */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-white/10 bg-slate-900/60 p-3 backdrop-blur-md">
+        <div className="flex flex-1 items-center gap-2 rounded-lg border border-white/5 bg-slate-950/60 px-3 py-2 text-xs font-mono text-slate-300 focus-within:border-indigo-500/50">
+          <Search className="h-4 w-4 text-slate-400 shrink-0" />
+          <input
+            id="input-user-search"
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by personnel name or email address..."
+            className="w-full bg-transparent placeholder-slate-500 focus:outline-none"
+          />
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="text-slate-400 hover:text-white">
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Filter className="h-4 w-4 text-slate-400" />
+          <div className="flex rounded-lg border border-white/5 bg-slate-950/60 p-1 text-[11px] font-mono">
+            {['ALL', 'SUPER_ADMIN', 'ENTERPRISE_ADMIN', 'TECHNICIAN'].map((r) => (
+              <button
+                key={r}
+                onClick={() => setRoleFilter(r)}
+                className={`rounded px-2.5 py-1 transition-all ${
+                  roleFilter === r
+                    ? 'bg-indigo-600 text-white font-bold shadow'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {r === 'ALL' ? 'All Roles' : r.replace('_', ' ')}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Users Table */}
-      <div className="rounded-xl border border-industrial-border bg-industrial-panel shadow-lg overflow-hidden">
+      <div className="rounded-2xl border border-white/10 bg-slate-900/60 shadow-xl backdrop-blur-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
-              <tr className="border-b border-industrial-border bg-slate-900/60 text-[11px] uppercase text-slate-400">
-                <th className="p-3.5 font-semibold">Full Name</th>
-                <th className="p-3.5 font-semibold">Email</th>
-                <th className="p-3.5 font-semibold">Hierarchical Role</th>
-                <th className="p-3.5 font-semibold">Tenant Organization</th>
-                <th className="p-3.5 font-semibold">Status</th>
-                <th className="p-3.5 font-semibold">Last Active</th>
+              <tr className="border-b border-white/10 bg-slate-950/70 text-[11px] uppercase tracking-wider text-slate-400">
+                <th className="p-4 font-semibold">Personnel Member</th>
+                <th className="p-4 font-semibold">Email Contact</th>
+                <th className="p-4 font-semibold">RBAC Tier</th>
+                <th className="p-4 font-semibold">Tenant Organization</th>
+                <th className="p-4 font-semibold">Status</th>
+                <th className="p-4 font-semibold text-right">Access Scope</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-industrial-border">
+            <tbody className="divide-y divide-white/5">
               {isLoading ? (
                 <tr>
-                  <td colSpan={6} className="py-8 text-center text-slate-500">
-                    Loading personnel roster...
+                  <td colSpan={6} className="py-12 text-center text-slate-400">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
+                      <span>Loading authorized personnel records...</span>
+                    </div>
+                  </td>
+                </tr>
+              ) : filteredUsers.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-12 text-center text-slate-400">
+                    <Users className="mx-auto h-8 w-8 text-slate-600 mb-2" />
+                    <p className="font-sans font-medium text-slate-300">No personnel members match current criteria.</p>
+                    <p className="text-[11px] text-slate-500 mt-1">Try resetting the role filter or search query.</p>
                   </td>
                 </tr>
               ) : (
-                users.map((u: User) => (
-                  <tr key={u.id} className="hover:bg-slate-900/40 transition-colors">
-                    <td className="p-3.5 font-bold text-white">{u.fullName}</td>
-                    <td className="p-3.5 text-sky-400">{u.email}</td>
-                    <td className="p-3.5">
-                      <span className="rounded bg-indigo-950/80 border border-indigo-800 px-2 py-0.5 text-[10px] text-indigo-300 font-bold uppercase">
-                        {u.role}
+                filteredUsers.map((u: User) => (
+                  <tr key={u.id} className="hover:bg-white/[0.02] transition-colors group">
+                    <td className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-indigo-500/20 to-purple-500/10 font-mono text-xs font-bold text-indigo-300 shadow">
+                          {getInitials(u.fullName)}
+                        </div>
+                        <div>
+                          <p className="font-bold text-white font-sans text-sm group-hover:text-indigo-300 transition-colors">
+                            {u.fullName}
+                          </p>
+                          <p className="text-[10px] text-slate-500 font-mono">ID: {u.id.slice(0, 8)}...</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-1.5 text-cyan-400">
+                        <Mail className="h-3 w-3 text-cyan-500/70" />
+                        <span>{u.email}</span>
+                      </div>
+                    </td>
+                    <td className="p-4">{getRoleBadge(u.role)}</td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-1.5 text-slate-300 font-sans">
+                        <Building2 className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                        <span>{u.tenant?.name || 'Platform Super Admin (Global)'}</span>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-[10px] text-emerald-300 font-bold">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        ACTIVE
                       </span>
                     </td>
-                    <td className="p-3.5 text-slate-300">{u.tenant?.name || 'Platform Super Admin'}</td>
-                    <td className="p-3.5">
-                      <span className="inline-flex items-center gap-1 rounded bg-emerald-950/80 border border-emerald-800 px-2 py-0.5 text-[10px] text-emerald-300 font-bold">
-                        <CheckCircle2 className="h-3 w-3" /> ACTIVE
+                    <td className="p-4 text-right">
+                      <span className="font-mono text-[11px] text-slate-400">
+                        {u.role === 'SUPER_ADMIN' ? 'Cross-Tenant RWX' : u.role === 'ENTERPRISE_ADMIN' ? 'Plant-Scoped RW' : 'Acoustic-Diagnostic RO+'}
                       </span>
                     </td>
-                    <td className="p-3.5 text-slate-400">Recently</td>
                   </tr>
                 ))
               )}
@@ -99,61 +272,79 @@ export const UsersPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Provision Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-xl border border-industrial-border bg-industrial-panel p-6 shadow-2xl">
-            <h3 className="font-mono text-sm font-bold text-white uppercase mb-4">
-              Provision New Personnel
-            </h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-150">
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900 p-6 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-400">
+                  <UserPlus className="h-4 w-4" />
+                </div>
+                <h3 className="font-mono text-sm font-bold text-white uppercase tracking-wider">
+                  Provision New Personnel
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowAddModal(false)}
+                className="rounded-lg p-1 text-slate-400 hover:bg-white/5 hover:text-white transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
 
             <div className="space-y-4 font-mono text-xs">
               <div>
-                <label className="block text-slate-400 mb-1">Full Name</label>
+                <label className="block text-slate-400 mb-1.5">Full Name</label>
                 <input
                   id="modal-user-fullname"
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="e.g. Rachel Chen"
-                  className="w-full rounded border border-industrial-border bg-[#0B0F19] p-2.5 text-white focus:border-indigo-500 focus:outline-none"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Email Address</label>
+                <label className="block text-slate-400 mb-1.5">Email Address</label>
                 <input
                   id="modal-user-email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="e.g. rachel@apexpower.com"
-                  className="w-full rounded border border-industrial-border bg-[#0B0F19] p-2.5 text-white focus:border-indigo-500 focus:outline-none"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Role Hierarchy</label>
+                <label className="block text-slate-400 mb-1.5">Role Hierarchy (3 Tiers)</label>
                 <select
                   id="modal-user-role"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full rounded border border-industrial-border bg-[#0B0F19] p-2.5 text-white focus:border-indigo-500 focus:outline-none"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all"
                 >
-                  <option value="TECHNICIAN">Tier 3: Field Maintenance Technician</option>
+                  <option value="TECHNICIAN">Tier 3: Field Acoustic Technician</option>
                   <option value="ENTERPRISE_ADMIN">Tier 2: Plant Owner / Enterprise Admin</option>
-                  <option value="SUPER_ADMIN">Tier 1: Platform Super Admin</option>
+                  <option value="SUPER_ADMIN">Tier 1: Global Platform Super Admin</option>
                 </select>
+                <p className="text-[10px] text-slate-500 mt-1 font-sans">
+                  {role === 'TECHNICIAN' && 'Grants access to record diagnostics and trigger AI engine inferences.'}
+                  {role === 'ENTERPRISE_ADMIN' && 'Full facility control: machine fleet, dispatch tickets, and user roster.'}
+                  {role === 'SUPER_ADMIN' && 'Global root access across all isolated tenant organizations.'}
+                </p>
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Initial Password</label>
+                <label className="block text-slate-400 mb-1.5">Temporary Password</label>
                 <input
                   id="modal-user-pass"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded border border-industrial-border bg-[#0B0F19] p-2.5 text-white focus:border-indigo-500 focus:outline-none"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all"
                 />
               </div>
 
@@ -161,7 +352,7 @@ export const UsersPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 rounded border border-industrial-border bg-slate-800 py-2 text-slate-300 hover:bg-slate-700"
+                  className="flex-1 rounded-xl border border-white/10 bg-slate-800/80 py-2.5 text-slate-300 hover:bg-slate-700 transition-colors"
                 >
                   Cancel
                 </button>
@@ -170,7 +361,7 @@ export const UsersPage: React.FC = () => {
                   type="button"
                   onClick={() => createMutation.mutate()}
                   disabled={!email || !fullName || createMutation.isPending}
-                  className="flex-1 rounded bg-indigo-600 py-2 font-bold text-white hover:bg-indigo-500 disabled:opacity-50"
+                  className="flex-1 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 py-2.5 font-bold text-white shadow-lg shadow-indigo-600/30 hover:from-indigo-500 hover:to-indigo-400 transition-all disabled:opacity-50"
                 >
                   {createMutation.isPending ? 'Provisioning...' : 'Provision User'}
                 </button>
