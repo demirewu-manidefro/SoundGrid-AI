@@ -84,10 +84,9 @@ export const Sidebar: React.FC = () => {
                     key={item.to}
                     to={item.to}
                     className={({ isActive }) =>
-                      `group relative flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-mono font-medium transition-all ${
-                        isActive
-                          ? 'bg-gradient-to-r from-cyan-500/15 via-indigo-500/10 to-transparent text-cyan-300 border border-cyan-500/30 shadow-[0_0_15px_-3px_rgba(0,242,254,0.15)]'
-                          : 'text-slate-400 hover:bg-slate-900/60 hover:text-slate-200 border border-transparent'
+                      `group relative flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-mono font-medium transition-all ${isActive
+                        ? 'bg-gradient-to-r from-cyan-500/15 via-indigo-500/10 to-transparent text-cyan-300 border border-cyan-500/30 shadow-[0_0_15px_-3px_rgba(0,242,254,0.15)]'
+                        : 'text-slate-400 hover:bg-slate-900/60 hover:text-slate-200 border border-transparent'
                       }`
                     }
                   >
@@ -95,19 +94,17 @@ export const Sidebar: React.FC = () => {
                       <>
                         <div className="flex items-center gap-3">
                           <Icon
-                            className={`h-4 w-4 shrink-0 transition-colors ${
-                              isActive ? 'text-cyan-400' : 'text-slate-500 group-hover:text-slate-300'
-                            }`}
+                            className={`h-4 w-4 shrink-0 transition-colors ${isActive ? 'text-cyan-400' : 'text-slate-500 group-hover:text-slate-300'
+                              }`}
                           />
                           <span>{item.label}</span>
                         </div>
                         {item.badge && (
                           <span
-                            className={`rounded-full px-1.5 py-0.2 text-[9px] font-mono font-bold tracking-tight ${
-                              isActive
+                            className={`rounded-full px-1.5 py-0.2 text-[9px] font-mono font-bold tracking-tight ${isActive
                                 ? 'bg-cyan-950/80 text-cyan-300 border border-cyan-800'
                                 : 'bg-slate-800 text-slate-400'
-                            }`}
+                              }`}
                           >
                             {item.badge}
                           </span>

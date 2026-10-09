@@ -157,6 +157,17 @@ class ApiClient {
         method: 'POST',
         body: JSON.stringify(credentials),
       }),
+    register: (data: {
+      email: string;
+      password: string;
+      fullName: string;
+      organizationName?: string;
+      role?: string;
+    }) =>
+      this.request<{ success: boolean; message: string; accessToken: string; user: User }>('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
     google: (idToken: string) =>
       this.request<{ success: boolean; accessToken: string; user: User }>('/auth/google', {
         method: 'POST',

@@ -6,6 +6,13 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  register: (data: {
+    email: string;
+    password: string;
+    fullName: string;
+    organizationName?: string;
+    role?: string;
+  }) => Promise<void>;
   loginWithGoogle: (idToken: string) => Promise<void>;
   quickDemoLogin: (role: 'SUPER_ADMIN' | 'ENTERPRISE_ADMIN' | 'TECHNICIAN') => Promise<void>;
   logout: () => void;
@@ -52,6 +59,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const register = async (data: {
+    email: string;
+    password: string;
+    fullName: string;
+    organizationName?: string;
+    role?: string;
+  }) => {
+    const res = await api.auth.register(data);
+    if (res.success && res.accessToken) {
+      localStorage.setItem('soundgrid_access_token', res.accessToken);
+      setToken(res.accessToken);
+      setUser(res.user);
+    }
+  };
+
   const loginWithGoogle = async (idToken: string) => {
     const res = await api.auth.google(idToken);
     if (res.success && res.accessToken) {
@@ -75,7 +97,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, loginWithGoogle, quickDemoLogin, logout }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, register, loginWithGoogle, quickDemoLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );
