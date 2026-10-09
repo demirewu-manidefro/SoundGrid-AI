@@ -2,11 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { UserRole } from '@prisma/client';
 
 const ROLE_HIERARCHY_WEIGHTS: Record<UserRole, number> = {
-  SUPER_ADMIN: 5,
-  ENTERPRISE_ADMIN: 4,
-  SAFETY_MANAGER: 3,
-  TECHNICIAN: 2,
-  AUDITOR: 1,
+  SUPER_ADMIN: 3,
+  ENTERPRISE_ADMIN: 2,
+  TECHNICIAN: 1,
 };
 
 /**
@@ -80,25 +78,8 @@ export function enforceTenantIsolation(req: Request, res: Response, next: NextFu
 }
 
 /**
- * Enforces read-only access for Third-Party Auditors (Tier 5).
- * Blocks any mutation attempt (POST, PUT, PATCH, DELETE) by an auditor.
+ * Legacy hook kept for route signature compatibility
  */
 export function enforceAuditorReadOnly(req: Request, res: Response, next: NextFunction): void {
-  if (!req.user) {
-    return next();
-  }
-
-  if (req.user.role === UserRole.AUDITOR) {
-    const isMutation = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method.toUpperCase());
-    if (isMutation) {
-      res.status(403).json({
-        success: false,
-        error: 'Auditor Read-Only Violation',
-        message: 'Third-Party Auditor role is strictly read-only. Mutation requests are blocked.',
-      });
-      return;
-    }
-  }
-
   next();
 }
