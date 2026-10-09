@@ -55,19 +55,6 @@ async function main() {
     },
   });
 
-  const apexSafety = await prisma.user.upsert({
-    where: { email: 'safety@apexpower.com' },
-    update: { passwordHash, tenantId: tenantApex.id },
-    create: {
-      email: 'safety@apexpower.com',
-      fullName: 'Elena Rostova (Chief Safety Engineer)',
-      role: UserRole.SAFETY_MANAGER,
-      passwordHash,
-      tenantId: tenantApex.id,
-      isActive: true,
-    },
-  });
-
   const apexTech = await prisma.user.upsert({
     where: { email: 'tech@apexpower.com' },
     update: { passwordHash, tenantId: tenantApex.id },
@@ -80,20 +67,7 @@ async function main() {
       isActive: true,
     },
   });
-
-  const apexAuditor = await prisma.user.upsert({
-    where: { email: 'auditor@apexpower.com' },
-    update: { passwordHash, tenantId: tenantApex.id },
-    create: {
-      email: 'auditor@apexpower.com',
-      fullName: 'Arthur Pendelton (ISO 55000 Compliance Auditor)',
-      role: UserRole.AUDITOR,
-      passwordHash,
-      tenantId: tenantApex.id,
-      isActive: true,
-    },
-  });
-  console.log('✅ Seeded Apex Power multi-tier user roster');
+  console.log('✅ Seeded Apex Power 3-tier user roster (Admin & Technician)');
 
   // 4. Tenant 2: Titan Industrial Dynamics (to verify organizational isolation)
   const tenantTitan = await prisma.tenant.upsert({
