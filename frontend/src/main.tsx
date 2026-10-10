@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
 
 const googleClientId =
   import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-  'mock-soundgrid-google-client-id.apps.googleusercontent.com';
+  '1035914529845-amt4mjaoap6afmdoiqrrqemrdv8pdo5c.apps.googleusercontent.com';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
