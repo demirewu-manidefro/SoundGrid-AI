@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { X, Eye, EyeOff, Check, AlertCircle, Loader2 } from 'lucide-react';
 import { Logo } from '../common/Logo';
+import { useGoogleLogin } from '@react-oauth/google';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -19,7 +20,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const { login, register, forceDemoLogin } = useAuth();
+  const { login, register, loginWithGoogle } = useAuth();
 
   // Password Security Rules
   const hasMinLen = password.length >= 8;
@@ -71,20 +72,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
     }
   };
 
-  const handleCustomGoogleLogin = async () => {
-    setIsGoogleLoading(true);
-    setError(null);
-    try {
-      // Simulate secure OAuth delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      forceDemoLogin();
-      onClose();
-    } catch (err) {
-      console.error(err);
-      setError('Google Authentication Failed.');
-    } finally {
-      setIsGoogleLoading(false);
+  const handleGoogleAuth = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      setIsGoogleLoading(true);
+      setError(null);
+      try {
+        await loginWithGoogle(tokenResponse.access_token);
+        onClose();
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || 'Google Authentication Failed on our server.');
+      } finally {
+        setIsGoogleLoading(false);
+      }
+    },
+    onError: () => {
+      setError('Google Authentication was cancelled or failed.');
     }
+  });
+
+  const handleCustomGoogleLogin = () => {
+    handleGoogleAuth();
   };
 
   const switchMode = (newMode: 'login' | 'register') => {
