@@ -11,7 +11,7 @@ export const HeatmapView: React.FC<HeatmapViewProps> = ({
 }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="flex h-48 w-full items-center justify-center rounded-lg border border-industrial-border bg-slate-900/50 text-xs text-slate-500 font-mono">
+      <div className="flex h-48 w-full items-center justify-center rounded-lg border border-[#3E3E3E] bg-slate-900/50 text-xs text-slate-500 font-mono">
         No spectral heatmap telemetry available
       </div>
     );
@@ -33,7 +33,7 @@ export const HeatmapView: React.FC<HeatmapViewProps> = ({
   };
 
   return (
-    <div className="rounded-xl border border-industrial-border bg-industrial-panel p-4 shadow-lg">
+    <div className="rounded-xl border border-[#3E3E3E] bg-[#232323] p-4 shadow-lg">
       <div className="mb-3 flex items-center justify-between">
         <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-300 font-mono">
           {title}
