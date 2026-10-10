@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Activity } from 'lucide-react';
 import { AuthModal } from '../components/auth/AuthModal';
+import { Logo } from '../components/common/Logo';
 
 export const Landing: React.FC = () => {
   const navigate = useNavigate();
@@ -26,10 +26,8 @@ export const Landing: React.FC = () => {
       {/* Header */}
       <header className="w-full flex items-center justify-between px-8 py-6 max-w-[1400px] mx-auto relative z-20">
         {/* Logo */}
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center">
-            Sound<span className="text-emerald-400">Grid</span>
-          </h1>
+        <div className="flex items-center cursor-pointer hover:opacity-90 transition-opacity" onClick={() => navigate('/')}>
+          <Logo className="h-8" />
         </div>
 
         {/* Right Actions */}
@@ -52,6 +50,10 @@ export const Landing: React.FC = () => {
 
       {/* Hero Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 relative z-10 -mt-16">
+        <div className="mb-8 transform hover:scale-105 transition-transform duration-500">
+          <Logo className="h-20 md:h-28" showText={false} />
+        </div>
+        
         <h2 className="text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tight mb-6 text-center">
           <span className="text-white">Intelligent </span>
           <span className="text-emerald-400">Acoustics.</span>
