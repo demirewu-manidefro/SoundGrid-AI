@@ -17,7 +17,7 @@ export const Logo: React.FC<LogoProps> = ({
         viewBox="0 0 32 32" 
         fill="none" 
         xmlns="http://www.w3.org/2000/svg" 
-        className="h-full aspect-square drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]"
+        className="h-full aspect-square drop-shadow-[0_0_8px_rgba(62,207,142,0.4)]"
       >
         <path 
           d="M4 16C4 9.37258 9.37258 4 16 4V4C22.6274 4 28 9.37258 28 16V16C28 22.6274 22.6274 28 16 28V28C9.37258 28 4 22.6274 4 16V16Z" 
@@ -32,14 +32,14 @@ export const Logo: React.FC<LogoProps> = ({
         <path d="M22 13L22 19" stroke="url(#sg-gradient)" strokeWidth="2.5" strokeLinecap="round"/>
         <defs>
           <linearGradient id="sg-gradient" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#34d399" />
-            <stop offset="1" stopColor="#059669" />
+            <stop stopColor="#3ECF8E" />
+            <stop offset="1" stopColor="#24B47E" />
           </linearGradient>
         </defs>
       </svg>
       {showText && (
         <span className={`font-bold tracking-tight text-white ${textSize} flex items-center`}>
-          Sound<span className="text-[#34d399]">Grid</span>
+          Sound<span className="text-[#3ECF8E]">Grid</span>
         </span>
       )}
     </div>

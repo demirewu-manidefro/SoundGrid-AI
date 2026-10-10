@@ -146,7 +146,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
       const db = Math.round(20 * Math.log10(Math.max(rms, 1e-4)));
       setDecibels(db);
 
-      ctx.fillStyle = '#070A12';
+      ctx.fillStyle = '#1C1C1C';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Oscilloscope Grid Lines
@@ -161,8 +161,8 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
 
       // Neon Waveform Line
       ctx.lineWidth = 2.5;
-      ctx.strokeStyle = '#00F2FE';
-      ctx.shadowColor = '#00F2FE';
+      ctx.strokeStyle = '#3ECF8E';
+      ctx.shadowColor = '#3ECF8E';
       ctx.shadowBlur = 10;
       ctx.beginPath();
 
@@ -269,7 +269,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
     <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/90 p-6 backdrop-blur-xl shadow-xl space-y-4">
       <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-950/60 border border-cyan-800/60 text-cyan-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2A2A2A]/60 border border-[#3E3E3E]/60 text-[#3ECF8E]">
             <Volume2 className="h-4 w-4" />
           </div>
           <div>
@@ -287,14 +287,14 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
               LIVE CAPTURE: {recordingSeconds}s / 4s
             </span>
           )}
-          <span className="rounded-md border border-white/5 bg-[#070A12] px-2.5 py-1 font-mono text-xs text-cyan-300">
+          <span className="rounded-md border border-white/5 bg-[#1C1C1C] px-2.5 py-1 font-mono text-xs text-[#3ECF8E]">
             {decibels} dB
           </span>
         </div>
       </div>
 
       {/* High-Tech Oscilloscope Canvas */}
-      <div className="relative h-32 w-full overflow-hidden rounded-xl border border-white/[0.08] bg-[#070A12] shadow-inner">
+      <div className="relative h-32 w-full overflow-hidden rounded-xl border border-white/[0.08] bg-[#1C1C1C] shadow-inner">
         <canvas
           ref={canvasRef}
           width={640}
@@ -303,15 +303,15 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
         />
 
         {!isRecording && !audioUrl && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 text-xs font-mono text-slate-400 bg-[#070A12]/40 backdrop-blur-[1px]">
-            <Radio className="h-5 w-5 text-cyan-400/60 animate-pulse" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 text-xs font-mono text-slate-400 bg-[#1C1C1C]/40 backdrop-blur-[1px]">
+            <Radio className="h-5 w-5 text-[#3ECF8E]/60 animate-pulse" />
             <span>Ready for acoustic signal capture or 1-click test preset</span>
           </div>
         )}
 
         {audioFileName && !isRecording && (
-          <div className="absolute top-2 left-2 flex items-center gap-2 rounded-md bg-slate-900/80 border border-white/10 px-2.5 py-1 text-[10px] font-mono text-cyan-300 backdrop-blur-md">
-            <CheckCircle2 className="h-3 w-3 text-cyan-400" />
+          <div className="absolute top-2 left-2 flex items-center gap-2 rounded-md bg-slate-900/80 border border-white/10 px-2.5 py-1 text-[10px] font-mono text-[#3ECF8E] backdrop-blur-md">
+            <CheckCircle2 className="h-3 w-3 text-[#3ECF8E]" />
             <span>Loaded: {audioFileName}</span>
           </div>
         )}
@@ -325,9 +325,9 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
               id="btn-start-record"
               onClick={startRecording}
               disabled={disabled}
-              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2.5 text-xs font-mono font-bold text-white shadow-[0_0_15px_-3px_rgba(99,102,241,0.4)] hover:brightness-110 transition-all disabled:opacity-50"
+              className="flex items-center gap-2 rounded-xl bg-[#3E3E3E] hover:bg-[#4E4E4E] text-white px-4 py-2.5 text-xs font-mono font-bold shadow-[0_0_15px_-3px_rgba(62,207,142,0.4)] transition-all disabled:opacity-50"
             >
-              <Mic className="h-4 w-4 text-cyan-200" /> Capture Microphone (16kHz)
+              <Mic className="h-4 w-4 text-white" /> Capture Microphone (16kHz)
             </button>
           ) : (
             <button
@@ -353,7 +353,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
                   }
                 }
               }}
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-slate-900/80 px-3.5 py-2.5 text-xs font-mono font-semibold text-slate-200 hover:border-cyan-500/40 hover:text-white transition-all"
+              className="flex items-center gap-2 rounded-xl border border-white/10 bg-slate-900/80 px-3.5 py-2.5 text-xs font-mono font-semibold text-slate-200 hover:border-[#3ECF8E]/40 hover:text-white transition-all"
             >
               {isPlaying ? (
                 <Pause className="h-4 w-4 text-amber-400" />
@@ -375,13 +375,13 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
         {/* 1-Click Simulation Presets */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1">
-            <Sparkles className="h-3 w-3 text-cyan-400" /> 1-Click Presets:
+            <Sparkles className="h-3 w-3 text-[#3ECF8E]" /> 1-Click Presets:
           </span>
           <button
             id="btn-sim-normal"
             onClick={() => simulateAudio('healthy')}
             disabled={isRecording || disabled}
-            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/40 px-3 py-1.5 text-[11px] font-mono font-bold text-emerald-300 hover:bg-emerald-900/60 hover:border-emerald-400 shadow-[0_0_10px_-3px_rgba(16,185,129,0.2)] transition-all"
+            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/40 px-3 py-1.5 text-[11px] font-mono font-bold text-emerald-300 hover:bg-emerald-900/60 hover:border-emerald-400 shadow-[0_0_10px_-3px_rgba(62,207,142,0.2)] transition-all"
           >
             <CheckCircle2 className="h-3 w-3" /> Nominal Hum
           </button>

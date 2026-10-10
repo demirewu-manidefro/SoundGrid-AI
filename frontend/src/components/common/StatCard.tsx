@@ -23,20 +23,20 @@ export const StatCard: React.FC<StatCardProps> = ({
 }) => {
   const colorConfigs = {
     accent: {
-      border: 'hover:border-cyan-400/50',
-      iconBox: 'text-cyan-400 bg-cyan-950/40 border-cyan-500/30 shadow-[0_0_15px_-3px_rgba(6,182,212,0.3)]',
-      glow: 'from-cyan-500/10 via-transparent to-transparent',
+      border: 'hover:border-[#3ECF8E]/50',
+      iconBox: 'text-[#3ECF8E] bg-[#2A2A2A]/40 border-[#3ECF8E]/30 shadow-[0_0_15px_-3px_rgba(62,207,142,0.3)]',
+      glow: 'from-[#3ECF8E]/10 via-transparent to-transparent',
       valueColor: 'text-white',
     },
     primary: {
-      border: 'hover:border-indigo-400/50',
-      iconBox: 'text-indigo-400 bg-indigo-950/40 border-indigo-500/30 shadow-[0_0_15px_-3px_rgba(99,102,241,0.3)]',
-      glow: 'from-indigo-500/10 via-transparent to-transparent',
+      border: 'hover:border-[#3ECF8E]/50',
+      iconBox: 'text-[#3ECF8E] bg-[#3ECF8E]/10 border-[#3ECF8E]/30 shadow-[0_0_15px_-3px_rgba(62,207,142,0.3)]',
+      glow: 'from-[#3ECF8E]/10 via-transparent to-transparent',
       valueColor: 'text-white',
     },
     healthy: {
       border: 'hover:border-emerald-400/50',
-      iconBox: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30 shadow-[0_0_15px_-3px_rgba(16,185,129,0.3)]',
+      iconBox: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30 shadow-[0_0_15px_-3px_rgba(62,207,142,0.3)]',
       glow: 'from-emerald-500/10 via-transparent to-transparent',
       valueColor: 'text-emerald-300',
     },
@@ -101,7 +101,7 @@ export const StatCard: React.FC<StatCardProps> = ({
       </div>
 
       {/* Bottom glowing accent line */}
-      <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-cyan-400/50 transition-colors duration-500" />
+      <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-[#3ECF8E]/50 transition-colors duration-500" />
     </div>
   );
 };

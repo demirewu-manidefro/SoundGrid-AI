@@ -41,7 +41,7 @@ export const Landing: React.FC = () => {
           </button>
           <button 
             onClick={() => openAuthModal('register')}
-            className="bg-emerald-400 hover:bg-emerald-500 text-black px-6 py-2.5 rounded-full font-bold transition-colors shadow-[0_0_15px_rgba(52,211,153,0.3)]"
+            className="bg-emerald-400 hover:bg-emerald-500 text-black px-6 py-2.5 rounded-full font-bold transition-colors shadow-[0_0_15px_rgba(62,207,142,0.3)]"
           >
             Register
           </button>
@@ -67,7 +67,7 @@ export const Landing: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <button 
             onClick={() => openAuthModal('register')}
-            className="bg-emerald-400 hover:bg-emerald-500 text-black px-8 py-3.5 rounded-lg font-bold tracking-wide transition-colors uppercase w-full sm:w-auto text-center shadow-[0_0_20px_rgba(52,211,153,0.4)]"
+            className="bg-emerald-400 hover:bg-emerald-500 text-black px-8 py-3.5 rounded-lg font-bold tracking-wide transition-colors uppercase w-full sm:w-auto text-center shadow-[0_0_20px_rgba(62,207,142,0.4)]"
           >
             Get Started
           </button>

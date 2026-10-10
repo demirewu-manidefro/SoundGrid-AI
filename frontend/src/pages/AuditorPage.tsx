@@ -68,7 +68,7 @@ export const AuditorPage: React.FC = () => {
     }
     if (action.includes('DIAGNOSTIC') || action.includes('ML')) {
       return (
-        <span className="inline-flex items-center gap-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-cyan-300">
+        <span className="inline-flex items-center gap-1 rounded-full border border-[#3ECF8E]/30 bg-[#3ECF8E]/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-[#3ECF8E]">
           <Terminal className="h-2.5 w-2.5" /> {action}
         </span>
       );
@@ -81,7 +81,7 @@ export const AuditorPage: React.FC = () => {
       );
     }
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-purple-500/30 bg-purple-500/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-purple-300">
+      <span className="inline-flex items-center gap-1 rounded-full border border-[#2E2E2E]/30 bg-[#2E2E2E]/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-purple-300">
         <Hash className="h-2.5 w-2.5" /> {action}
       </span>
     );
@@ -111,7 +111,7 @@ export const AuditorPage: React.FC = () => {
             id="btn-export-audit"
             onClick={handleExportJson}
             disabled={logs.length === 0}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-sky-600 to-cyan-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-sky-600/30 hover:shadow-sky-600/50 hover:from-sky-500 hover:to-cyan-500 transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-sky-600 to-cyan-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-sky-600/30 hover:shadow-sky-600/50 hover:from-sky-500 hover:to-[#3ECF8E] transition-all cursor-pointer active:scale-95 disabled:opacity-50"
           >
             <Download className="h-4 w-4" /> Export Ledger (JSON)
           </button>
@@ -126,11 +126,11 @@ export const AuditorPage: React.FC = () => {
               <span className="text-[10px] text-sky-400 font-sans">Indexed</span>
             </div>
           </div>
-          <div className="rounded-xl border border-cyan-500/20 bg-cyan-950/20 p-3">
-            <span className="text-[11px] uppercase tracking-wider text-cyan-300">Diagnostic Inferences</span>
+          <div className="rounded-xl border border-[#3ECF8E]/20 bg-[#2A2A2A]/20 p-3">
+            <span className="text-[11px] uppercase tracking-wider text-[#3ECF8E]">Diagnostic Inferences</span>
             <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-cyan-400">{stats.diagnostics}</span>
-              <span className="text-[10px] text-cyan-300/70 font-sans">ML Scans</span>
+              <span className="text-2xl font-bold text-[#3ECF8E]">{stats.diagnostics}</span>
+              <span className="text-[10px] text-[#3ECF8E]/70 font-sans">ML Scans</span>
             </div>
           </div>
           <div className="rounded-xl border border-amber-500/20 bg-amber-950/20 p-3">
@@ -232,7 +232,7 @@ export const AuditorPage: React.FC = () => {
                     </td>
                     <td className="p-4">{getActionBadge(log.action)}</td>
                     <td className="p-4 font-bold text-slate-200">
-                      <span className="font-mono text-cyan-300/90">{log.resource}</span>
+                      <span className="font-mono text-[#3ECF8E]/90">{log.resource}</span>
                     </td>
                     <td className="p-4">
                       {log.actor ? (
@@ -337,7 +337,7 @@ export const AuditorPage: React.FC = () => {
                     )}
                   </button>
                 </div>
-                <pre className="max-h-64 overflow-auto rounded-xl border border-white/10 bg-slate-950 p-4 text-[11px] font-mono text-cyan-300 shadow-inner">
+                <pre className="max-h-64 overflow-auto rounded-xl border border-white/10 bg-slate-950 p-4 text-[11px] font-mono text-[#3ECF8E] shadow-inner">
                   {JSON.stringify(selectedLog.metadata || {}, null, 2)}
                 </pre>
               </div>

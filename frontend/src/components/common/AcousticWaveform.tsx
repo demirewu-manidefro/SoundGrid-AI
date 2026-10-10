@@ -51,8 +51,8 @@ export const AcousticWaveform: React.FC<AcousticWaveformProps> = ({
           gradient.addColorStop(0, '#f43f5e'); // Rose
           gradient.addColorStop(1, 'rgba(244, 63, 94, 0.2)');
         } else {
-          gradient.addColorStop(0, '#00F2FE'); // Cyan
-          gradient.addColorStop(1, 'rgba(99, 102, 241, 0.2)'); // Violet
+          gradient.addColorStop(0, '#3ECF8E'); // Cyan
+          gradient.addColorStop(1, 'rgba(62,207,142, 0.2)'); // Violet
         }
 
         ctx.fillStyle = gradient;
@@ -77,7 +77,7 @@ export const AcousticWaveform: React.FC<AcousticWaveformProps> = ({
     <div className="relative w-full overflow-hidden rounded-lg bg-slate-950/60 p-2 border border-white/5">
       <div className="flex items-center justify-between text-[9px] font-mono text-slate-500 mb-1">
         <span className="flex items-center gap-1.5">
-          <span className={`h-1.5 w-1.5 rounded-full ${isAnomaly ? 'bg-rose-500 animate-ping' : 'bg-cyan-400'}`} />
+          <span className={`h-1.5 w-1.5 rounded-full ${isAnomaly ? 'bg-rose-500 animate-ping' : 'bg-[#3ECF8E]'}`} />
           {isAnomaly ? 'ANOMALY HARMONICS DETECTED' : 'Acoustic Baseline (16 kHz Telemetry)'}
         </span>
         <span>0Hz — 8000Hz</span>

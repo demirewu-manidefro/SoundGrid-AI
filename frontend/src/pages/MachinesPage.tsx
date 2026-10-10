@@ -64,9 +64,9 @@ export const MachinesPage: React.FC = () => {
       case 'TRANSFORMER':
         return <Zap className="h-5 w-5 text-amber-400" />;
       case 'PUMP':
-        return <Activity className="h-5 w-5 text-cyan-400" />;
+        return <Activity className="h-5 w-5 text-[#3ECF8E]" />;
       case 'MOTOR':
-        return <Cpu className="h-5 w-5 text-indigo-400" />;
+        return <Cpu className="h-5 w-5 text-[#2E2E2E]" />;
       case 'FAN':
         return <Fan className="h-5 w-5 text-emerald-400" />;
       default:
@@ -80,7 +80,7 @@ export const MachinesPage: React.FC = () => {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center border-b border-white/[0.08] pb-6">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#232323]/20 border border-[#2E2E2E]/30 text-[#2E2E2E]">
               <Cpu className="h-5 w-5" />
             </div>
             <h1 className="font-display text-2xl font-extrabold tracking-tight text-white uppercase">
@@ -96,7 +96,7 @@ export const MachinesPage: React.FC = () => {
           <button
             id="btn-register-machine-modal"
             onClick={() => setShowRegisterModal(true)}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 px-4 py-2.5 text-xs font-mono font-bold text-white shadow-[0_0_15px_-3px_rgba(99,102,241,0.4)] hover:brightness-110 transition-all"
+            className="flex items-center gap-2 rounded-xl bg-[#3ECF8E] hover:bg-[#24B47E] text-[#1C1C1C] px-4 py-2.5 text-xs font-mono font-bold shadow-[0_0_15px_-3px_rgba(62,207,142,0.4)] transition-all"
           >
             <Plus className="h-4 w-4" /> Register Industrial Asset
           </button>
@@ -113,7 +113,7 @@ export const MachinesPage: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by serial number, asset name, or location..."
-            className="w-full rounded-xl border border-white/10 bg-[#070A12] py-2 pl-10 pr-3.5 text-xs font-mono text-white placeholder-slate-500 focus:border-cyan-400 focus:outline-none transition-colors"
+            className="w-full rounded-xl border border-white/10 bg-[#1C1C1C] py-2 pl-10 pr-3.5 text-xs font-mono text-white placeholder-slate-500 focus:border-[#3ECF8E] focus:outline-none transition-colors"
           />
         </div>
 
@@ -121,7 +121,7 @@ export const MachinesPage: React.FC = () => {
           id="select-filter-type"
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          className="rounded-xl border border-white/10 bg-[#070A12] px-3.5 py-2 text-xs font-mono text-slate-300 focus:border-cyan-400 focus:outline-none transition-colors"
+          className="rounded-xl border border-white/10 bg-[#1C1C1C] px-3.5 py-2 text-xs font-mono text-slate-300 focus:border-[#3ECF8E] focus:outline-none transition-colors"
         >
           <option value="">All Equipment Types</option>
           <option value="TRANSFORMER">Transformer</option>
@@ -134,7 +134,7 @@ export const MachinesPage: React.FC = () => {
           id="select-filter-status"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-xl border border-white/10 bg-[#070A12] px-3.5 py-2 text-xs font-mono text-slate-300 focus:border-cyan-400 focus:outline-none transition-colors"
+          className="rounded-xl border border-white/10 bg-[#1C1C1C] px-3.5 py-2 text-xs font-mono text-slate-300 focus:border-[#3ECF8E] focus:outline-none transition-colors"
         >
           <option value="">All Health States</option>
           <option value="OPERATIONAL">Operational (Healthy)</option>
@@ -157,7 +157,7 @@ export const MachinesPage: React.FC = () => {
           filtered.map((m) => (
             <div
               key={m.id}
-              className="group relative flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-5 backdrop-blur-xl shadow-xl hover:border-cyan-500/40 hover:-translate-y-1 transition-all duration-300"
+              className="group relative flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-5 backdrop-blur-xl shadow-xl hover:border-[#3ECF8E]/40 hover:-translate-y-1 transition-all duration-300"
             >
               <div>
                 <div className="flex items-start justify-between mb-3">
@@ -174,12 +174,12 @@ export const MachinesPage: React.FC = () => {
                   <StatusBadge status={m.status} size="sm" />
                 </div>
 
-                <h3 className="font-display text-base font-bold text-white mt-1 group-hover:text-cyan-300 transition-colors line-clamp-1">
+                <h3 className="font-display text-base font-bold text-white mt-1 group-hover:text-[#3ECF8E] transition-colors line-clamp-1">
                   {m.name}
                 </h3>
 
                 <div className="mt-3 space-y-1.5 font-mono text-xs text-slate-400">
-                  <p className="flex items-center gap-1.5 text-cyan-300/80 font-semibold">
+                  <p className="flex items-center gap-1.5 text-[#3ECF8E]/80 font-semibold">
                     <Barcode className="h-3.5 w-3.5 text-slate-500" />
                     <span>{m.serialNumber}</span>
                   </p>
@@ -196,7 +196,7 @@ export const MachinesPage: React.FC = () => {
                 </span>
                 <Link
                   to="/diagnostics"
-                  className="flex items-center gap-1.5 rounded-lg border border-cyan-500/30 bg-cyan-950/40 px-3 py-1 text-xs font-mono font-bold text-cyan-300 hover:bg-cyan-900/60 transition-colors"
+                  className="flex items-center gap-1.5 rounded-lg border border-[#3ECF8E]/30 bg-[#2A2A2A]/40 px-3 py-1 text-xs font-mono font-bold text-[#3ECF8E] hover:bg-cyan-900/60 transition-colors"
                 >
                   <Zap className="h-3 w-3" /> Inspect Audio
                 </Link>
@@ -209,7 +209,7 @@ export const MachinesPage: React.FC = () => {
       {/* Register Machine Modal */}
       {showRegisterModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0F1626] p-6 shadow-2xl">
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#232323] p-6 shadow-2xl">
             <h3 className="font-display text-base font-bold text-white uppercase tracking-wider mb-4">
               Register New Machinery Asset
             </h3>
@@ -223,7 +223,7 @@ export const MachinesPage: React.FC = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Auxiliary High-Torque Pump 4"
-                  className="w-full rounded-xl border border-white/10 bg-[#070A12] p-3 text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                  className="w-full rounded-xl border border-white/10 bg-[#1C1C1C] p-3 text-white focus:border-[#3ECF8E] focus:outline-none transition-colors"
                 />
               </div>
 
@@ -233,7 +233,7 @@ export const MachinesPage: React.FC = () => {
                   id="modal-select-type"
                   value={machineType}
                   onChange={(e) => setMachineType(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-[#070A12] p-3 text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                  className="w-full rounded-xl border border-white/10 bg-[#1C1C1C] p-3 text-white focus:border-[#3ECF8E] focus:outline-none transition-colors"
                 >
                   <option value="TRANSFORMER">Transformer (Substation / Step-Up)</option>
                   <option value="PUMP">Centrifugal Slurry/Cooling Pump</option>
@@ -250,7 +250,7 @@ export const MachinesPage: React.FC = () => {
                   value={serialNumber}
                   onChange={(e) => setSerialNumber(e.target.value)}
                   placeholder="e.g. PU-920-BETA"
-                  className="w-full rounded-xl border border-white/10 bg-[#070A12] p-3 text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                  className="w-full rounded-xl border border-white/10 bg-[#1C1C1C] p-3 text-white focus:border-[#3ECF8E] focus:outline-none transition-colors"
                 />
               </div>
 
@@ -262,7 +262,7 @@ export const MachinesPage: React.FC = () => {
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder="e.g. Turbine Hall Bay 3"
-                  className="w-full rounded-xl border border-white/10 bg-[#070A12] p-3 text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                  className="w-full rounded-xl border border-white/10 bg-[#1C1C1C] p-3 text-white focus:border-[#3ECF8E] focus:outline-none transition-colors"
                 />
               </div>
 
@@ -279,7 +279,7 @@ export const MachinesPage: React.FC = () => {
                   type="button"
                   onClick={() => createMutation.mutate()}
                   disabled={!name || !serialNumber || !location || createMutation.isPending}
-                  className="rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 px-5 py-2 font-bold text-white hover:brightness-110 transition-all disabled:opacity-50"
+                  className="rounded-xl bg-[#3ECF8E] hover:bg-[#24B47E] text-[#1C1C1C] px-5 py-2 font-bold transition-all disabled:opacity-50"
                 >
                   {createMutation.isPending ? 'Provisioning...' : 'Provision Asset'}
                 </button>

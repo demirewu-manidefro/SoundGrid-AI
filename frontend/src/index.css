@@ -4,8 +4,8 @@
 
 @layer base {
   body {
-    background-color: #070A12;
-    color: #F1F5F9;
+    background-color: #1C1C1C;
+    color: #EDEDED;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
@@ -17,38 +17,38 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #070A12;
+  background: #1C1C1C;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1C2740;
+  background: #3E3E3E;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #38BDF8;
+  background: #3ECF8E;
 }
 
 /* Ambient Radial Mesh */
 .bg-radial-mesh {
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 20%, rgba(0, 242, 254, 0.07) 0%, transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 90%, rgba(236, 72, 153, 0.04) 0%, transparent 40%);
+    radial-gradient(circle at 15% 15%, rgba(62, 207, 142, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(62, 207, 142, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(36, 180, 126, 0.03) 0%, transparent 40%);
 }
 
 /* Industrial Grid overlay */
 .bg-grid-pattern {
   background-size: 36px 36px;
   background-image: 
-    linear-gradient(to right, rgba(28, 39, 64, 0.35) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(28, 39, 64, 0.35) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
 /* Glassmorphism panels */
 .glass-panel {
-  background: rgba(15, 22, 38, 0.72);
+  background: rgba(35, 35, 35, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.07);
@@ -58,23 +58,23 @@
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .glass-panel-hover:hover {
-  background: rgba(22, 32, 56, 0.85);
-  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(42, 42, 42, 0.85);
+  border-color: rgba(62, 207, 142, 0.35);
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px -10px rgba(0, 242, 254, 0.12);
+  box-shadow: 0 12px 30px -10px rgba(62, 207, 142, 0.12);
 }
 
 /* High-Tech Glowing effects */
 .glow-cyan {
-  box-shadow: 0 0 20px -3px rgba(0, 242, 254, 0.35);
+  box-shadow: 0 0 20px -3px rgba(62, 207, 142, 0.35);
 }
 
 .glow-violet {
-  box-shadow: 0 0 20px -3px rgba(99, 102, 241, 0.35);
+  box-shadow: 0 0 20px -3px rgba(36, 180, 126, 0.35);
 }
 
 .glow-healthy {
-  box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 0 20px -3px rgba(62,207,142, 0.35);
 }
 
 .glow-warning {
@@ -86,11 +86,11 @@
 }
 
 .text-glow-cyan {
-  text-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
+  text-shadow: 0 0 12px rgba(62, 207, 142, 0.6);
 }
 
 .text-glow-emerald {
-  text-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+  text-shadow: 0 0 12px rgba(62,207,142, 0.6);
 }
 
 /* Radar scanner line */

@@ -68,11 +68,11 @@ export const TechnicianPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-r from-[#0F1626]/90 via-[#131C33]/80 to-[#0F1626]/90 p-6 md:p-8 backdrop-blur-xl shadow-2xl">
+      <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-r from-[#232323]/90 via-[#2A2A2A]/80 to-[#232323]/90 p-6 md:p-8 backdrop-blur-xl shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-3 py-1 font-mono text-[11px] font-semibold text-cyan-300">
-              <Radio className="h-3.5 w-3.5 text-cyan-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#3ECF8E]/30 bg-[#2A2A2A]/40 px-3 py-1 font-mono text-[11px] font-semibold text-[#3ECF8E]">
+              <Radio className="h-3.5 w-3.5 text-[#3ECF8E] animate-pulse" />
               <span>Acoustic Edge Terminal • Sub-10ms Inference</span>
             </div>
             <h1 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-white uppercase">
@@ -98,7 +98,7 @@ export const TechnicianPage: React.FC = () => {
           <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/90 p-6 backdrop-blur-xl shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cyan-500/20 text-cyan-400 text-xs">1</span>
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#3ECF8E]/20 text-[#3ECF8E] text-xs">1</span>
                 Target Equipment Asset
               </h3>
               {selectedMachine && (
@@ -113,7 +113,7 @@ export const TechnicianPage: React.FC = () => {
                 id="select-machine"
                 value={selectedMachineId}
                 onChange={(e) => setSelectedMachineId(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-[#070A12] p-3.5 text-xs font-mono text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                className="w-full rounded-xl border border-white/10 bg-[#1C1C1C] p-3.5 text-xs font-mono text-white focus:border-[#3ECF8E] focus:outline-none transition-colors"
               >
                 <option value="">-- Choose Machinery Target to Inspect --</option>
                 {machines.map((m: Machine) => (
@@ -127,7 +127,7 @@ export const TechnicianPage: React.FC = () => {
             {selectedMachine && (
               <div className="mt-3.5 rounded-xl border border-white/5 bg-slate-900/40 p-3 flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-slate-400">
                 <span>Asset: <strong className="text-white">{selectedMachine.name}</strong></span>
-                <span>Type: <strong className="text-cyan-300">{selectedMachine.machineType}</strong></span>
+                <span>Type: <strong className="text-[#3ECF8E]">{selectedMachine.machineType}</strong></span>
                 <span>Yard: <strong className="text-slate-200">{selectedMachine.location}</strong></span>
               </div>
             )}
@@ -140,9 +140,9 @@ export const TechnicianPage: React.FC = () => {
           />
 
           {/* Alternative File Dropzone */}
-          <div className="rounded-2xl border border-dashed border-white/10 bg-industrial-panel/50 p-5 text-center hover:border-cyan-500/40 transition-colors">
+          <div className="rounded-2xl border border-dashed border-white/10 bg-industrial-panel/50 p-5 text-center hover:border-[#3ECF8E]/40 transition-colors">
             <label className="cursor-pointer block">
-              <Upload className="mx-auto h-6 w-6 text-cyan-400/80 mb-2" />
+              <Upload className="mx-auto h-6 w-6 text-[#3ECF8E]/80 mb-2" />
               <span className="font-mono text-xs text-slate-200 font-semibold">
                 Or upload pre-recorded 16kHz WAV file (Max 10 MB)
               </span>
@@ -159,8 +159,8 @@ export const TechnicianPage: React.FC = () => {
             </label>
 
             {audioFile && (
-              <div className="mt-3.5 inline-flex items-center gap-2 rounded-lg border border-cyan-800/80 bg-cyan-950/40 px-3 py-1.5 text-xs font-mono text-cyan-300 shadow-[0_0_12px_-2px_rgba(0,242,254,0.3)]">
-                <FileAudio className="h-4 w-4 text-cyan-400" />
+              <div className="mt-3.5 inline-flex items-center gap-2 rounded-lg border border-[#3E3E3E]/80 bg-[#2A2A2A]/40 px-3 py-1.5 text-xs font-mono text-[#3ECF8E] shadow-[0_0_12px_-2px_rgba(62,207,142,0.3)]">
+                <FileAudio className="h-4 w-4 text-[#3ECF8E]" />
                 <span>Selected: {audioFile.name} ({(audioFile.blob.size / 1024).toFixed(1)} KB)</span>
               </div>
             )}
@@ -169,7 +169,7 @@ export const TechnicianPage: React.FC = () => {
           {/* Field Observation Notes & Trigger Button */}
           <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/90 p-6 backdrop-blur-xl shadow-xl space-y-4">
             <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cyan-500/20 text-cyan-400 text-xs">2</span>
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#3ECF8E]/20 text-[#3ECF8E] text-xs">2</span>
               Field Observations & Notes
             </h3>
             <textarea
@@ -178,16 +178,16 @@ export const TechnicianPage: React.FC = () => {
               value={technicianNotes}
               onChange={(e) => setTechnicianNotes(e.target.value)}
               placeholder="e.g. Higher acoustic pitch heard near bearing seal during 80% throttle ramp test..."
-              className="w-full rounded-xl border border-white/10 bg-[#070A12] p-3 text-xs font-mono text-white placeholder-slate-500 focus:border-cyan-400 focus:outline-none transition-colors"
+              className="w-full rounded-xl border border-white/10 bg-[#1C1C1C] p-3 text-xs font-mono text-white placeholder-slate-500 focus:border-[#3ECF8E] focus:outline-none transition-colors"
             />
 
             <button
               id="btn-run-diagnostic"
               onClick={() => diagnosticMutation.mutate()}
               disabled={!audioFile || !selectedMachineId || diagnosticMutation.isPending}
-              className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 py-3.5 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-[0_0_20px_-3px_rgba(99,102,241,0.5)] hover:shadow-[0_0_25px_-2px_rgba(0,242,254,0.6)] hover:brightness-110 transition-all disabled:opacity-40 disabled:pointer-events-none"
+              className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-[#3ECF8E] hover:bg-[#24B47E] text-[#1C1C1C] py-3.5 text-xs font-mono font-bold uppercase tracking-wider shadow-[0_0_20px_-3px_rgba(62,207,142,0.5)] hover:shadow-[0_0_25px_-2px_rgba(62,207,142,0.6)] transition-all disabled:opacity-40 disabled:pointer-events-none"
             >
-              <Zap className="h-4 w-4 text-cyan-200" />
+              <Zap className="h-4 w-4 text-white" />
               {diagnosticMutation.isPending
                 ? 'Running TorchScript ML Inference...'
                 : 'Execute Sub-Second AI Diagnostic Inference'}
@@ -209,16 +209,16 @@ export const TechnicianPage: React.FC = () => {
               <div
                 className={`relative overflow-hidden rounded-2xl border p-6 backdrop-blur-xl shadow-2xl ${
                   evaluationResult.prediction.isAnomaly
-                    ? 'border-rose-500/40 bg-gradient-to-b from-rose-950/60 to-[#0F1626]'
-                    : 'border-emerald-500/40 bg-gradient-to-b from-emerald-950/60 to-[#0F1626]'
+                    ? 'border-rose-500/40 bg-gradient-to-b from-rose-950/60 to-[#232323]'
+                    : 'border-emerald-500/40 bg-gradient-to-b from-emerald-950/60 to-[#232323]'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs uppercase tracking-wider text-slate-300">
                     Model Inference Result
                   </span>
-                  <span className="flex items-center gap-1.5 font-mono text-xs text-cyan-300 bg-cyan-950/70 border border-cyan-800/60 rounded-full px-3 py-0.5">
-                    <Clock className="h-3 w-3 text-cyan-400" />
+                  <span className="flex items-center gap-1.5 font-mono text-xs text-[#3ECF8E] bg-[#2A2A2A]/70 border border-[#3E3E3E]/60 rounded-full px-3 py-0.5">
+                    <Clock className="h-3 w-3 text-[#3ECF8E]" />
                     {evaluationResult.prediction.inferenceLatencyMs} ms
                   </span>
                 </div>
@@ -229,7 +229,7 @@ export const TechnicianPage: React.FC = () => {
                       <AlertCircle className="h-7 w-7" />
                     </div>
                   ) : (
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 shadow-[0_0_20px_-3px_rgba(16,185,129,0.5)]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 shadow-[0_0_20px_-3px_rgba(62,207,142,0.5)]">
                       <CheckCircle className="h-7 w-7" />
                     </div>
                   )}
@@ -289,30 +289,30 @@ export const TechnicianPage: React.FC = () => {
               {/* Acoustic DSP Telemetry Cards */}
               <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/90 p-6 backdrop-blur-xl shadow-xl">
                 <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white mb-4 flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-cyan-400" />
+                  <Activity className="h-4 w-4 text-[#3ECF8E]" />
                   Acoustic DSP Frequency Telemetry
                 </h3>
 
                 <div className="grid grid-cols-2 gap-3.5 font-mono">
-                  <div className="rounded-xl border border-white/5 bg-[#070A12] p-3.5">
+                  <div className="rounded-xl border border-white/5 bg-[#1C1C1C] p-3.5">
                     <p className="text-[10px] text-slate-400 uppercase font-bold">RMS Energy</p>
                     <p className="text-xl font-bold text-white mt-1">
                       {evaluationResult.telemetry.rmsEnergyDb} <span className="text-xs text-slate-500">dB</span>
                     </p>
                   </div>
-                  <div className="rounded-xl border border-white/5 bg-[#070A12] p-3.5">
+                  <div className="rounded-xl border border-white/5 bg-[#1C1C1C] p-3.5">
                     <p className="text-[10px] text-slate-400 uppercase font-bold">Spectral Centroid</p>
-                    <p className="text-xl font-bold text-cyan-400 mt-1">
+                    <p className="text-xl font-bold text-[#3ECF8E] mt-1">
                       {evaluationResult.telemetry.spectralCentroidHz} <span className="text-xs text-slate-500">Hz</span>
                     </p>
                   </div>
-                  <div className="rounded-xl border border-white/5 bg-[#070A12] p-3.5">
+                  <div className="rounded-xl border border-white/5 bg-[#1C1C1C] p-3.5">
                     <p className="text-[10px] text-slate-400 uppercase font-bold">Dominant Peak</p>
                     <p className="text-xl font-bold text-amber-400 mt-1">
                       {evaluationResult.telemetry.dominantFrequencyHz} <span className="text-xs text-slate-500">Hz</span>
                     </p>
                   </div>
-                  <div className="rounded-xl border border-white/5 bg-[#070A12] p-3.5">
+                  <div className="rounded-xl border border-white/5 bg-[#1C1C1C] p-3.5">
                     <p className="text-[10px] text-slate-400 uppercase font-bold">Zero-Crossing Rate</p>
                     <p className="text-xl font-bold text-emerald-400 mt-1">
                       {evaluationResult.telemetry.zeroCrossingRate}

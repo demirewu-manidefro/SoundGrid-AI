@@ -47,13 +47,13 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Top Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-r from-[#0F1626]/90 via-[#131C33]/80 to-[#0F1626]/90 p-6 md:p-8 backdrop-blur-xl shadow-2xl">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 h-72 w-72 rounded-full bg-gradient-to-br from-cyan-500/10 via-indigo-500/10 to-transparent blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-r from-[#232323]/90 via-[#2A2A2A]/80 to-[#232323]/90 p-6 md:p-8 backdrop-blur-xl shadow-2xl">
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 h-72 w-72 rounded-full bg-gradient-to-br from-[#3ECF8E]/10 via-[#2E2E2E]/10 to-transparent blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-3 py-1 font-mono text-[11px] font-semibold text-cyan-300 shadow-[0_0_12px_-2px_rgba(0,242,254,0.3)]">
-              <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#3ECF8E]/30 bg-[#2A2A2A]/40 px-3 py-1 font-mono text-[11px] font-semibold text-[#3ECF8E] shadow-[0_0_12px_-2px_rgba(62,207,142,0.3)]">
+              <span className="h-2 w-2 rounded-full bg-[#3ECF8E] animate-pulse" />
               TorchScript CNN Runtime • Sub-10ms Inference Active
             </div>
             <h1 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-white uppercase">
@@ -67,9 +67,9 @@ export const Dashboard: React.FC = () => {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               to="/diagnostics"
-              className="group relative flex items-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 px-5 py-3 text-xs font-mono font-bold text-white shadow-[0_0_20px_-3px_rgba(99,102,241,0.5)] hover:shadow-[0_0_25px_-2px_rgba(0,242,254,0.6)] transition-all hover:scale-[1.02]"
+              className="group relative flex items-center gap-2.5 overflow-hidden rounded-xl bg-[#3ECF8E] hover:bg-[#24B47E] text-[#1C1C1C] px-5 py-3 text-xs font-mono font-bold shadow-[0_0_20px_-3px_rgba(62,207,142,0.5)] hover:shadow-[0_0_25px_-2px_rgba(62,207,142,0.6)] transition-all hover:scale-[1.02]"
             >
-              <Zap className="h-4 w-4 text-cyan-200 transition-transform group-hover:rotate-12" />
+              <Zap className="h-4 w-4 text-white transition-transform group-hover:rotate-12" />
               <span>Launch Acoustic Diagnostics</span>
             </Link>
           </div>
@@ -114,13 +114,13 @@ export const Dashboard: React.FC = () => {
       <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-5 backdrop-blur-xl shadow-xl">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Radio className="h-4 w-4 text-cyan-400" />
+            <Radio className="h-4 w-4 text-[#3ECF8E]" />
             <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white">
               Real-Time Acoustic Telemetry Wave Spectrum
             </h3>
           </div>
-          <span className="text-[11px] font-mono text-cyan-400/90 font-semibold flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <span className="text-[11px] font-mono text-[#3ECF8E]/90 font-semibold flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3ECF8E] animate-pulse" />
             Sampling 16 kHz • 128 Mel Filters
           </span>
         </div>
@@ -142,7 +142,7 @@ export const Dashboard: React.FC = () => {
             </div>
             <Link
               to="/machines"
-              className="flex items-center gap-1 text-xs font-mono text-cyan-400 hover:text-cyan-300 font-semibold transition-colors"
+              className="flex items-center gap-1 text-xs font-mono text-[#3ECF8E] hover:text-[#3ECF8E] font-semibold transition-colors"
             >
               All Assets <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
@@ -152,11 +152,11 @@ export const Dashboard: React.FC = () => {
             {machines.map((m) => (
               <div
                 key={m.id}
-                className="group relative flex items-center justify-between rounded-xl border border-white/[0.06] bg-[#070A12]/60 p-4 hover:border-cyan-500/40 hover:bg-[#0E1526]/80 transition-all duration-200"
+                className="group relative flex items-center justify-between rounded-xl border border-white/[0.06] bg-[#1C1C1C]/60 p-4 hover:border-[#3ECF8E]/40 hover:bg-[#1C1C1C]/80 transition-all duration-200"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-display text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                    <span className="font-display text-sm font-bold text-white group-hover:text-[#3ECF8E] transition-colors">
                       {m.name}
                     </span>
                   </div>
@@ -184,7 +184,7 @@ export const Dashboard: React.FC = () => {
               </div>
               <Link
                 to="/tickets"
-                className="flex items-center gap-1 text-xs font-mono text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
+                className="flex items-center gap-1 text-xs font-mono text-[#2E2E2E] hover:text-indigo-300 font-semibold transition-colors"
               >
                 Triage <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
@@ -205,7 +205,7 @@ export const Dashboard: React.FC = () => {
                 {tickets.slice(0, 3).map((t) => (
                   <div
                     key={t.id}
-                    className="rounded-xl border border-white/[0.06] bg-[#070A12]/60 p-3.5 text-xs hover:border-white/10 transition-colors"
+                    className="rounded-xl border border-white/[0.06] bg-[#1C1C1C]/60 p-3.5 text-xs hover:border-white/10 transition-colors"
                   >
                     <div className="flex items-center justify-between">
                       <StatusBadge status={t.priority} size="sm" />
@@ -228,7 +228,7 @@ export const Dashboard: React.FC = () => {
           <div className="pt-4 border-t border-white/[0.08] mt-4">
             <Link
               to="/tickets"
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-indigo-500/30 bg-indigo-950/40 py-2.5 text-xs font-mono font-semibold text-indigo-300 hover:bg-indigo-900/50 hover:text-white transition-all"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#2E2E2E]/30 bg-indigo-950/40 py-2.5 text-xs font-mono font-semibold text-indigo-300 hover:bg-indigo-900/50 hover:text-white transition-all"
             >
               Manage & Approve Work Orders →
             </Link>
@@ -249,7 +249,7 @@ export const Dashboard: React.FC = () => {
           </div>
           <Link
             to="/diagnostics"
-            className="flex items-center gap-1.5 text-xs font-mono font-semibold text-cyan-400 hover:text-cyan-300"
+            className="flex items-center gap-1.5 text-xs font-mono font-semibold text-[#3ECF8E] hover:text-[#3ECF8E]"
           >
             Run New Inspection <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
@@ -287,12 +287,12 @@ export const Dashboard: React.FC = () => {
                     <td className="py-3.5">
                       <StatusBadge status={d.isAnomaly ? 'CRITICAL' : 'OPERATIONAL'} size="sm" />
                     </td>
-                    <td className="py-3.5 font-bold text-cyan-400">
+                    <td className="py-3.5 font-bold text-[#3ECF8E]">
                       <div className="flex items-center gap-2">
                         <span>{(d.confidenceScore * 100).toFixed(1)}%</span>
                         <div className="h-1.5 w-12 rounded-full bg-slate-800 overflow-hidden">
                           <div
-                            className={`h-full ${d.isAnomaly ? 'bg-rose-500' : 'bg-cyan-400'}`}
+                            className={`h-full ${d.isAnomaly ? 'bg-rose-500' : 'bg-[#3ECF8E]'}`}
                             style={{ width: `${d.confidenceScore * 100}%` }}
                           />
                         </div>

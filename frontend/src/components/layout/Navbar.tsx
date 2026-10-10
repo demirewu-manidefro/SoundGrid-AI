@@ -37,7 +37,7 @@ export const Navbar: React.FC = () => {
       title: 'Enterprise Admin',
       label: 'Plant Director (Apex Power)',
       user: 'admin@apexpower.com',
-      badgeColor: 'border-cyan-500/40 bg-cyan-950/60 text-cyan-300',
+      badgeColor: 'border-[#3ECF8E]/40 bg-[#2A2A2A]/60 text-[#3ECF8E]',
     },
     {
       role: 'TECHNICIAN',
@@ -50,15 +50,15 @@ export const Navbar: React.FC = () => {
   ] as const;
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-white/[0.08] bg-[#070A12]/80 px-6 backdrop-blur-xl shadow-lg">
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-white/[0.08] bg-[#1C1C1C]/80 px-6 backdrop-blur-xl shadow-lg">
       {/* Brand & System Health */}
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600/30 to-cyan-500/20 border border-cyan-500/30 text-cyan-400 shadow-[0_0_15px_-3px_rgba(0,242,254,0.3)] group cursor-pointer">
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[#232323] border border-[#3E3E3E] text-[#3ECF8E] shadow-[0_0_15px_-3px_rgba(62,207,142,0.3)] group cursor-pointer">
             <Activity className="h-5 w-5 transition-transform group-hover:scale-110" />
             <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3ECF8E] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#3ECF8E]" />
             </span>
           </div>
           <div>
@@ -66,7 +66,7 @@ export const Navbar: React.FC = () => {
               <span className="font-display text-base font-extrabold tracking-wider text-white">
                 SOUNDGRID
               </span>
-              <span className="rounded-full bg-cyan-950/80 border border-cyan-800/80 px-2 py-0.5 text-[9px] font-mono font-bold tracking-widest text-cyan-400 shadow-[0_0_10px_-2px_rgba(0,242,254,0.5)]">
+              <span className="rounded-full bg-[#2A2A2A]/80 border border-[#3E3E3E]/80 px-2 py-0.5 text-[9px] font-mono font-bold tracking-widest text-[#3ECF8E] shadow-[0_0_10px_-2px_rgba(62,207,142,0.5)]">
                 SENTINEL
               </span>
             </div>
@@ -79,7 +79,7 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center gap-2 rounded-full bg-slate-900/60 px-3 py-1 border border-white/5 text-xs font-mono">
             <span
               className={`h-2 w-2 rounded-full ${
-                gatewayHealthy ? 'bg-emerald-400 shadow-[0_0_8px_#10B981]' : 'bg-rose-500 animate-ping'
+                gatewayHealthy ? 'bg-emerald-400 shadow-[0_0_8px_#3ECF8E]' : 'bg-rose-500 animate-ping'
               }`}
             />
             <span className="text-slate-400">API GATEWAY:</span>
@@ -88,10 +88,10 @@ export const Navbar: React.FC = () => {
             </span>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full bg-cyan-950/30 px-3 py-1 border border-cyan-800/30 text-xs font-mono">
-            <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#00F2FE]" />
+          <div className="flex items-center gap-2 rounded-full bg-[#2A2A2A]/30 px-3 py-1 border border-[#3E3E3E]/30 text-xs font-mono">
+            <span className="h-2 w-2 rounded-full bg-[#3ECF8E] shadow-[0_0_8px_#3ECF8E]" />
             <span className="text-slate-400">AI TORCH ENGINE:</span>
-            <span className="text-cyan-300 font-semibold">127.0.0.1:8001 (5.04ms)</span>
+            <span className="text-[#3ECF8E] font-semibold">127.0.0.1:8001 (5.04ms)</span>
           </div>
         </div>
       </div>
@@ -102,10 +102,10 @@ export const Navbar: React.FC = () => {
         <button
           id="btn-role-switcher"
           onClick={() => setShowDemoModal(true)}
-          className="flex items-center gap-2 rounded-xl border border-indigo-500/30 bg-indigo-950/40 px-3.5 py-1.5 text-xs font-mono font-medium text-indigo-300 hover:border-indigo-400 hover:bg-indigo-900/50 hover:text-white transition-all shadow-[0_0_12px_-3px_rgba(99,102,241,0.25)]"
+          className="flex items-center gap-2 rounded-xl border border-[#2E2E2E]/30 bg-indigo-950/40 px-3.5 py-1.5 text-xs font-mono font-medium text-indigo-300 hover:border-[#2E2E2E] hover:bg-indigo-900/50 hover:text-white transition-all shadow-[0_0_12px_-3px_rgba(62,207,142,0.25)]"
           title="Switch role instantly to test multi-tenant RBAC permissions"
         >
-          <Sparkles className="h-3.5 w-3.5 text-indigo-400 animate-pulse" />
+          <Sparkles className="h-3.5 w-3.5 text-[#2E2E2E] animate-pulse" />
           <span>Switch Tier Role</span>
         </button>
 
@@ -115,7 +115,7 @@ export const Navbar: React.FC = () => {
             <div className="text-right">
               <div className="flex items-center justify-end gap-2">
                 <span className="text-xs font-semibold text-slate-200">{user.fullName}</span>
-                <span className="rounded-full border border-cyan-800/60 bg-cyan-950/60 px-2 py-0.5 text-[10px] font-mono text-cyan-300 font-bold uppercase">
+                <span className="rounded-full border border-[#3E3E3E]/60 bg-[#2A2A2A]/60 px-2 py-0.5 text-[10px] font-mono text-[#3ECF8E] font-bold uppercase">
                   {user.role}
                 </span>
               </div>
@@ -139,10 +139,10 @@ export const Navbar: React.FC = () => {
       {/* Role Switcher Modal */}
       {showDemoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#0F1626] p-6 shadow-2xl">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#232323] p-6 shadow-2xl">
             <div className="mb-4 flex items-center justify-between border-b border-white/[0.08] pb-3">
               <div className="flex items-center gap-2.5">
-                <Shield className="h-5 w-5 text-cyan-400" />
+                <Shield className="h-5 w-5 text-[#3ECF8E]" />
                 <h3 className="font-display text-base font-bold text-white uppercase tracking-wider">
                   Select RBAC Role Persona
                 </h3>
@@ -170,7 +170,7 @@ export const Navbar: React.FC = () => {
                     }}
                     className={`flex w-full items-center justify-between rounded-xl border p-4 text-left transition-all ${
                       isCurrent
-                        ? 'border-cyan-500/80 bg-cyan-950/40 shadow-[0_0_20px_-3px_rgba(0,242,254,0.25)]'
+                        ? 'border-[#3ECF8E]/80 bg-[#2A2A2A]/40 shadow-[0_0_20px_-3px_rgba(62,207,142,0.25)]'
                         : 'border-white/[0.08] bg-slate-900/60 hover:border-white/20 hover:bg-slate-800/60'
                     }`}
                   >
@@ -182,10 +182,10 @@ export const Navbar: React.FC = () => {
                         <p className="font-display text-sm font-bold text-white">{r.title}</p>
                       </div>
                       <p className="text-xs text-slate-300 font-sans">{r.label}</p>
-                      <p className="text-[11px] font-mono text-cyan-400/80 mt-1">{r.user}</p>
+                      <p className="text-[11px] font-mono text-[#3ECF8E]/80 mt-1">{r.user}</p>
                     </div>
                     {isCurrent ? (
-                      <span className="flex items-center gap-1 text-xs font-mono text-cyan-400 font-bold">
+                      <span className="flex items-center gap-1 text-xs font-mono text-[#3ECF8E] font-bold">
                         <CheckCircle2 className="h-4 w-4" /> ACTIVE
                       </span>
                     ) : (

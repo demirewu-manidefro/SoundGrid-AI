@@ -13,7 +13,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md' })
   let isPulsing = false;
 
   if (norm === 'OPERATIONAL' || norm === 'HEALTHY' || norm === 'RESOLVED') {
-    styles = 'bg-emerald-950/60 text-emerald-300 border-emerald-500/30 shadow-[0_0_12px_-3px_rgba(16,185,129,0.3)]';
+    styles = 'bg-emerald-950/60 text-emerald-300 border-emerald-500/30 shadow-[0_0_12px_-3px_rgba(62,207,142,0.3)]';
     dotColor = 'bg-emerald-400';
   } else if (norm === 'WARNING' || norm === 'IN_PROGRESS' || norm === 'HIGH') {
     styles = 'bg-amber-950/60 text-amber-300 border-amber-500/30 shadow-[0_0_12px_-3px_rgba(245,158,11,0.3)]';

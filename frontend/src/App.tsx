@@ -19,9 +19,9 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#070A12] bg-radial-mesh">
+      <div className="flex min-h-screen items-center justify-center bg-[#1C1C1C] bg-radial-mesh">
         <div className="flex flex-col items-center gap-3">
-          <Activity className="h-8 w-8 text-cyan-400 animate-spin" />
+          <Activity className="h-8 w-8 text-[#3ECF8E] animate-spin" />
           <p className="font-mono text-xs tracking-wider text-slate-400 uppercase">
             Synchronizing Industrial Telemetry Cluster...
           </p>
@@ -35,11 +35,11 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#070A12] text-white selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="flex min-h-screen flex-col bg-[#1C1C1C] text-white selection:bg-[#3ECF8E]/30 selection:text-white">
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-[#070A12] bg-radial-mesh">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-[#1C1C1C] bg-radial-mesh">
           {children}
         </main>
       </div>

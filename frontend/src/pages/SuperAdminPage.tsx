@@ -56,13 +56,13 @@ export const SuperAdminPage: React.FC = () => {
     switch (tTier) {
       case 'ENTERPRISE':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-purple-500/30 bg-purple-500/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.15)]">
-            <Sparkles className="h-2.5 w-2.5 text-purple-400" /> ENTERPRISE TIER
+          <span className="inline-flex items-center gap-1 rounded-full border border-[#2E2E2E]/30 bg-[#2E2E2E]/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.15)]">
+            <Sparkles className="h-2.5 w-2.5 text-[#2E2E2E]" /> ENTERPRISE TIER
           </span>
         );
       case 'PROFESSIONAL':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-cyan-300">
+          <span className="inline-flex items-center gap-1 rounded-full border border-[#3ECF8E]/30 bg-[#3ECF8E]/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-[#3ECF8E]">
             PROFESSIONAL
           </span>
         );
@@ -80,11 +80,11 @@ export const SuperAdminPage: React.FC = () => {
     <div className="space-y-6">
       {/* Top Banner / Header */}
       <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-slate-900/90 via-purple-950/40 to-slate-900/90 p-6 backdrop-blur-xl shadow-2xl">
-        <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-purple-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-[#2E2E2E]/10 blur-3xl pointer-events-none" />
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
             <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.3)]">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#2E2E2E]/20 border border-[#2E2E2E]/30 text-[#2E2E2E] shadow-[0_0_12px_rgba(168,85,247,0.3)]">
                 <ShieldAlert className="h-4 w-4" />
               </span>
               <h1 className="font-mono text-xl font-bold tracking-tight text-white uppercase">
@@ -99,7 +99,7 @@ export const SuperAdminPage: React.FC = () => {
           <button
             id="btn-onboard-tenant"
             onClick={() => setShowOnboardModal(true)}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-purple-600/30 hover:shadow-purple-600/50 hover:from-purple-500 hover:to-indigo-500 transition-all cursor-pointer active:scale-95"
+            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-[#232323] px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-purple-600/30 hover:shadow-purple-600/50 hover:from-[#2E2E2E] hover:to-[#2E2E2E] transition-all cursor-pointer active:scale-95"
           >
             <Plus className="h-4 w-4" /> Onboard Enterprise Tenant
           </button>
@@ -114,17 +114,17 @@ export const SuperAdminPage: React.FC = () => {
               <span className="text-[10px] text-emerald-400 font-sans">100% Isolated</span>
             </div>
           </div>
-          <div className="rounded-xl border border-cyan-500/20 bg-cyan-950/20 p-3">
-            <span className="text-[11px] uppercase tracking-wider text-cyan-300">Total Machinery Assets</span>
+          <div className="rounded-xl border border-[#3ECF8E]/20 bg-[#2A2A2A]/20 p-3">
+            <span className="text-[11px] uppercase tracking-wider text-[#3ECF8E]">Total Machinery Assets</span>
             <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-cyan-400">{totalMachines}</span>
-              <span className="text-[10px] text-cyan-300/70 font-sans">Monitored</span>
+              <span className="text-2xl font-bold text-[#3ECF8E]">{totalMachines}</span>
+              <span className="text-[10px] text-[#3ECF8E]/70 font-sans">Monitored</span>
             </div>
           </div>
-          <div className="rounded-xl border border-purple-500/20 bg-purple-950/20 p-3">
+          <div className="rounded-xl border border-[#2E2E2E]/20 bg-purple-950/20 p-3">
             <span className="text-[11px] uppercase tracking-wider text-purple-300">Total Active Users</span>
             <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-purple-400">{totalUsers}</span>
+              <span className="text-2xl font-bold text-[#2E2E2E]">{totalUsers}</span>
               <span className="text-[10px] text-purple-300/70 font-sans">Accounts</span>
             </div>
           </div>
@@ -142,10 +142,10 @@ export const SuperAdminPage: React.FC = () => {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-xl shadow-lg relative overflow-hidden">
           <div className="flex items-center gap-2 mb-2">
-            <Cpu className="h-4 w-4 text-cyan-400" />
+            <Cpu className="h-4 w-4 text-[#3ECF8E]" />
             <p className="text-xs font-mono uppercase text-slate-400 font-bold">FastAPI Neural Core</p>
           </div>
-          <p className="text-2xl font-mono font-bold text-cyan-300">TorchScript v1.0</p>
+          <p className="text-2xl font-mono font-bold text-[#3ECF8E]">TorchScript v1.0</p>
           <p className="text-[11px] font-mono text-slate-400 mt-1">
             soundgrid_web_model.pt (1.67 MB) • 44.1kHz Mel-Spectrogram DSP
           </p>
@@ -156,7 +156,7 @@ export const SuperAdminPage: React.FC = () => {
 
         <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-xl shadow-lg relative overflow-hidden">
           <div className="flex items-center gap-2 mb-2">
-            <Database className="h-4 w-4 text-indigo-400" />
+            <Database className="h-4 w-4 text-[#2E2E2E]" />
             <p className="text-xs font-mono uppercase text-slate-400 font-bold">PostgreSQL Engine</p>
           </div>
           <p className="text-2xl font-mono font-bold text-indigo-300">PostgreSQL 18</p>
@@ -170,7 +170,7 @@ export const SuperAdminPage: React.FC = () => {
 
         <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-xl shadow-lg relative overflow-hidden">
           <div className="flex items-center gap-2 mb-2">
-            <Shield className="h-4 w-4 text-purple-400" />
+            <Shield className="h-4 w-4 text-[#2E2E2E]" />
             <p className="text-xs font-mono uppercase text-slate-400 font-bold">RBAC Hierarchy</p>
           </div>
           <p className="text-2xl font-mono font-bold text-purple-300">3 Verified Tiers</p>
@@ -185,7 +185,7 @@ export const SuperAdminPage: React.FC = () => {
 
       {/* Filter and Search Bar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-white/10 bg-slate-900/60 p-3 backdrop-blur-md">
-        <div className="flex flex-1 items-center gap-2 rounded-lg border border-white/5 bg-slate-950/60 px-3 py-2 text-xs font-mono text-slate-300 focus-within:border-purple-500/50">
+        <div className="flex flex-1 items-center gap-2 rounded-lg border border-white/5 bg-slate-950/60 px-3 py-2 text-xs font-mono text-slate-300 focus-within:border-[#2E2E2E]/50">
           <Search className="h-4 w-4 text-slate-400 shrink-0" />
           <input
             id="input-tenant-search"
@@ -241,7 +241,7 @@ export const SuperAdminPage: React.FC = () => {
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-slate-400">
                     <div className="flex flex-col items-center gap-2">
-                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-purple-500 border-t-transparent" />
+                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#2E2E2E] border-t-transparent" />
                       <span>Loading multi-tenant hierarchy registry...</span>
                     </div>
                   </td>
@@ -258,7 +258,7 @@ export const SuperAdminPage: React.FC = () => {
                   <tr key={t.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-purple-500/10 text-purple-400 shadow">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-[#2E2E2E]/10 text-[#2E2E2E] shadow">
                           <Building2 className="h-4 w-4" />
                         </div>
                         <div>
@@ -310,7 +310,7 @@ export const SuperAdminPage: React.FC = () => {
           <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900 p-6 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2E2E2E]/20 border border-[#2E2E2E]/30 text-[#2E2E2E]">
                   <Building2 className="h-4 w-4" />
                 </div>
                 <h3 className="font-mono text-sm font-bold text-white uppercase tracking-wider">
@@ -337,7 +337,7 @@ export const SuperAdminPage: React.FC = () => {
                     setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-'));
                   }}
                   placeholder="e.g. Siemens Energy Plant 7"
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none transition-all"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-[#2E2E2E] focus:ring-1 focus:ring-[#2E2E2E] focus:outline-none transition-all"
                 />
               </div>
 
@@ -349,7 +349,7 @@ export const SuperAdminPage: React.FC = () => {
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
                   placeholder="e.g. siemens-energy-p7"
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none transition-all"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-[#2E2E2E] focus:ring-1 focus:ring-[#2E2E2E] focus:outline-none transition-all"
                 />
               </div>
 
@@ -359,7 +359,7 @@ export const SuperAdminPage: React.FC = () => {
                   id="modal-tenant-tier"
                   value={tier}
                   onChange={(e) => setTier(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none transition-all"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white focus:border-[#2E2E2E] focus:ring-1 focus:ring-[#2E2E2E] focus:outline-none transition-all"
                 >
                   <option value="STARTER">Starter Tier (10 Machines, 3 Users)</option>
                   <option value="PROFESSIONAL">Professional Tier (50 Machines, 20 Users)</option>
@@ -380,7 +380,7 @@ export const SuperAdminPage: React.FC = () => {
                   type="button"
                   onClick={() => onboardMutation.mutate()}
                   disabled={!name || !slug || onboardMutation.isPending}
-                  className="flex-1 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-2.5 font-bold text-white shadow-lg shadow-purple-600/30 hover:from-purple-500 hover:to-indigo-500 transition-all disabled:opacity-50"
+                  className="flex-1 rounded-xl bg-gradient-to-r from-purple-600 to-[#232323] py-2.5 font-bold text-white shadow-lg shadow-purple-600/30 hover:from-[#2E2E2E] hover:to-[#2E2E2E] transition-all disabled:opacity-50"
                 >
                   {onboardMutation.isPending ? 'Provisioning...' : 'Provision Tenant'}
                 </button>

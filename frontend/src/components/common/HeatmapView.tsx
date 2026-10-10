@@ -25,11 +25,11 @@ export const HeatmapView: React.FC<HeatmapViewProps> = ({
 
   const getColor = (val: number) => {
     const ratio = Math.max(0, Math.min(1, (val - min) / range));
-    if (ratio < 0.25) return 'bg-[#0f172a]'; // Very low (Dark blue)
-    if (ratio < 0.5) return 'bg-[#0369a1]';  // Low (Sky/Blue)
-    if (ratio < 0.75) return 'bg-[#0284c7]'; // Medium (Cyan)
-    if (ratio < 0.9) return 'bg-[#f59e0b]';  // High (Amber)
-    return 'bg-[#ef4444]';                   // Peak (Crimson)
+    if (ratio < 0.25) return 'bg-[#111111]'; // Very low (Dark)
+    if (ratio < 0.5) return 'bg-[#2E2E2E]';  // Low (Gray)
+    if (ratio < 0.75) return 'bg-[#3ECF8E]'; // Medium (Green)
+    if (ratio < 0.9) return 'bg-[#F59E0B]';  // High (Amber)
+    return 'bg-[#EF4444]';                   // Peak (Crimson)
   };
 
   return (
@@ -41,10 +41,10 @@ export const HeatmapView: React.FC<HeatmapViewProps> = ({
         <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400">
           <span>Low</span>
           <div className="flex h-2.5 w-20 overflow-hidden rounded">
-            <div className="h-full w-1/4 bg-[#0f172a]" />
-            <div className="h-full w-1/4 bg-[#0369a1]" />
-            <div className="h-full w-1/4 bg-[#f59e0b]" />
-            <div className="h-full w-1/4 bg-[#ef4444]" />
+            <div className="h-full w-1/4 bg-[#111111]" />
+            <div className="h-full w-1/4 bg-[#2E2E2E]" />
+            <div className="h-full w-1/4 bg-[#3ECF8E]" />
+            <div className="h-full w-1/4 bg-[#EF4444]" />
           </div>
           <span>Peak</span>
         </div>

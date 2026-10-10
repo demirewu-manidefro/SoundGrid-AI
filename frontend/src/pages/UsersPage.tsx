@@ -66,16 +66,16 @@ export const UsersPage: React.FC = () => {
         );
       case 'ENTERPRISE_ADMIN':
         return (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-indigo-300 shadow-[0_0_10px_rgba(99,102,241,0.15)]">
-            <Building2 className="h-3 w-3 text-indigo-400" />
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#2E2E2E]/30 bg-[#2E2E2E]/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-indigo-300 shadow-[0_0_10px_rgba(62,207,142,0.15)]">
+            <Building2 className="h-3 w-3 text-[#2E2E2E]" />
             ENTERPRISE ADMIN (T2)
           </span>
         );
       case 'TECHNICIAN':
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.15)]">
-            <Wrench className="h-3 w-3 text-cyan-400" />
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#3ECF8E]/30 bg-[#3ECF8E]/10 px-2.5 py-0.5 text-[10px] font-mono font-bold text-[#3ECF8E] shadow-[0_0_10px_rgba(6,182,212,0.15)]">
+            <Wrench className="h-3 w-3 text-[#3ECF8E]" />
             TECHNICIAN (T3)
           </span>
         );
@@ -95,11 +95,11 @@ export const UsersPage: React.FC = () => {
     <div className="space-y-6">
       {/* Top Banner / Header */}
       <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-6 backdrop-blur-xl shadow-2xl">
-        <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-[#2E2E2E]/10 blur-3xl pointer-events-none" />
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
             <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 shadow-[0_0_12px_rgba(99,102,241,0.3)]">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#2E2E2E]/20 border border-[#2E2E2E]/30 text-[#2E2E2E] shadow-[0_0_12px_rgba(62,207,142,0.3)]">
                 <Users className="h-4 w-4" />
               </span>
               <h1 className="font-mono text-xl font-bold tracking-tight text-white uppercase">
@@ -114,7 +114,7 @@ export const UsersPage: React.FC = () => {
           <button
             id="btn-add-user"
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:from-indigo-500 hover:to-indigo-400 transition-all cursor-pointer active:scale-95"
+            className="flex items-center gap-2 rounded-xl bg-[#3ECF8E] hover:bg-[#24B47E] text-[#1C1C1C] px-4 py-2.5 text-xs font-semibold shadow-lg shadow-[#3ECF8E]/30 hover:shadow-[#3ECF8E]/50 transition-all cursor-pointer active:scale-95"
           >
             <UserPlus className="h-4 w-4" /> Provision Team Member
           </button>
@@ -129,18 +129,18 @@ export const UsersPage: React.FC = () => {
               <span className="text-[10px] text-emerald-400 font-sans">Active</span>
             </div>
           </div>
-          <div className="rounded-xl border border-indigo-500/20 bg-indigo-950/20 p-3">
+          <div className="rounded-xl border border-[#2E2E2E]/20 bg-indigo-950/20 p-3">
             <span className="text-[11px] uppercase tracking-wider text-indigo-300">Enterprise Admins</span>
             <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-indigo-400">{stats.enterpriseAdmins}</span>
+              <span className="text-2xl font-bold text-[#2E2E2E]">{stats.enterpriseAdmins}</span>
               <span className="text-[10px] text-indigo-300/70 font-sans">Tier 2</span>
             </div>
           </div>
-          <div className="rounded-xl border border-cyan-500/20 bg-cyan-950/20 p-3">
-            <span className="text-[11px] uppercase tracking-wider text-cyan-300">Technicians</span>
+          <div className="rounded-xl border border-[#3ECF8E]/20 bg-[#2A2A2A]/20 p-3">
+            <span className="text-[11px] uppercase tracking-wider text-[#3ECF8E]">Technicians</span>
             <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-cyan-400">{stats.technicians}</span>
-              <span className="text-[10px] text-cyan-300/70 font-sans">Tier 3</span>
+              <span className="text-2xl font-bold text-[#3ECF8E]">{stats.technicians}</span>
+              <span className="text-[10px] text-[#3ECF8E]/70 font-sans">Tier 3</span>
             </div>
           </div>
           <div className="rounded-xl border border-rose-500/20 bg-rose-950/20 p-3">
@@ -155,7 +155,7 @@ export const UsersPage: React.FC = () => {
 
       {/* Filter and Search Bar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-white/10 bg-slate-900/60 p-3 backdrop-blur-md">
-        <div className="flex flex-1 items-center gap-2 rounded-lg border border-white/5 bg-slate-950/60 px-3 py-2 text-xs font-mono text-slate-300 focus-within:border-indigo-500/50">
+        <div className="flex flex-1 items-center gap-2 rounded-lg border border-white/5 bg-slate-950/60 px-3 py-2 text-xs font-mono text-slate-300 focus-within:border-[#2E2E2E]/50">
           <Search className="h-4 w-4 text-slate-400 shrink-0" />
           <input
             id="input-user-search"
@@ -181,7 +181,7 @@ export const UsersPage: React.FC = () => {
                 onClick={() => setRoleFilter(r)}
                 className={`rounded px-2.5 py-1 transition-all ${
                   roleFilter === r
-                    ? 'bg-indigo-600 text-white font-bold shadow'
+                    ? 'bg-[#232323] text-white font-bold shadow'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
@@ -211,7 +211,7 @@ export const UsersPage: React.FC = () => {
                 <tr>
                   <td colSpan={6} className="py-12 text-center text-slate-400">
                     <div className="flex flex-col items-center gap-2">
-                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
+                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#2E2E2E] border-t-transparent" />
                       <span>Loading authorized personnel records...</span>
                     </div>
                   </td>
@@ -229,7 +229,7 @@ export const UsersPage: React.FC = () => {
                   <tr key={u.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-indigo-500/20 to-purple-500/10 font-mono text-xs font-bold text-indigo-300 shadow">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-[#2E2E2E]/20 to-[#2E2E2E]/10 font-mono text-xs font-bold text-indigo-300 shadow">
                           {getInitials(u.fullName)}
                         </div>
                         <div>
@@ -241,8 +241,8 @@ export const UsersPage: React.FC = () => {
                       </div>
                     </td>
                     <td className="p-4">
-                      <div className="flex items-center gap-1.5 text-cyan-400">
-                        <Mail className="h-3 w-3 text-cyan-500/70" />
+                      <div className="flex items-center gap-1.5 text-[#3ECF8E]">
+                        <Mail className="h-3 w-3 text-[#3ECF8E]/70" />
                         <span>{u.email}</span>
                       </div>
                     </td>
@@ -278,7 +278,7 @@ export const UsersPage: React.FC = () => {
           <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900 p-6 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-400">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2E2E2E]/20 border border-[#2E2E2E]/30 text-[#2E2E2E]">
                   <UserPlus className="h-4 w-4" />
                 </div>
                 <h3 className="font-mono text-sm font-bold text-white uppercase tracking-wider">
@@ -302,7 +302,7 @@ export const UsersPage: React.FC = () => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="e.g. Rachel Chen"
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-[#2E2E2E] focus:ring-1 focus:ring-[#2E2E2E] focus:outline-none transition-all"
                 />
               </div>
 
@@ -314,7 +314,7 @@ export const UsersPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="e.g. rachel@apexpower.com"
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-[#2E2E2E] focus:ring-1 focus:ring-[#2E2E2E] focus:outline-none transition-all"
                 />
               </div>
 
@@ -324,7 +324,7 @@ export const UsersPage: React.FC = () => {
                   id="modal-user-role"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white focus:border-[#2E2E2E] focus:ring-1 focus:ring-[#2E2E2E] focus:outline-none transition-all"
                 >
                   <option value="TECHNICIAN">Tier 3: Field Acoustic Technician</option>
                   <option value="ENTERPRISE_ADMIN">Tier 2: Plant Owner / Enterprise Admin</option>
@@ -344,7 +344,7 @@ export const UsersPage: React.FC = () => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all"
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 p-2.5 text-white focus:border-[#2E2E2E] focus:ring-1 focus:ring-[#2E2E2E] focus:outline-none transition-all"
                 />
               </div>
 
@@ -361,7 +361,7 @@ export const UsersPage: React.FC = () => {
                   type="button"
                   onClick={() => createMutation.mutate()}
                   disabled={!email || !fullName || createMutation.isPending}
-                  className="flex-1 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 py-2.5 font-bold text-white shadow-lg shadow-indigo-600/30 hover:from-indigo-500 hover:to-indigo-400 transition-all disabled:opacity-50"
+                  className="flex-1 rounded-xl bg-[#3ECF8E] hover:bg-[#24B47E] text-[#1C1C1C] py-2.5 font-bold shadow-lg shadow-[#3ECF8E]/30 transition-all disabled:opacity-50"
                 >
                   {createMutation.isPending ? 'Provisioning...' : 'Provision User'}
                 </button>

@@ -124,7 +124,7 @@ export const SafetyTicketsPage: React.FC = () => {
                     <td className="p-4 text-slate-300">
                       {t.assignedTo ? (
                         <span className="flex items-center gap-1.5 text-slate-200">
-                          <UserCheck className="h-3.5 w-3.5 text-cyan-400" />
+                          <UserCheck className="h-3.5 w-3.5 text-[#3ECF8E]" />
                           {t.assignedTo.fullName}
                         </span>
                       ) : (
@@ -147,7 +147,7 @@ export const SafetyTicketsPage: React.FC = () => {
                               'Inspected bearing housing and retightened rotor assembly. Acoustic harmonics verified nominal.'
                             );
                           }}
-                          className="rounded-xl border border-indigo-500/40 bg-indigo-950/40 px-3 py-1.5 text-xs font-mono font-bold text-indigo-300 hover:bg-indigo-600 hover:text-white transition-all shadow-[0_0_10px_-2px_rgba(99,102,241,0.3)]"
+                          className="rounded-xl border border-[#2E2E2E]/40 bg-indigo-950/40 px-3 py-1.5 text-xs font-mono font-bold text-indigo-300 hover:bg-[#232323] hover:text-white transition-all shadow-[0_0_10px_-2px_rgba(62,207,142,0.3)]"
                         >
                           Triage & Approve
                         </button>
@@ -168,7 +168,7 @@ export const SafetyTicketsPage: React.FC = () => {
       {/* Safety Resolution & Approval Modal */}
       {selectedTicket && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#0F1626] p-6 shadow-2xl">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#232323] p-6 shadow-2xl">
             <div className="mb-4 flex items-center justify-between border-b border-white/[0.08] pb-3">
               <h3 className="font-display text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
                 <ShieldCheck className="h-5 w-5 text-emerald-400" />
@@ -184,14 +184,14 @@ export const SafetyTicketsPage: React.FC = () => {
 
             <div className="space-y-4 font-mono text-xs">
               {/* Assign to technician */}
-              <div className="rounded-xl border border-white/10 bg-[#070A12] p-4">
+              <div className="rounded-xl border border-white/10 bg-[#1C1C1C] p-4">
                 <p className="font-bold text-slate-200 mb-2">Assign Field Technician</p>
                 <div className="flex gap-2">
                   <select
                     id="select-assign-tech"
                     value={assignedTechId}
                     onChange={(e) => setAssignedTechId(e.target.value)}
-                    className="flex-1 rounded-xl border border-white/10 bg-slate-900 p-2.5 text-white text-xs focus:border-cyan-400 focus:outline-none"
+                    className="flex-1 rounded-xl border border-white/10 bg-slate-900 p-2.5 text-white text-xs focus:border-[#3ECF8E] focus:outline-none"
                   >
                     <option value="">-- Choose Field Technician --</option>
                     {technicians.map((t: User) => (
@@ -209,7 +209,7 @@ export const SafetyTicketsPage: React.FC = () => {
                       })
                     }
                     disabled={!assignedTechId || assignMutation.isPending}
-                    className="rounded-xl bg-indigo-600 px-4 py-2 font-bold text-white hover:bg-indigo-500 disabled:opacity-50"
+                    className="rounded-xl bg-[#232323] px-4 py-2 font-bold text-white hover:bg-[#2E2E2E] disabled:opacity-50"
                   >
                     Assign
                   </button>
@@ -233,7 +233,7 @@ export const SafetyTicketsPage: React.FC = () => {
                   value={resolutionNotes}
                   onChange={(e) => setResolutionNotes(e.target.value)}
                   placeholder="Enter resolution actions, component replacements, and test sign-off..."
-                  className="w-full rounded-xl border border-white/10 bg-[#070A12] p-3 text-white text-xs focus:border-emerald-400 focus:outline-none mb-3"
+                  className="w-full rounded-xl border border-white/10 bg-[#1C1C1C] p-3 text-white text-xs focus:border-emerald-400 focus:outline-none mb-3"
                 />
 
                 <button
@@ -245,7 +245,7 @@ export const SafetyTicketsPage: React.FC = () => {
                     })
                   }
                   disabled={!resolutionNotes || resolveMutation.isPending}
-                  className="w-full rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 py-3 font-bold text-white hover:brightness-110 shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)] transition-all disabled:opacity-50"
+                  className="w-full rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 py-3 font-bold text-white hover:brightness-110 shadow-[0_0_15px_-3px_rgba(62,207,142,0.4)] transition-all disabled:opacity-50"
                 >
                   {resolveMutation.isPending
                     ? 'Recording Sign-Off...'
