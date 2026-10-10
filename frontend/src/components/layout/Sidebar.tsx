@@ -68,7 +68,7 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 border-r border-white/[0.08] bg-[#1C1C1C]/90 p-4 flex flex-col justify-between shrink-0 backdrop-blur-xl">
+    <aside className="w-64 border-r border-white/[0.08] bg-[#1C1C1C]/90 p-4 flex flex-col justify-between shrink-0 ">
       <div className="space-y-6">
         <div>
           <div className="px-3 py-2 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500">
@@ -123,7 +123,7 @@ export const Sidebar: React.FC = () => {
 
       {/* Hardware Telemetry & Tenant State Card */}
       <div className="space-y-3">
-        <div className="rounded-xl border border-white/[0.08] bg-[#232323]/80 p-3.5 backdrop-blur-md">
+        <div className="rounded-xl border border-white/[0.08] bg-[#232323] p-3.5 ">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5 text-[#3ECF8E] font-mono text-[10px] font-bold uppercase tracking-wider">
               <Activity className="h-3.5 w-3.5 animate-pulse" />
