@@ -78,7 +78,7 @@ export const SafetyTicketsPage: React.FC = () => {
       </div>
 
       {/* Tickets List */}
-      <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 shadow-2xl backdrop-blur-xl overflow-hidden">
+      <div className="rounded-2xl border border-white/[0.08] bg-[#232323] shadow-2xl  overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
@@ -167,7 +167,7 @@ export const SafetyTicketsPage: React.FC = () => {
 
       {/* Safety Resolution & Approval Modal */}
       {selectedTicket && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80  p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#232323] p-6 shadow-2xl">
             <div className="mb-4 flex items-center justify-between border-b border-white/[0.08] pb-3">
               <h3 className="font-display text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
