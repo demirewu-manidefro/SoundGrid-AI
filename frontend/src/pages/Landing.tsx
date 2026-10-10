@@ -1,9 +1,17 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Activity } from 'lucide-react';
+import { AuthModal } from '../components/auth/AuthModal';
 
 export const Landing: React.FC = () => {
   const navigate = useNavigate();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
+
+  const openAuthModal = (mode: 'login' | 'register') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
 
   return (
     <div 
@@ -16,7 +24,7 @@ export const Landing: React.FC = () => {
       }}
     >
       {/* Header */}
-      <header className="w-full flex items-center justify-between px-8 py-6 max-w-[1400px] mx-auto relative z-10">
+      <header className="w-full flex items-center justify-between px-8 py-6 max-w-[1400px] mx-auto relative z-20">
         {/* Logo */}
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
           <h1 className="text-2xl font-bold tracking-tight text-white flex items-center">
@@ -27,16 +35,18 @@ export const Landing: React.FC = () => {
         {/* Right Actions */}
         <div className="flex items-center gap-6 text-sm font-semibold">
           <button className="text-gray-300 hover:text-white transition-colors">አማ</button>
-          <Link to="/login" className="text-gray-300 hover:text-white transition-colors">
+          <button 
+            onClick={() => openAuthModal('login')} 
+            className="text-gray-300 hover:text-white transition-colors"
+          >
             Sign In
-          </Link>
-          <Link 
-            to="/login"
-            state={{ mode: 'register' }}
+          </button>
+          <button 
+            onClick={() => openAuthModal('register')}
             className="bg-emerald-400 hover:bg-emerald-500 text-black px-6 py-2.5 rounded-full font-bold transition-colors shadow-[0_0_15px_rgba(52,211,153,0.3)]"
           >
             Register
-          </Link>
+          </button>
         </div>
       </header>
 
@@ -53,18 +63,18 @@ export const Landing: React.FC = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Link 
-            to="/login"
+          <button 
+            onClick={() => openAuthModal('register')}
             className="bg-emerald-400 hover:bg-emerald-500 text-black px-8 py-3.5 rounded-lg font-bold tracking-wide transition-colors uppercase w-full sm:w-auto text-center shadow-[0_0_20px_rgba(52,211,153,0.4)]"
           >
             Get Started
-          </Link>
-          <Link 
-            to="/login"
+          </button>
+          <button 
+            onClick={() => openAuthModal('login')}
             className="bg-[#111111]/80 hover:bg-[#222222]/90 border border-white/10 text-white px-8 py-3.5 rounded-lg font-bold tracking-wide transition-all uppercase w-full sm:w-auto text-center backdrop-blur-sm"
           >
             Explore Platform
-          </Link>
+          </button>
         </div>
       </main>
 
@@ -75,6 +85,12 @@ export const Landing: React.FC = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </div>
+
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+        initialMode={authModalMode}
+      />
     </div>
   );
 };

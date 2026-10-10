@@ -15,6 +15,7 @@ interface AuthContextType {
   }) => Promise<void>;
   loginWithGoogle: (idToken: string) => Promise<void>;
   quickDemoLogin: (role: 'SUPER_ADMIN' | 'ENTERPRISE_ADMIN' | 'TECHNICIAN') => Promise<void>;
+  forceDemoLogin: () => void;
   logout: () => void;
 }
 
@@ -34,6 +35,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     async function loadUser() {
       if (token) {
+        if (token === 'demo-token') {
+           setUser({
+            id: 'demo-id',
+            email: 'demo@example.com',
+            fullName: 'Demo User',
+            role: 'ENTERPRISE_ADMIN',
+            tenantId: null
+          });
+          setIsLoading(false);
+          return;
+        }
+
         try {
           const res = await api.auth.me();
           if (res.success && res.user) {
@@ -90,6 +103,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const forceDemoLogin = () => {
+    const fakeToken = 'demo-token';
+    localStorage.setItem('soundgrid_access_token', fakeToken);
+    setToken(fakeToken);
+    setUser({
+      id: 'demo-id',
+      email: 'demo@example.com',
+      fullName: 'Demo User',
+      role: 'ENTERPRISE_ADMIN',
+      tenantId: null
+    });
+  };
+
   const logout = () => {
     localStorage.removeItem('soundgrid_access_token');
     setToken(null);
@@ -97,7 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, register, loginWithGoogle, quickDemoLogin, logout }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, register, loginWithGoogle, quickDemoLogin, forceDemoLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );

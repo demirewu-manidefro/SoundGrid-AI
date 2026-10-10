@@ -4,7 +4,6 @@ import { useAuth } from './context/AuthContext';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 
-import { Login } from './pages/Login';
 import { Landing } from './pages/Landing';
 import { Dashboard } from './pages/Dashboard';
 import { TechnicianPage } from './pages/TechnicianPage';
@@ -32,7 +31,7 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
   }
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -54,10 +53,6 @@ export const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/login"
-          element={user ? <Navigate to="/dashboard" replace /> : <Login />}
-        />
         <Route
           path="/"
           element={user ? <Navigate to="/dashboard" replace /> : <Landing />}
