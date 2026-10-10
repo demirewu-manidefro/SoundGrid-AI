@@ -68,7 +68,7 @@ export const TechnicianPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-r from-[#232323]/90 via-[#2A2A2A]/80 to-[#232323]/90 p-6 md:p-8 backdrop-blur-xl shadow-2xl">
+      <div className="relative overflow-hidden rounded-2xl border border-[#3E3E3E] bg-gradient-to-r from-[#232323]/90 via-[#2A2A2A]/80 to-[#232323]/90 p-6 md:p-8  shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#3ECF8E]/30 bg-[#2A2A2A]/40 px-3 py-1 font-mono text-[11px] font-semibold text-[#3ECF8E]">
@@ -95,7 +95,7 @@ export const TechnicianPage: React.FC = () => {
         {/* Left Column: Acquisition & Controls */}
         <div className="space-y-6 lg:col-span-7">
           {/* Equipment Selection */}
-          <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/90 p-6 backdrop-blur-xl shadow-xl">
+          <div className="rounded-2xl border border-[#3E3E3E] bg-[#232323] p-6  shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#3ECF8E]/20 text-[#3ECF8E] text-xs">1</span>
@@ -140,7 +140,7 @@ export const TechnicianPage: React.FC = () => {
           />
 
           {/* Alternative File Dropzone */}
-          <div className="rounded-2xl border border-dashed border-white/10 bg-industrial-panel/50 p-5 text-center hover:border-[#3ECF8E]/40 transition-colors">
+          <div className="rounded-2xl border border-dashed border-white/10 bg-[#232323] p-5 text-center hover:border-[#3ECF8E]/40 transition-colors">
             <label className="cursor-pointer block">
               <Upload className="mx-auto h-6 w-6 text-[#3ECF8E]/80 mb-2" />
               <span className="font-mono text-xs text-slate-200 font-semibold">
@@ -167,7 +167,7 @@ export const TechnicianPage: React.FC = () => {
           </div>
 
           {/* Field Observation Notes & Trigger Button */}
-          <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/90 p-6 backdrop-blur-xl shadow-xl space-y-4">
+          <div className="rounded-2xl border border-[#3E3E3E] bg-[#232323] p-6  shadow-xl space-y-4">
             <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#3ECF8E]/20 text-[#3ECF8E] text-xs">2</span>
               Field Observations & Notes
@@ -207,7 +207,7 @@ export const TechnicianPage: React.FC = () => {
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
               {/* Verdict Card */}
               <div
-                className={`relative overflow-hidden rounded-2xl border p-6 backdrop-blur-xl shadow-2xl ${
+                className={`relative overflow-hidden rounded-2xl border p-6  shadow-2xl ${
                   evaluationResult.prediction.isAnomaly
                     ? 'border-rose-500/40 bg-gradient-to-b from-rose-950/60 to-[#232323]'
                     : 'border-emerald-500/40 bg-gradient-to-b from-emerald-950/60 to-[#232323]'
@@ -287,7 +287,7 @@ export const TechnicianPage: React.FC = () => {
               </div>
 
               {/* Acoustic DSP Telemetry Cards */}
-              <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/90 p-6 backdrop-blur-xl shadow-xl">
+              <div className="rounded-2xl border border-[#3E3E3E] bg-[#232323] p-6  shadow-xl">
                 <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white mb-4 flex items-center gap-2">
                   <Activity className="h-4 w-4 text-[#3ECF8E]" />
                   Acoustic DSP Frequency Telemetry
@@ -325,7 +325,7 @@ export const TechnicianPage: React.FC = () => {
               <HeatmapView data={evaluationResult.telemetry.previewHeatmap} />
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-industrial-panel/50 p-12 text-center text-slate-500">
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-[#232323] p-12 text-center text-slate-500">
               <Cpu className="h-14 w-14 text-slate-600 mb-3" />
               <p className="font-mono text-sm text-slate-300 font-semibold">
                 Awaiting Acoustic Signal Evaluation
