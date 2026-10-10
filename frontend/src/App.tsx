@@ -4,8 +4,8 @@ import { useAuth } from './context/AuthContext';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 
-// Pages
 import { Login } from './pages/Login';
+import { Landing } from './pages/Landing';
 import { Dashboard } from './pages/Dashboard';
 import { TechnicianPage } from './pages/TechnicianPage';
 import { MachinesPage } from './pages/MachinesPage';
@@ -56,10 +56,14 @@ export const App: React.FC = () => {
       <Routes>
         <Route
           path="/login"
-          element={user ? <Navigate to="/" replace /> : <Login />}
+          element={user ? <Navigate to="/dashboard" replace /> : <Login />}
         />
         <Route
           path="/"
+          element={user ? <Navigate to="/dashboard" replace /> : <Landing />}
+        />
+        <Route
+          path="/dashboard"
           element={
             <ProtectedLayout>
               <Dashboard />
@@ -114,7 +118,7 @@ export const App: React.FC = () => {
             </ProtectedLayout>
           }
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} replace />} />
       </Routes>
     </BrowserRouter>
   );

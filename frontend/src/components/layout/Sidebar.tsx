@@ -22,7 +22,7 @@ export const Sidebar: React.FC = () => {
 
   const navItems = [
     {
-      to: '/',
+      to: '/dashboard',
       label: 'Telemetry Overview',
       icon: LayoutDashboard,
       allowed: true,
