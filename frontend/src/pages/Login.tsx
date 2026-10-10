@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { 
@@ -9,8 +10,11 @@ import {
 export const Login: React.FC = () => {
   const { login, register, quickDemoLogin, loginWithGoogle } = useAuth();
   
+  const location = useLocation();
   // Auth Tab Mode: 'login' | 'register'
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [authMode, setAuthMode] = useState<'login' | 'register'>(
+    location.state?.mode === 'register' ? 'register' : 'login'
+  );
 
   // Login form state
   const [email, setEmail] = useState('admin@apexpower.com');
