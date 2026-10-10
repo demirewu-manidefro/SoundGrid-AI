@@ -266,7 +266,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
   };
 
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/90 p-6 backdrop-blur-xl shadow-xl space-y-4">
+    <div className="rounded-2xl border border-white/[0.08] bg-[#232323] p-6  shadow-xl space-y-4">
       <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2A2A2A]/60 border border-[#3E3E3E]/60 text-[#3ECF8E]">
@@ -310,7 +310,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioReady, disa
         )}
 
         {audioFileName && !isRecording && (
-          <div className="absolute top-2 left-2 flex items-center gap-2 rounded-md bg-slate-900/80 border border-white/10 px-2.5 py-1 text-[10px] font-mono text-[#3ECF8E] backdrop-blur-md">
+          <div className="absolute top-2 left-2 flex items-center gap-2 rounded-md bg-slate-900/80 border border-white/10 px-2.5 py-1 text-[10px] font-mono text-[#3ECF8E] ">
             <CheckCircle2 className="h-3 w-3 text-[#3ECF8E]" />
             <span>Loaded: {audioFileName}</span>
           </div>
