@@ -94,7 +94,7 @@ export const UsersPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Banner / Header */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-6 backdrop-blur-xl shadow-2xl">
+      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-6  shadow-2xl">
         <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-[#2E2E2E]/10 blur-3xl pointer-events-none" />
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
@@ -154,7 +154,7 @@ export const UsersPage: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-white/10 bg-slate-900/60 p-3 backdrop-blur-md">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-white/10 bg-slate-900/60 p-3 ">
         <div className="flex flex-1 items-center gap-2 rounded-lg border border-white/5 bg-slate-950/60 px-3 py-2 text-xs font-mono text-slate-300 focus-within:border-[#2E2E2E]/50">
           <Search className="h-4 w-4 text-slate-400 shrink-0" />
           <input
@@ -193,7 +193,7 @@ export const UsersPage: React.FC = () => {
       </div>
 
       {/* Users Table */}
-      <div className="rounded-2xl border border-white/10 bg-slate-900/60 shadow-xl backdrop-blur-xl overflow-hidden">
+      <div className="rounded-2xl border border-white/10 bg-slate-900/60 shadow-xl  overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
@@ -274,7 +274,7 @@ export const UsersPage: React.FC = () => {
 
       {/* Provision Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-150">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80  p-4 animate-in fade-in duration-150">
           <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900 p-6 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
               <div className="flex items-center gap-2">
