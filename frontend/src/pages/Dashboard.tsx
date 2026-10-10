@@ -47,7 +47,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Top Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-r from-[#232323]/90 via-[#2A2A2A]/80 to-[#232323]/90 p-6 md:p-8 backdrop-blur-xl shadow-2xl">
+      <div className="relative overflow-hidden rounded-2xl border border-[#3E3E3E] bg-gradient-to-r from-[#232323]/90 via-[#2A2A2A]/80 to-[#232323]/90 p-6 md:p-8  shadow-2xl">
         <div className="absolute top-0 right-0 -mt-10 -mr-10 h-72 w-72 rounded-full bg-gradient-to-br from-[#3ECF8E]/10 via-[#2E2E2E]/10 to-transparent blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
@@ -111,7 +111,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Live Acoustic Waveform Visualizer Banner */}
-      <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-5 backdrop-blur-xl shadow-xl">
+      <div className="rounded-2xl border border-[#3E3E3E] bg-[#232323] p-5  shadow-xl">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Radio className="h-4 w-4 text-[#3ECF8E]" />
@@ -130,8 +130,8 @@ export const Dashboard: React.FC = () => {
       {/* Fleet Status Grid & Open Work Orders */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Machinery Status Overview */}
-        <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-6 backdrop-blur-xl shadow-xl lg:col-span-2">
-          <div className="mb-5 flex items-center justify-between border-b border-white/[0.08] pb-3">
+        <div className="rounded-2xl border border-[#3E3E3E] bg-[#232323] p-6  shadow-xl lg:col-span-2">
+          <div className="mb-5 flex items-center justify-between border-b border-[#3E3E3E] pb-3">
             <div>
               <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white">
                 Equipment Fleet Status
@@ -171,9 +171,9 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Actionable Work Orders */}
-        <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-6 backdrop-blur-xl shadow-xl flex flex-col justify-between">
+        <div className="rounded-2xl border border-[#3E3E3E] bg-[#232323] p-6  shadow-xl flex flex-col justify-between">
           <div>
-            <div className="mb-5 flex items-center justify-between border-b border-white/[0.08] pb-3">
+            <div className="mb-5 flex items-center justify-between border-b border-[#3E3E3E] pb-3">
               <div>
                 <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white">
                   Active Work Orders ({openTickets})
@@ -184,7 +184,7 @@ export const Dashboard: React.FC = () => {
               </div>
               <Link
                 to="/tickets"
-                className="flex items-center gap-1 text-xs font-mono text-[#2E2E2E] hover:text-indigo-300 font-semibold transition-colors"
+                className="flex items-center gap-1 text-xs font-mono text-[#2E2E2E] hover:text-[#3ECF8E] font-semibold transition-colors"
               >
                 Triage <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
@@ -225,10 +225,10 @@ export const Dashboard: React.FC = () => {
             )}
           </div>
 
-          <div className="pt-4 border-t border-white/[0.08] mt-4">
+          <div className="pt-4 border-t border-[#3E3E3E] mt-4">
             <Link
               to="/tickets"
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#2E2E2E]/30 bg-indigo-950/40 py-2.5 text-xs font-mono font-semibold text-indigo-300 hover:bg-indigo-900/50 hover:text-white transition-all"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#3E3E3E] bg-[#232323] py-2.5 text-xs font-mono font-semibold text-[#EDEDED] hover:bg-[#2A2A2A] hover:text-white transition-all"
             >
               Manage & Approve Work Orders →
             </Link>
@@ -237,8 +237,8 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Recent Diagnostic Stream Table */}
-      <div className="rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-6 backdrop-blur-xl shadow-xl">
-        <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.08] pb-3">
+      <div className="rounded-2xl border border-[#3E3E3E] bg-[#232323] p-6  shadow-xl">
+        <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#3E3E3E] pb-3">
           <div>
             <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white">
               Recent Acoustic Inspection Stream
@@ -258,7 +258,7 @@ export const Dashboard: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
-              <tr className="border-b border-white/[0.08] text-[10px] uppercase tracking-wider text-slate-400">
+              <tr className="border-b border-[#3E3E3E] text-[10px] uppercase tracking-wider text-slate-400">
                 <th className="pb-3 font-semibold">Timestamp</th>
                 <th className="pb-3 font-semibold">Equipment Asset</th>
                 <th className="pb-3 font-semibold">AI Classification</th>
