@@ -28,7 +28,7 @@ export class AuthService {
       include: { tenant: true },
     });
 
-    if (!user || !user.passwordHash || user.deletedAt) {
+    if (!user || user.deletedAt) {
       await AuditService.record({
         action: 'AUTH_LOGIN_FAILED',
         resource: `User:${params.email}`,
@@ -36,6 +36,10 @@ export class AuthService {
         metadata: { reason: 'User not found or deleted', userAgent: params.userAgent },
       });
       throw new Error('Invalid email or password.');
+    }
+
+    if (!user.passwordHash) {
+      throw new Error('This account was created with Google. Please use "Sign in with Google" or register again to set a password.');
     }
 
     if (!user.isActive) {
@@ -125,9 +129,47 @@ export class AuthService {
     // 1. Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: { email },
+      include: { tenant: true },
     });
     if (existingUser) {
-      throw new Error('An account with this email address already exists. Please sign in instead.');
+      if (!existingUser.passwordHash && existingUser.googleId) {
+        if (params.password.length < 8) {
+          throw new Error('Password must be at least 8 characters long.');
+        }
+        const passwordHash = await hashPassword(params.password);
+        
+        const updatedUser = await prisma.user.update({
+          where: { id: existingUser.id },
+          data: { passwordHash, lastLoginAt: new Date() },
+          include: { tenant: true },
+        });
+
+        await AuditService.record({
+          actorId: updatedUser.id,
+          tenantId: updatedUser.tenantId,
+          action: 'AUTH_REGISTER_SUCCESS',
+          resource: `User:${updatedUser.id}`,
+          ipAddress: params.ipAddress,
+          metadata: { role: updatedUser.role, email: updatedUser.email, note: 'Set password for Google user', userAgent: params.userAgent },
+        });
+
+        const { accessToken, refreshToken } = await this.issueTokenPair(updatedUser);
+
+        return {
+          accessToken,
+          refreshToken,
+          user: {
+            id: updatedUser.id,
+            email: updatedUser.email,
+            fullName: updatedUser.fullName,
+            role: updatedUser.role,
+            tenantId: updatedUser.tenantId,
+            tenant: updatedUser.tenant ? { id: updatedUser.tenant.id, name: updatedUser.tenant.name, slug: updatedUser.tenant.slug, tier: updatedUser.tenant.tier } : null,
+          },
+        };
+      } else {
+        throw new Error('An account with this email address already exists. Please sign in instead.');
+      }
     }
 
     if (params.password.length < 8) {
@@ -226,19 +268,36 @@ export class AuthService {
     let fullName: string;
     let googleId: string;
 
-    // Verify token using google-auth-library with fallback for testing
     try {
-      const ticket = await googleClient.verifyIdToken({
-        idToken: params.idToken,
-        audience: ENV.GOOGLE_CLIENT_ID,
-      });
-      const payload = ticket.getPayload();
-      if (!payload || !payload.email) {
-        throw new Error('Invalid Google payload.');
+      // Attempt to verify as an ID Token first
+      try {
+        const ticket = await googleClient.verifyIdToken({
+          idToken: params.idToken,
+          audience: ENV.GOOGLE_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        if (!payload || !payload.email) {
+          throw new Error('Invalid Google payload.');
+        }
+        email = payload.email.toLowerCase().trim();
+        fullName = payload.name || 'Google User';
+        googleId = payload.sub;
+      } catch (idTokenErr) {
+        // If it fails, fallback to fetching userinfo (assuming it's an access token from implicit flow)
+        const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${params.idToken}` },
+        });
+        if (!response.ok) {
+          throw new Error('Google token verification failed.');
+        }
+        const payload = await response.json();
+        if (!payload || !payload.email) {
+          throw new Error('Invalid Google payload.');
+        }
+        email = payload.email.toLowerCase().trim();
+        fullName = payload.name || 'Google User';
+        googleId = payload.sub;
       }
-      email = payload.email.toLowerCase().trim();
-      fullName = payload.name || 'Google User';
-      googleId = payload.sub;
     } catch (verifyErr) {
       // Allow mock token in development / test environments: e.g. "mock-google-token:<email>"
       if (ENV.NODE_ENV !== 'production' && params.idToken.startsWith('mock-google-token:')) {

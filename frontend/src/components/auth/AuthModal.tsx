@@ -22,6 +22,25 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
   
   const { login, register, loginWithGoogle } = useAuth();
 
+  const handleGoogleAuth = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      setIsGoogleLoading(true);
+      setError(null);
+      try {
+        await loginWithGoogle(tokenResponse.access_token);
+        onClose();
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || 'Google Authentication Failed on our server.');
+      } finally {
+        setIsGoogleLoading(false);
+      }
+    },
+    onError: () => {
+      setError('Google Authentication was cancelled or failed.');
+    }
+  });
+
   // Password Security Rules
   const hasMinLen = password.length >= 8;
   const hasUpper = /[A-Z]/.test(password);
@@ -71,25 +90,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
       setIsLoading(false);
     }
   };
-
-  const handleGoogleAuth = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      setIsGoogleLoading(true);
-      setError(null);
-      try {
-        await loginWithGoogle(tokenResponse.access_token);
-        onClose();
-      } catch (err: any) {
-        console.error(err);
-        setError(err.message || 'Google Authentication Failed on our server.');
-      } finally {
-        setIsGoogleLoading(false);
-      }
-    },
-    onError: () => {
-      setError('Google Authentication was cancelled or failed.');
-    }
-  });
 
   const handleCustomGoogleLogin = () => {
     handleGoogleAuth();
