@@ -58,12 +58,9 @@ export const StatCard: React.FC<StatCardProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-5 backdrop-blur-xl transition-all duration-300 ${cfg.border} shadow-xl hover:-translate-y-1 hover:shadow-2xl group`}
+      className={`relative overflow-hidden rounded-2xl border border-[#3E3E3E] bg-[#232323] p-5  transition-all duration-300 ${cfg.border} shadow-xl hover:-translate-y-1 hover:shadow-2xl group`}
     >
-      {/* Ambient Radial Corner Glow */}
-      <div
-        className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br ${cfg.glow} blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500`}
-      />
+
 
       <div className="relative z-10 flex items-start justify-between">
         <div>
