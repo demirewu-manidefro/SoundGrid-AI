@@ -28,7 +28,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md' })
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border uppercase tracking-wider font-mono backdrop-blur-md transition-all ${sizeClasses} ${styles}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border uppercase tracking-wider font-mono  transition-all ${sizeClasses} ${styles}`}
     >
       <span className="relative flex h-2 w-2">
         {isPulsing && (
