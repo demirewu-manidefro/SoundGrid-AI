@@ -104,7 +104,7 @@ export const MachinesPage: React.FC = () => {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-wrap items-center gap-3.5 rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-3.5 backdrop-blur-xl shadow-lg">
+      <div className="flex flex-wrap items-center gap-3.5 rounded-2xl border border-white/[0.08] bg-[#232323] p-3.5  shadow-lg">
         <div className="relative flex-1 min-w-[220px]">
           <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
           <input
@@ -157,7 +157,7 @@ export const MachinesPage: React.FC = () => {
           filtered.map((m) => (
             <div
               key={m.id}
-              className="group relative flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-industrial-panel/80 p-5 backdrop-blur-xl shadow-xl hover:border-[#3ECF8E]/40 hover:-translate-y-1 transition-all duration-300"
+              className="group relative flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#232323] p-5  shadow-xl hover:border-[#3ECF8E]/40 hover:-translate-y-1 transition-all duration-300"
             >
               <div>
                 <div className="flex items-start justify-between mb-3">
@@ -208,7 +208,7 @@ export const MachinesPage: React.FC = () => {
 
       {/* Register Machine Modal */}
       {showRegisterModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80  p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#232323] p-6 shadow-2xl">
             <h3 className="font-display text-base font-bold text-white uppercase tracking-wider mb-4">
               Register New Machinery Asset
