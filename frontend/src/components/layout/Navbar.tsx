@@ -50,7 +50,7 @@ export const Navbar: React.FC = () => {
   ] as const;
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-white/[0.08] bg-[#1C1C1C]/80 px-6 backdrop-blur-xl shadow-lg">
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-white/[0.08] bg-[#1C1C1C]/80 px-6  shadow-lg">
       {/* Brand & System Health */}
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
@@ -102,7 +102,7 @@ export const Navbar: React.FC = () => {
         <button
           id="btn-role-switcher"
           onClick={() => setShowDemoModal(true)}
-          className="flex items-center gap-2 rounded-xl border border-[#2E2E2E]/30 bg-indigo-950/40 px-3.5 py-1.5 text-xs font-mono font-medium text-indigo-300 hover:border-[#2E2E2E] hover:bg-indigo-900/50 hover:text-white transition-all shadow-[0_0_12px_-3px_rgba(62,207,142,0.25)]"
+          className="flex items-center gap-2 rounded-xl border border-[#3E3E3E] bg-[#232323] px-3.5 py-1.5 text-xs font-mono font-medium text-[#EDEDED] hover:border-[#3ECF8E] hover:bg-[#2A2A2A] hover:text-white transition-all shadow-[0_0_12px_-3px_rgba(62,207,142,0.25)]"
           title="Switch role instantly to test multi-tenant RBAC permissions"
         >
           <Sparkles className="h-3.5 w-3.5 text-[#2E2E2E] animate-pulse" />
@@ -138,7 +138,7 @@ export const Navbar: React.FC = () => {
 
       {/* Role Switcher Modal */}
       {showDemoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80  p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#232323] p-6 shadow-2xl">
             <div className="mb-4 flex items-center justify-between border-b border-white/[0.08] pb-3">
               <div className="flex items-center gap-2.5">
