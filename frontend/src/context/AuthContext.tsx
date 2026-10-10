@@ -69,6 +69,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('soundgrid_access_token', res.accessToken);
       setToken(res.accessToken);
       setUser(res.user);
+    } else {
+      throw new Error((res as any).message || 'Invalid email or password');
     }
   };
 
@@ -84,6 +86,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('soundgrid_access_token', res.accessToken);
       setToken(res.accessToken);
       setUser(res.user);
+    } else {
+      throw new Error(res.message || 'Registration failed');
     }
   };
 

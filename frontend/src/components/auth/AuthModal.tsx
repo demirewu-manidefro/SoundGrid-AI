@@ -45,8 +45,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
       if (mode === 'login') {
         try {
           await login(email, password);
-        } catch (err) {
-          forceDemoLogin();
+          onClose();
+        } catch (err: any) {
+          setError(err.message || 'Invalid email or password.');
         }
       } else {
         try {
@@ -57,15 +58,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
             organizationName: 'Demo Org',
             role: 'ENTERPRISE_ADMIN'
           });
-        } catch (err) {
-          forceDemoLogin();
+          onClose();
+        } catch (err: any) {
+          setError(err.message || 'Registration failed. Email might already be in use.');
         }
       }
-      onClose();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      forceDemoLogin();
-      onClose();
+      setError(err.message || 'An unexpected error occurred.');
     } finally {
       setIsLoading(false);
     }
